@@ -2750,7 +2750,7 @@ static int qc3p_read_charger_type(struct rt9471_chip *chip)
 	return val;
 }
 
-static bool qc3p_update_policy(struct rt9471_chip *chip)
+static __maybe_unused bool qc3p_update_policy(struct rt9471_chip *chip)
 {
 	int ret = 0;
 	int val = 0;
