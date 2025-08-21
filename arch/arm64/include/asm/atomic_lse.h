@@ -32,14 +32,7 @@ static inline void atomic_##op(int i, atomic_t *v)			\
 	register int w0 asm ("w0") = i;					\
 	register atomic_t *x1 asm ("x1") = v;				\
 									\
-	asm volatile(							\
-	__LSE_PREAMBLE							\
-	ARM64_LSE_ATOMIC_INSN(					\
-	/* LL/SC */							\
-	__LL_SC_ATOMIC(op)						\
-	__nops(1),							\
-	/* LSE atomics */						\
-"	prfm	pstl1strm, %[v]\n"					\
+	asm volatile(ARM64_LSE_ATOMIC_INSN(__LL_SC_ATOMIC(op),		\
 "	" #asm_op "	%w[i], %[v]\n")					\
 	: [i] "+r" (w0), [v] "+Q" (v->counter)				\
 	: "r" (x1)							\
@@ -59,9 +52,7 @@ static inline int atomic_fetch_##op##name(int i, atomic_t *v)		\
 	register int w0 asm ("w0") = i;					\
 	register atomic_t *x1 asm ("x1") = v;				\
 									\
-	asm volatile(							\
-	__LSE_PREAMBLE							\
-	ARM64_LSE_ATOMIC_INSN(						\
+	asm volatile(ARM64_LSE_ATOMIC_INSN(				\
 	/* LL/SC */							\
 	__LL_SC_ATOMIC(fetch_##op##name)				\
 	__nops(1),							\
@@ -95,9 +86,7 @@ static inline int atomic_add_return##name(int i, atomic_t *v)		\
 	register int w0 asm ("w0") = i;					\
 	register atomic_t *x1 asm ("x1") = v;				\
 									\
-	asm volatile(							\
-	__LSE_PREAMBLE							\
-	ARM64_LSE_ATOMIC_INSN(						\
+	asm volatile(ARM64_LSE_ATOMIC_INSN(				\
 	/* LL/SC */							\
 	__LL_SC_ATOMIC(add_return##name)				\
 	__nops(2),							\
@@ -124,9 +113,7 @@ static inline void atomic_and(int i, atomic_t *v)
 	register int w0 asm ("w0") = i;
 	register atomic_t *x1 asm ("x1") = v;
 
-	asm volatile(
-	__LSE_PREAMBLE
-	ARM64_LSE_ATOMIC_INSN(
+	asm volatile(ARM64_LSE_ATOMIC_INSN(
 	/* LL/SC */
 	__LL_SC_ATOMIC(and)
 	__nops(2),
@@ -145,9 +132,7 @@ static inline int atomic_fetch_and##name(int i, atomic_t *v)		\
 	register int w0 asm ("w0") = i;					\
 	register atomic_t *x1 asm ("x1") = v;				\
 									\
-	asm volatile(							\
-	__LSE_PREAMBLE							\
-	ARM64_LSE_ATOMIC_INSN(						\
+	asm volatile(ARM64_LSE_ATOMIC_INSN(				\
 	/* LL/SC */							\
 	__LL_SC_ATOMIC(fetch_and##name)					\
 	__nops(2),							\
@@ -174,9 +159,7 @@ static inline void atomic_sub(int i, atomic_t *v)
 	register int w0 asm ("w0") = i;
 	register atomic_t *x1 asm ("x1") = v;
 
-	asm volatile(
-	__LSE_PREAMBLE
-	ARM64_LSE_ATOMIC_INSN(
+	asm volatile(ARM64_LSE_ATOMIC_INSN(
 	/* LL/SC */
 	__LL_SC_ATOMIC(sub)
 	__nops(2),
@@ -195,9 +178,7 @@ static inline int atomic_sub_return##name(int i, atomic_t *v)		\
 	register int w0 asm ("w0") = i;					\
 	register atomic_t *x1 asm ("x1") = v;				\
 									\
-	asm volatile(							\
-	__LSE_PREAMBLE							\
-	ARM64_LSE_ATOMIC_INSN(						\
+	asm volatile(ARM64_LSE_ATOMIC_INSN(				\
 	/* LL/SC */							\
 	__LL_SC_ATOMIC(sub_return##name)				\
 	__nops(3),							\
@@ -226,9 +207,7 @@ static inline int atomic_fetch_sub##name(int i, atomic_t *v)		\
 	register int w0 asm ("w0") = i;					\
 	register atomic_t *x1 asm ("x1") = v;				\
 									\
-	asm volatile(							\
-	__LSE_PREAMBLE							\
-	ARM64_LSE_ATOMIC_INSN(						\
+	asm volatile(ARM64_LSE_ATOMIC_INSN(				\
 	/* LL/SC */							\
 	__LL_SC_ATOMIC(fetch_sub##name)					\
 	__nops(2),							\
@@ -258,14 +237,7 @@ static inline void atomic64_##op(long i, atomic64_t *v)			\
 	register long x0 asm ("x0") = i;				\
 	register atomic64_t *x1 asm ("x1") = v;				\
 									\
-	asm volatile(							\
-	__LSE_PREAMBLE							\
-	ARM64_LSE_ATOMIC_INSN(					\
-	/* LL/SC */							\
-	__LL_SC_ATOMIC64(op)						\
-	__nops(1),							\
-	/* LSE atomics */						\
-"	prfm	pstl1strm, %[v]\n"					\
+	asm volatile(ARM64_LSE_ATOMIC_INSN(__LL_SC_ATOMIC64(op),	\
 "	" #asm_op "	%[i], %[v]\n")					\
 	: [i] "+r" (x0), [v] "+Q" (v->counter)				\
 	: "r" (x1)							\
@@ -285,9 +257,7 @@ static inline long atomic64_fetch_##op##name(long i, atomic64_t *v)	\
 	register long x0 asm ("x0") = i;				\
 	register atomic64_t *x1 asm ("x1") = v;				\
 									\
-	asm volatile(							\
-	__LSE_PREAMBLE							\
-	ARM64_LSE_ATOMIC_INSN(						\
+	asm volatile(ARM64_LSE_ATOMIC_INSN(				\
 	/* LL/SC */							\
 	__LL_SC_ATOMIC64(fetch_##op##name)				\
 	__nops(1),							\
@@ -321,9 +291,7 @@ static inline long atomic64_add_return##name(long i, atomic64_t *v)	\
 	register long x0 asm ("x0") = i;				\
 	register atomic64_t *x1 asm ("x1") = v;				\
 									\
-	asm volatile(							\
-	__LSE_PREAMBLE							\
-	ARM64_LSE_ATOMIC_INSN(						\
+	asm volatile(ARM64_LSE_ATOMIC_INSN(				\
 	/* LL/SC */							\
 	__LL_SC_ATOMIC64(add_return##name)				\
 	__nops(2),							\
@@ -350,9 +318,7 @@ static inline void atomic64_and(long i, atomic64_t *v)
 	register long x0 asm ("x0") = i;
 	register atomic64_t *x1 asm ("x1") = v;
 
-	asm volatile(
-	__LSE_PREAMBLE
-	ARM64_LSE_ATOMIC_INSN(
+	asm volatile(ARM64_LSE_ATOMIC_INSN(
 	/* LL/SC */
 	__LL_SC_ATOMIC64(and)
 	__nops(2),
@@ -371,9 +337,7 @@ static inline long atomic64_fetch_and##name(long i, atomic64_t *v)	\
 	register long x0 asm ("x0") = i;				\
 	register atomic64_t *x1 asm ("x1") = v;				\
 									\
-	asm volatile(							\
-	__LSE_PREAMBLE							\
-	ARM64_LSE_ATOMIC_INSN(						\
+	asm volatile(ARM64_LSE_ATOMIC_INSN(				\
 	/* LL/SC */							\
 	__LL_SC_ATOMIC64(fetch_and##name)				\
 	__nops(2),							\
@@ -400,9 +364,7 @@ static inline void atomic64_sub(long i, atomic64_t *v)
 	register long x0 asm ("x0") = i;
 	register atomic64_t *x1 asm ("x1") = v;
 
-	asm volatile(
-	__LSE_PREAMBLE
-	ARM64_LSE_ATOMIC_INSN(
+	asm volatile(ARM64_LSE_ATOMIC_INSN(
 	/* LL/SC */
 	__LL_SC_ATOMIC64(sub)
 	__nops(2),
@@ -421,9 +383,7 @@ static inline long atomic64_sub_return##name(long i, atomic64_t *v)	\
 	register long x0 asm ("x0") = i;				\
 	register atomic64_t *x1 asm ("x1") = v;				\
 									\
-	asm volatile(							\
-	__LSE_PREAMBLE							\
-	ARM64_LSE_ATOMIC_INSN(						\
+	asm volatile(ARM64_LSE_ATOMIC_INSN(				\
 	/* LL/SC */							\
 	__LL_SC_ATOMIC64(sub_return##name)				\
 	__nops(3),							\
@@ -452,9 +412,7 @@ static inline long atomic64_fetch_sub##name(long i, atomic64_t *v)	\
 	register long x0 asm ("x0") = i;				\
 	register atomic64_t *x1 asm ("x1") = v;				\
 									\
-	asm volatile(							\
-	__LSE_PREAMBLE							\
-	ARM64_LSE_ATOMIC_INSN(						\
+	asm volatile(ARM64_LSE_ATOMIC_INSN(				\
 	/* LL/SC */							\
 	__LL_SC_ATOMIC64(fetch_sub##name)				\
 	__nops(2),							\
@@ -480,9 +438,7 @@ static inline long atomic64_dec_if_positive(atomic64_t *v)
 {
 	register long x0 asm ("x0") = (long)v;
 
-	asm volatile(
-	__LSE_PREAMBLE
-	ARM64_LSE_ATOMIC_INSN(
+	asm volatile(ARM64_LSE_ATOMIC_INSN(
 	/* LL/SC */
 	__LL_SC_ATOMIC64(dec_if_positive)
 	__nops(7),
@@ -516,9 +472,7 @@ static inline unsigned long __cmpxchg_case_##name(volatile void *ptr,	\
 	register unsigned long x1 asm ("x1") = old;			\
 	register unsigned long x2 asm ("x2") = new;			\
 									\
-	asm volatile(							\
-	__LSE_PREAMBLE							\
-	ARM64_LSE_ATOMIC_INSN(						\
+	asm volatile(ARM64_LSE_ATOMIC_INSN(				\
 	/* LL/SC */							\
 	__LL_SC_CMPXCHG(name)						\
 	__nops(2),							\
@@ -571,9 +525,7 @@ static inline long __cmpxchg_double##name(unsigned long old1,		\
 	register unsigned long x3 asm ("x3") = new2;			\
 	register unsigned long x4 asm ("x4") = (unsigned long)ptr;	\
 									\
-	asm volatile(							\
-	__LSE_PREAMBLE							\
-	ARM64_LSE_ATOMIC_INSN(						\
+	asm volatile(ARM64_LSE_ATOMIC_INSN(				\
 	/* LL/SC */							\
 	__LL_SC_CMPXCHG_DBL(name)					\
 	__nops(4),							\
