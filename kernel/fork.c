@@ -876,9 +876,10 @@ static struct task_struct *dup_task_struct(struct task_struct *orig, int node)
 	 * One for us, one for whoever does the "release_task()" (usually
 	 * parent)
 	 */
-	refcount_set(&tsk->rcu_users, 2);
+	get_task_struct(tsk);
 	/* One for the rcu users */
-	refcount_set(&tsk->usage, 1);
+	get_task_struct(tsk);
+
 #ifdef CONFIG_BLK_DEV_IO_TRACE
 	tsk->btrace_seq = 0;
 #endif
