@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2015-2020 The Linux Foundation. All rights reserved.
+ * Copyright (c) 2021 Qualcomm Innovation Center, Inc. All rights reserved
  *
  * Permission to use, copy, modify, and/or distribute this software for
  * any purpose with or without fee is hereby granted, provided that the
@@ -660,7 +661,6 @@ static int __hdd_soc_recovery_reinit(struct device *dev,
 		cds_set_recovery_in_progress(false);
 
 	hdd_soc_load_unlock(dev);
-	hdd_start_complete(0);
 
 	return 0;
 
@@ -711,6 +711,7 @@ static int hdd_soc_recovery_reinit(struct device *dev,
 
 
 	osif_psoc_sync_trans_stop(psoc_sync);
+	hdd_start_complete(0);
 
 	return errno;
 }
@@ -1095,7 +1096,7 @@ static int __wlan_hdd_bus_suspend(struct wow_enable_params wow_params)
 	struct pmo_wow_enable_params pmo_params;
 	int pending;
 
-	hdd_info("starting bus suspend");
+	hdd_debug("starting bus suspend");
 
 	hdd_ctx = cds_get_context(QDF_MODULE_ID_HDD);
 
@@ -1173,7 +1174,7 @@ static int __wlan_hdd_bus_suspend(struct wow_enable_params wow_params)
 	 */
 	pld_request_bus_bandwidth(hdd_ctx->parent_dev, PLD_BUS_WIDTH_NONE);
 
-	hdd_info("bus suspend succeeded");
+	hdd_debug("bus suspend succeeded");
 	return 0;
 
 resume_hif:
@@ -1312,7 +1313,7 @@ int wlan_hdd_bus_resume(void)
 	if (cds_is_driver_recovering())
 		return 0;
 
-	hdd_info("starting bus resume");
+	hdd_debug("starting bus resume");
 
 	if (!hdd_ctx) {
 		hdd_err_rl("hdd context is NULL");
@@ -1381,7 +1382,7 @@ int wlan_hdd_bus_resume(void)
 		goto out;
 	}
 
-	hdd_info("bus resume succeeded");
+	hdd_debug("bus resume succeeded");
 	return 0;
 
 out:

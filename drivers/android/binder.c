@@ -479,6 +479,8 @@ struct binder_priority {
  *                        binder transactions
  *                        (protected by @inner_lock)
  * @sync_recv:            process received sync transactions since last frozen
+ *                        bit 0: received sync transaction after being frozen
+ *                        bit 1: new pending sync transaction during freezing
  *                        (protected by @inner_lock)
  *                        bit 0: received sync transaction after being frozen
  *                        bit 1: new pending sync transaction during freezing
@@ -1160,7 +1162,7 @@ static int to_userspace_prio(int policy, int kernel_priority)
 	if (is_fair_policy(policy))
 		return PRIO_TO_NICE(kernel_priority);
 	else
-		return MAX_USER_RT_PRIO - 1 - kernel_priority;
+		return MAX_RT_PRIO - 1 - kernel_priority;
 }
 
 static int to_kernel_prio(int policy, int user_priority)
@@ -1168,7 +1170,7 @@ static int to_kernel_prio(int policy, int user_priority)
 	if (is_fair_policy(policy))
 		return NICE_TO_PRIO(user_priority);
 	else
-		return MAX_USER_RT_PRIO - 1 - user_priority;
+		return MAX_RT_PRIO - 1 - user_priority;
 }
 
 static void binder_do_set_priority(struct task_struct *task,
@@ -2178,6 +2180,7 @@ static void binder_send_failed_reply(struct binder_transaction *t,
 			binder_free_transaction(t);
 			return;
 		}
+		__release(&target_thread->proc->inner_lock);
 		next = t->from_parent;
 
 		binder_debug(BINDER_DEBUG_FAILED_TRANSACTION,
@@ -2865,6 +2868,56 @@ static int binder_fixup_parent(struct binder_transaction *t,
 }
 
 /**
+ * binder_can_update_transaction() - Can a txn be superseded by an updated one?
+ * @t1: the pending async txn in the frozen process
+ * @t2: the new async txn to supersede the outdated pending one
+ *
+ * Return:  true if t2 can supersede t1
+ *          false if t2 can not supersede t1
+ */
+static bool binder_can_update_transaction(struct binder_transaction *t1,
+					  struct binder_transaction *t2)
+{
+	if ((t1->flags & t2->flags & (TF_ONE_WAY | TF_UPDATE_TXN)) !=
+	    (TF_ONE_WAY | TF_UPDATE_TXN) || !t1->to_proc || !t2->to_proc)
+		return false;
+	if (t1->to_proc->tsk == t2->to_proc->tsk && t1->code == t2->code &&
+	    t1->flags == t2->flags && t1->buffer->pid == t2->buffer->pid &&
+	    t1->buffer->target_node->ptr == t2->buffer->target_node->ptr &&
+	    t1->buffer->target_node->cookie == t2->buffer->target_node->cookie)
+		return true;
+	return false;
+}
+
+/**
+ * binder_find_outdated_transaction_ilocked() - Find the outdated transaction
+ * @t:		 new async transaction
+ * @target_list: list to find outdated transaction
+ *
+ * Return: the outdated transaction if found
+ *         NULL if no outdated transacton can be found
+ *
+ * Requires the proc->inner_lock to be held.
+ */
+static struct binder_transaction *
+binder_find_outdated_transaction_ilocked(struct binder_transaction *t,
+					 struct list_head *target_list)
+{
+	struct binder_work *w;
+
+	list_for_each_entry(w, target_list, entry) {
+		struct binder_transaction *t_queued;
+
+		if (w->type != BINDER_WORK_TRANSACTION)
+			continue;
+		t_queued = container_of(w, struct binder_transaction, work);
+		if (binder_can_update_transaction(t_queued, t))
+			return t_queued;
+	}
+	return NULL;
+}
+
+/**
  * binder_proc_transaction() - sends a transaction to a process and wakes it up
  * @t:		transaction to send
  * @proc:	process to send the transaction to
@@ -2890,6 +2943,7 @@ static int binder_proc_transaction(struct binder_transaction *t,
 	struct binder_priority node_prio;
 	bool oneway = !!(t->flags & TF_ONE_WAY);
 	bool pending_async = false;
+	struct binder_transaction *t_outdated = NULL;
 
 	BUG_ON(!node);
 	binder_node_lock(node);
@@ -2898,11 +2952,10 @@ static int binder_proc_transaction(struct binder_transaction *t,
 
 	if (oneway) {
 		BUG_ON(thread);
-		if (node->has_async_transaction) {
+		if (node->has_async_transaction)
 			pending_async = true;
-		} else {
+		else
 			node->has_async_transaction = true;
-		}
 	}
 
 	binder_inner_proc_lock(proc);
@@ -2928,6 +2981,17 @@ static int binder_proc_transaction(struct binder_transaction *t,
 	} else if (!pending_async) {
 		binder_enqueue_work_ilocked(&t->work, &proc->todo);
 	} else {
+		if ((t->flags & TF_UPDATE_TXN) && proc->is_frozen) {
+			t_outdated = binder_find_outdated_transaction_ilocked(t,
+					&node->async_todo);
+			if (t_outdated) {
+				binder_debug(BINDER_DEBUG_TRANSACTION,
+					     "txn %d supersedes %d\n",
+					     t->debug_id, t_outdated->debug_id);
+				list_del_init(&t_outdated->work.entry);
+				proc->outstanding_txns--;
+			}
+		}
 		binder_enqueue_work_ilocked(&t->work, &node->async_todo);
 	}
 
@@ -2937,6 +3001,22 @@ static int binder_proc_transaction(struct binder_transaction *t,
 	proc->outstanding_txns++;
 	binder_inner_proc_unlock(proc);
 	binder_node_unlock(node);
+
+	/*
+	 * To reduce potential contention, free the outdated transaction and
+	 * buffer after releasing the locks.
+	 */
+	if (t_outdated) {
+		struct binder_buffer *buffer = t_outdated->buffer;
+
+		t_outdated->buffer = NULL;
+		buffer->transaction = NULL;
+		trace_binder_transaction_update_buffer_release(buffer);
+		binder_transaction_buffer_release(proc, buffer, 0, 0);
+		binder_alloc_free_buf(&proc->alloc, buffer);
+		kfree(t_outdated);
+		binder_stats_deleted(BINDER_STAT_TRANSACTION);
+	}
 
 	return 0;
 }
@@ -3093,8 +3173,8 @@ static void binder_transaction(struct binder_proc *proc,
 						ref->node, &target_proc,
 						&return_error);
 			} else {
-				binder_user_error("%d:%d got transaction to invalid handle\n",
-						  proc->pid, thread->pid);
+				binder_user_error("%d:%d got transaction to invalid handle, %u\n",
+						  proc->pid, thread->pid, tr->target.handle);
 				return_error = BR_FAILED_REPLY;
 			}
 			binder_proc_unlock(proc);
@@ -3273,7 +3353,7 @@ static void binder_transaction(struct binder_proc *proc,
 		if (extra_buffers_size < added_size) {
 			/* integer overflow of extra_buffers_size */
 			return_error = BR_FAILED_REPLY;
-			return_error_param = EINVAL;
+			return_error_param = -EINVAL;
 			return_error_line = __LINE__;
 			goto err_bad_extra_size;
 		}
@@ -4224,7 +4304,7 @@ static int binder_wait_for_work(struct binder_thread *thread,
 		binder_inner_proc_lock(proc);
 		list_del_init(&thread->waiting_thread_node);
 		if (signal_pending(current)) {
-			ret = -ERESTARTSYS;
+			ret = -EINTR;
 			break;
 		}
 	}
@@ -5175,7 +5255,7 @@ static long binder_ioctl(struct file *filp, unsigned int cmd, unsigned long arg)
 
 		if (copy_from_user(&max_threads, ubuf,
 				   sizeof(max_threads))) {
-			ret = -EINVAL;
+			ret = -EFAULT;
 			goto err;
 		}
 		binder_inner_proc_lock(proc);
@@ -5187,7 +5267,7 @@ static long binder_ioctl(struct file *filp, unsigned int cmd, unsigned long arg)
 		struct flat_binder_object fbo;
 
 		if (copy_from_user(&fbo, ubuf, sizeof(fbo))) {
-			ret = -EINVAL;
+			ret = -EFAULT;
 			goto err;
 		}
 		ret = binder_ioctl_set_ctx_mgr(filp, &fbo);
@@ -5339,7 +5419,7 @@ static long binder_ioctl(struct file *filp, unsigned int cmd, unsigned long arg)
 		uint32_t enable;
 
 		if (copy_from_user(&enable, ubuf, sizeof(enable))) {
-			ret = -EINVAL;
+			ret = -EFAULT;
 			goto err;
 		}
 		binder_inner_proc_lock(proc);
@@ -5356,7 +5436,7 @@ err:
 	if (thread)
 		thread->looper_need_return = false;
 	wait_event_interruptible(binder_user_error_wait, binder_stop_on_user_error < 2);
-	if (ret && ret != -ERESTARTSYS)
+	if (ret && ret != -EINTR)
 		pr_info("%d:%d ioctl %x %lx returned %d\n", proc->pid, current->pid, cmd, arg, ret);
 err_unlocked:
 	trace_binder_ioctl_done(ret);

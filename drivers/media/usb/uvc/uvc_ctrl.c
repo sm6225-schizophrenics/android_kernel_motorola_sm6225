@@ -1450,6 +1450,7 @@ static void uvc_ctrl_send_events(struct uvc_fh *handle,
 		if (ctrl->entity != entity)
 			continue;
 
+		ctrl = uvc_find_control(handle->chain, xctrls[i].id, &mapping);
 		if (ctrl->info.flags & UVC_CTRL_FLAG_ASYNCHRONOUS)
 			/* Notification will be sent from an Interrupt event. */
 			continue;

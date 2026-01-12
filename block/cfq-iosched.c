@@ -658,19 +658,9 @@ static inline void cfqg_put(struct cfq_group *cfqg)
 	return blkg_put(cfqg_to_blkg(cfqg));
 }
 
-#define cfq_log_cfqq(cfqd, cfqq, fmt, args...)	do {			\
-	blk_add_cgroup_trace_msg((cfqd)->queue,				\
-			cfqg_to_blkg((cfqq)->cfqg)->blkcg,		\
-			"cfq%d%c%c " fmt, (cfqq)->pid,			\
-			cfq_cfqq_sync((cfqq)) ? 'S' : 'A',		\
-			cfqq_type((cfqq)) == SYNC_NOIDLE_WORKLOAD ? 'N' : ' ',\
-			  ##args);					\
-} while (0)
+#define cfq_log_cfqq(cfqd, cfqq, fmt, args...)	do {} while (0)
 
-#define cfq_log_cfqg(cfqd, cfqg, fmt, args...)	do {			\
-	blk_add_cgroup_trace_msg((cfqd)->queue,				\
-			cfqg_to_blkg(cfqg)->blkcg, fmt, ##args);	\
-} while (0)
+#define cfq_log_cfqg(cfqd, cfqg, fmt, args...)	do {} while (0)
 
 static inline void cfqg_stats_update_io_add(struct cfq_group *cfqg,
 					    struct cfq_group *curr_cfqg,
@@ -4854,8 +4844,11 @@ USEC_STORE_FUNCTION(cfq_target_latency_us_store, &cfqd->cfq_target_latency, 1, U
 #define CFQ_ATTR(name) \
 	__ATTR(name, 0644, cfq_##name##_show, cfq_##name##_store)
 
+#define CFQ_RO_ATTR(name) \
+	__ATTR(name, S_IRUGO, cfq_##name##_show, cfq_##name##_store)
+
 static struct elv_fs_entry cfq_attrs[] = {
-	CFQ_ATTR(quantum),
+	CFQ_RO_ATTR(quantum),
 	CFQ_ATTR(fifo_expire_sync),
 	CFQ_ATTR(fifo_expire_async),
 	CFQ_ATTR(back_seek_max),
@@ -4867,7 +4860,7 @@ static struct elv_fs_entry cfq_attrs[] = {
 	CFQ_ATTR(slice_async_rq),
 	CFQ_ATTR(slice_idle),
 	CFQ_ATTR(slice_idle_us),
-	CFQ_ATTR(group_idle),
+	CFQ_RO_ATTR(group_idle),
 	CFQ_ATTR(group_idle_us),
 	CFQ_ATTR(low_latency),
 	CFQ_ATTR(target_latency),

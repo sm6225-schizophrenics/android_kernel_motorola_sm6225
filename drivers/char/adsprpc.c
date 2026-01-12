@@ -184,8 +184,10 @@ enum fastrpc_remote_subsys_state {
 static int fastrpc_pdr_notifier_cb(struct notifier_block *nb,
 					unsigned long code,
 					void *data);
+#ifdef CONFIG_DEBUG_FS
 static struct dentry *debugfs_root;
 static struct dentry *debugfs_global_file;
+#endif
 
 static inline void mem_barrier(void)
 {
@@ -4302,7 +4304,7 @@ static int fastrpc_device_open(struct inode *inode, struct file *filp)
 
 static int fastrpc_set_process_info(struct fastrpc_file *fl)
 {
-	int err = 0, buf_size = 0;
+	int err = 0;
 	char strpid[PID_SIZE];
 	char cur_comm[TASK_COMM_LEN];
 
@@ -4310,6 +4312,7 @@ static int fastrpc_set_process_info(struct fastrpc_file *fl)
 	cur_comm[TASK_COMM_LEN-1] = '\0';
 	fl->tgid = current->tgid;
 	snprintf(strpid, PID_SIZE, "%d", current->pid);
+#ifdef CONFIG_DEBUG_FS
 	if (debugfs_root) {
 		buf_size = strlen(cur_comm) + strlen("_")
 			+ strlen(strpid) + 1;
@@ -4339,6 +4342,7 @@ static int fastrpc_set_process_info(struct fastrpc_file *fl)
 			fl->debug_buf = NULL;
 		}
 	}
+#endif
 	return err;
 }
 
@@ -5070,7 +5074,8 @@ static int fastrpc_cb_probe(struct device *dev)
 	}
 
 	chan->sesscount++;
-	if (debugfs_root) {
+#ifdef CONFIG_DEBUG_FS	
+	if (debugfs_root && !debugfs_global_file) {
 		debugfs_global_file = debugfs_create_file("global", 0644,
 			debugfs_root, NULL, &debugfs_fops);
 		if (IS_ERR_OR_NULL(debugfs_global_file)) {
@@ -5079,6 +5084,7 @@ static int fastrpc_cb_probe(struct device *dev)
 			debugfs_global_file = NULL;
 		}
 	}
+#endif
 bail:
 	return err;
 }
@@ -5438,6 +5444,7 @@ static struct platform_driver fastrpc_driver = {
 		.name = "fastrpc",
 		.of_match_table = fastrpc_match_table,
 		.suppress_bind_attrs = true,
+		.probe_type = PROBE_FORCE_SYNCHRONOUS,
 	},
 };
 
@@ -5470,6 +5477,7 @@ static int __init fastrpc_device_init(void)
 	struct device *secure_dev = NULL;
 	int err = 0, i;
 
+#ifdef CONFIG_DEBUG_FS
 	debugfs_root = debugfs_create_dir("adsprpc", NULL);
 	if (IS_ERR_OR_NULL(debugfs_root)) {
 		pr_warn("Error: %s: %s: failed to create debugfs root dir\n",
@@ -5477,6 +5485,7 @@ static int __init fastrpc_device_init(void)
 		debugfs_remove_recursive(debugfs_root);
 		debugfs_root = NULL;
 	}
+#endif
 	memset(me, 0, sizeof(*me));
 	fastrpc_init(me);
 	me->dev = NULL;
@@ -5611,7 +5620,9 @@ static void __exit fastrpc_device_exit(void)
 		wakeup_source_unregister(me->wake_source);
 	if (me->wake_source_secure)
 		wakeup_source_unregister(me->wake_source_secure);
+#ifdef CONFIG_DEBUG_FS
 	debugfs_remove_recursive(debugfs_root);
+#endif
 }
 
 late_initcall(fastrpc_device_init);

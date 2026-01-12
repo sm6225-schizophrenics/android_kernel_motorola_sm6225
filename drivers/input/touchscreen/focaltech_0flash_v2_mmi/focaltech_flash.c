@@ -956,8 +956,17 @@ int fts_fw_resume(bool need_reset)
             fwlen = fw->size;
             get_fw_i_flag = false;
         } else {
-            FTS_ERROR("%s:firmware(%s) request fail,ret=%d\n",
+            FTS_INFO("%s:firmware(%s) request fail,ret=%d, retrying with the secondary file name\n",
                       __func__, fwname, ret);
+
+	    // fallback for the vendor partitions with the hardcoded fw name
+	    snprintf(fwname, FILE_NAME_LENGTH, "focaltech-txd-ft8726-02-0000-devon.bin");
+	    ret = request_firmware(&fw, fwname, upg->ts_data->dev);
+	    if (ret == 0)
+		FTS_INFO("firmware fallback(%s) request successfully", fwname);
+    	    else
+	        FTS_ERROR("%s:all firmware(%s) request attempts failed,ret=%d\n",
+		           __func__, fwname, ret);
         }
     }
 

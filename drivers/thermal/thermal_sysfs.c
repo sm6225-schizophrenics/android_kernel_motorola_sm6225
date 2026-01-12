@@ -18,6 +18,7 @@
 #include <linux/slab.h>
 #include <linux/string.h>
 #include <linux/jiffies.h>
+#include <linux/vmalloc.h>
 
 #include "thermal_core.h"
 
@@ -259,12 +260,8 @@ passive_store(struct device *dev, struct device_attribute *attr,
 	if (state && !tz->forced_passive) {
 		if (!tz->passive_delay)
 			tz->passive_delay = 1000;
-		thermal_zone_device_rebind_exception(tz, "Processor",
-						     sizeof("Processor"));
 	} else if (!state && tz->forced_passive) {
 		tz->passive_delay = 0;
-		thermal_zone_device_unbind_exception(tz, "Processor",
-						     sizeof("Processor"));
 	}
 
 	tz->forced_passive = state;
@@ -1067,7 +1064,7 @@ static void cooling_device_stats_setup(struct thermal_cooling_device *cdev)
 	var += sizeof(*stats->time_in_state) * states;
 	var += sizeof(*stats->trans_table) * states * states;
 
-	stats = kzalloc(var, GFP_KERNEL);
+	stats = vzalloc(var);
 	if (!stats)
 		goto out;
 
@@ -1089,7 +1086,7 @@ out:
 
 static void cooling_device_stats_destroy(struct thermal_cooling_device *cdev)
 {
-	kfree(cdev->stats);
+	vfree(cdev->stats);
 	cdev->stats = NULL;
 }
 
