@@ -6149,7 +6149,6 @@ again:
 	} else {
 		retval = -EINVAL;
 	}
-#endif
 	if (!retval && !(p->flags & PF_KTHREAD))
 		cpumask_and(&p->cpus_requested, in_mask, cpu_possible_mask);
 out_free_new_mask:
