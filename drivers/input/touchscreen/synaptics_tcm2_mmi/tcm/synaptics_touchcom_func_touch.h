@@ -46,16 +46,16 @@
  * List the object classifications
  */
 enum object_classification {
-	LIFT = 0,
-	FINGER = 1,
-	GLOVED_OBJECT = 2,
-	STYLUS = 3,
-	ERASER = 4,
-	SMALL_OBJECT = 5,
-	PALM = 6,
-	EDGE_TOUCHED = 8,
-	HOVER_OBJECT = 9,
-	NOP = -1,
+  LIFT = 0,
+  FINGER = 1,
+  GLOVED_OBJECT = 2,
+  STYLUS = 3,
+  ERASER = 4,
+  SMALL_OBJECT = 5,
+  PALM = 6,
+  EDGE_TOUCHED = 8,
+  HOVER_OBJECT = 9,
+  NOP = -1,
 };
 
 /**
@@ -64,11 +64,11 @@ enum object_classification {
  * List the gesture ID assigned
  */
 enum gesture_classification {
-	GESTURE_ID_NONE = 0,
-	GESTURE_ID_DOUBLE_TAP = 1,
-	GESTURE_ID_SWIPE = 2,
-	GESTURE_ID_ACTIVE_SINGLE_TAP = 0x10,
-	GESTURE_ID_ACTIVE_TAP_AND_HOLD = 7,
+  GESTURE_ID_NONE = 0,
+  GESTURE_ID_DOUBLE_TAP = 1,
+  GESTURE_ID_SWIPE = 2,
+  GESTURE_ID_ACTIVE_SINGLE_TAP = 0x10,
+  GESTURE_ID_ACTIVE_TAP_AND_HOLD = 7,
 };
 
 /**
@@ -77,40 +77,40 @@ enum gesture_classification {
  * Define the 8-bit codes for the touch report configuration
  */
 enum touch_report_code {
-	/* control flow codes */
-	TOUCH_REPORT_END = 0x00,
-	TOUCH_REPORT_FOREACH_ACTIVE_OBJECT = 0x01,
-	TOUCH_REPORT_FOREACH_OBJECT = 0x02,
-	TOUCH_REPORT_FOREACH_END = 0x03,
-	TOUCH_REPORT_PAD_TO_NEXT_BYTE = 0x04,
-	/* entity codes */
-	TOUCH_REPORT_TIMESTAMP = 0x05,
-	TOUCH_REPORT_OBJECT_N_INDEX = 0x06,
-	TOUCH_REPORT_OBJECT_N_CLASSIFICATION = 0x07,
-	TOUCH_REPORT_OBJECT_N_X_POSITION = 0x08,
-	TOUCH_REPORT_OBJECT_N_Y_POSITION = 0x09,
-	TOUCH_REPORT_OBJECT_N_Z = 0x0a,
-	TOUCH_REPORT_OBJECT_N_X_WIDTH = 0x0b,
-	TOUCH_REPORT_OBJECT_N_Y_WIDTH = 0x0c,
-	TOUCH_REPORT_OBJECT_N_TX_POSITION_TIXELS = 0x0d,
-	TOUCH_REPORT_OBJECT_N_RX_POSITION_TIXELS = 0x0e,
-	TOUCH_REPORT_0D_BUTTONS_STATE = 0x0f,
-	TOUCH_REPORT_GESTURE_ID = 0x10,
-	TOUCH_REPORT_FRAME_RATE = 0x11,
-	TOUCH_REPORT_POWER_IM = 0x12,
-	TOUCH_REPORT_CID_IM = 0x13,
-	TOUCH_REPORT_RAIL_IM = 0x14,
-	TOUCH_REPORT_CID_VARIANCE_IM = 0x15,
-	TOUCH_REPORT_NSM_FREQUENCY_INDEX = 0x16,
-	TOUCH_REPORT_NSM_STATE = 0x17,
-	TOUCH_REPORT_NUM_OF_ACTIVE_OBJECTS = 0x18,
-	TOUCH_REPORT_CPU_CYCLES_USED_SINCE_LAST_FRAME = 0x19,
-	TOUCH_REPORT_FACE_DETECT = 0x1a,
-	TOUCH_REPORT_GESTURE_DATA = 0x1b,
-	TOUCH_REPORT_FORCE_MEASUREMENT = 0x1c,
-	TOUCH_REPORT_FINGERPRINT_AREA_MEET = 0x1d,
-	TOUCH_REPORT_SENSING_MODE = 0x1e,
-	TOUCH_REPORT_KNOB_DATA = 0x24,
+  /* control flow codes */
+  TOUCH_REPORT_END = 0x00,
+  TOUCH_REPORT_FOREACH_ACTIVE_OBJECT = 0x01,
+  TOUCH_REPORT_FOREACH_OBJECT = 0x02,
+  TOUCH_REPORT_FOREACH_END = 0x03,
+  TOUCH_REPORT_PAD_TO_NEXT_BYTE = 0x04,
+  /* entity codes */
+  TOUCH_REPORT_TIMESTAMP = 0x05,
+  TOUCH_REPORT_OBJECT_N_INDEX = 0x06,
+  TOUCH_REPORT_OBJECT_N_CLASSIFICATION = 0x07,
+  TOUCH_REPORT_OBJECT_N_X_POSITION = 0x08,
+  TOUCH_REPORT_OBJECT_N_Y_POSITION = 0x09,
+  TOUCH_REPORT_OBJECT_N_Z = 0x0a,
+  TOUCH_REPORT_OBJECT_N_X_WIDTH = 0x0b,
+  TOUCH_REPORT_OBJECT_N_Y_WIDTH = 0x0c,
+  TOUCH_REPORT_OBJECT_N_TX_POSITION_TIXELS = 0x0d,
+  TOUCH_REPORT_OBJECT_N_RX_POSITION_TIXELS = 0x0e,
+  TOUCH_REPORT_0D_BUTTONS_STATE = 0x0f,
+  TOUCH_REPORT_GESTURE_ID = 0x10,
+  TOUCH_REPORT_FRAME_RATE = 0x11,
+  TOUCH_REPORT_POWER_IM = 0x12,
+  TOUCH_REPORT_CID_IM = 0x13,
+  TOUCH_REPORT_RAIL_IM = 0x14,
+  TOUCH_REPORT_CID_VARIANCE_IM = 0x15,
+  TOUCH_REPORT_NSM_FREQUENCY_INDEX = 0x16,
+  TOUCH_REPORT_NSM_STATE = 0x17,
+  TOUCH_REPORT_NUM_OF_ACTIVE_OBJECTS = 0x18,
+  TOUCH_REPORT_CPU_CYCLES_USED_SINCE_LAST_FRAME = 0x19,
+  TOUCH_REPORT_FACE_DETECT = 0x1a,
+  TOUCH_REPORT_GESTURE_DATA = 0x1b,
+  TOUCH_REPORT_FORCE_MEASUREMENT = 0x1c,
+  TOUCH_REPORT_FINGERPRINT_AREA_MEET = 0x1d,
+  TOUCH_REPORT_SENSING_MODE = 0x1e,
+  TOUCH_REPORT_KNOB_DATA = 0x24,
 };
 
 /**
@@ -131,9 +131,9 @@ enum touch_report_code {
  * @return
  *    on success, 0 or positive value; otherwise, negative value on error.
  */
-int syna_tcm_parse_touch_report(struct tcm_dev *tcm_dev,
-		unsigned char *report, unsigned int report_size,
-		struct tcm_touch_data_blob *touch_data);
+int syna_tcm_parse_touch_report(struct tcm_dev *tcm_dev, unsigned char *report,
+                                unsigned int report_size,
+                                struct tcm_touch_data_blob *touch_data);
 
 /**
  * syna_tcm_set_touch_report_config()
@@ -152,7 +152,8 @@ int syna_tcm_parse_touch_report(struct tcm_dev *tcm_dev,
  *    on success, 0 or positive value; otherwise, negative value on error.
  */
 int syna_tcm_set_touch_report_config(struct tcm_dev *tcm_dev,
-		unsigned char *config, unsigned int config_size);
+                                     unsigned char *config,
+                                     unsigned int config_size);
 
 /**
  * syna_tcm_preserve_touch_report_config()
@@ -173,7 +174,6 @@ int syna_tcm_set_touch_report_config(struct tcm_dev *tcm_dev,
  */
 int syna_tcm_preserve_touch_report_config(struct tcm_dev *tcm_dev);
 
-
 /**
  * syna_tcm_get_touch_data()
  *
@@ -191,8 +191,8 @@ int syna_tcm_preserve_touch_report_config(struct tcm_dev *tcm_dev);
  *    on success, 0 or positive value; otherwise, negative value on error.
  */
 int syna_tcm_get_touch_data(const unsigned char *report,
-		unsigned int report_size, unsigned int offset,
-		unsigned int bits, unsigned int *data);
+                            unsigned int report_size, unsigned int offset,
+                            unsigned int bits, unsigned int *data);
 
 /**
  * syna_tcm_set_custom_touch_entity_callback()
@@ -210,8 +210,9 @@ int syna_tcm_get_touch_data(const unsigned char *report,
  * @return
  *    on success, 0 or positive value; otherwise, negative value on error.
  */
-int syna_tcm_set_custom_touch_entity_callback(struct tcm_dev *tcm_dev,
-		tcm_custom_touch_entity_callback_t p_cb, void *p_cbdata);
+int syna_tcm_set_custom_touch_entity_callback(
+    struct tcm_dev *tcm_dev, tcm_custom_touch_entity_callback_t p_cb,
+    void *p_cbdata);
 
 /**
  * syna_tcm_set_custom_gesture_callback()
@@ -230,7 +231,7 @@ int syna_tcm_set_custom_touch_entity_callback(struct tcm_dev *tcm_dev,
  *    on success, 0 or positive value; otherwise, negative value on error.
  */
 int syna_tcm_set_custom_gesture_callback(struct tcm_dev *tcm_dev,
-		tcm_custom_gesture_callback_t p_cb, void *p_cbdata);
-
+                                         tcm_custom_gesture_callback_t p_cb,
+                                         void *p_cbdata);
 
 #endif /* end of _SYNAPTICS_TOUCHCOM_TOUCH_FUNCS_H_ */

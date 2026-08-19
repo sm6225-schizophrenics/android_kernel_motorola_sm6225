@@ -57,8 +57,8 @@
  * The below enumerates the type of power supply
  */
 enum power_supply {
-	PSU_REGULATOR = 0,
-	PSU_GPIO,
+  PSU_REGULATOR = 0,
+  PSU_GPIO,
 };
 
 /**
@@ -83,64 +83,64 @@ enum power_supply {
 
 /* The hardware data especially for bus transferred */
 struct syna_hw_bus_data {
-	unsigned char type;
-	/* capability of i/o chunk */
-	unsigned int rd_chunk_size;
-	unsigned int wr_chunk_size;
-	/* clock frequency in hz */
-	unsigned int frequency_hz;
-	/* parameters for i2c */
-	unsigned int i2c_addr;
-	/* parameters for spi */
-	unsigned int spi_mode;
-	unsigned int spi_byte_delay_us;
-	unsigned int spi_block_delay_us;
-	/* mutex to protect the i/o, if needed */
-	syna_pal_mutex_t io_mutex;
-	/* parameters for io switch, if needed */
-	int switch_gpio;
-	int switch_state;
+  unsigned char type;
+  /* capability of i/o chunk */
+  unsigned int rd_chunk_size;
+  unsigned int wr_chunk_size;
+  /* clock frequency in hz */
+  unsigned int frequency_hz;
+  /* parameters for i2c */
+  unsigned int i2c_addr;
+  /* parameters for spi */
+  unsigned int spi_mode;
+  unsigned int spi_byte_delay_us;
+  unsigned int spi_block_delay_us;
+  /* mutex to protect the i/o, if needed */
+  syna_pal_mutex_t io_mutex;
+  /* parameters for io switch, if needed */
+  int switch_gpio;
+  int switch_state;
 };
 
 /* The hardware data especially for ATTN signal */
 struct syna_hw_attn_data {
-	/* parameters */
-	int irq_gpio;
-	int irq_on_state;
-	unsigned long irq_flags;
-	int irq_id;
-	bool irq_enabled;
-	/* mutex to protect the irq control, if needed */
-	syna_pal_mutex_t irq_en_mutex;
+  /* parameters */
+  int irq_gpio;
+  int irq_on_state;
+  unsigned long irq_flags;
+  int irq_id;
+  bool irq_enabled;
+  /* mutex to protect the irq control, if needed */
+  syna_pal_mutex_t irq_en_mutex;
 };
 
 /* The hardware data especially for RST_N pin */
 struct syna_hw_rst_data {
-	/* parameters */
-	int reset_gpio;
-	int reset_on_state;
-	unsigned int reset_delay_ms;
-	unsigned int reset_active_ms;
+  /* parameters */
+  int reset_gpio;
+  int reset_on_state;
+  unsigned int reset_delay_ms;
+  unsigned int reset_active_ms;
 };
 
 /* The hardware data especially for power control */
 struct syna_hw_pwr_data {
-	int psu;
-	/* parameters */
-	int vdd_gpio;
-	int avdd_gpio;
-	int power_on_state;
-	unsigned int power_on_delay_ms;
-	/* voltage */
-	unsigned int vdd;
-	unsigned int vled;
-	unsigned int vio;
-	unsigned int vddtx;
-	/* regulators */
-	const char *vdd_reg_name;
-	void *vdd_reg_dev;
-	const char *avdd_reg_name;
-	void *avdd_reg_dev;
+  int psu;
+  /* parameters */
+  int vdd_gpio;
+  int avdd_gpio;
+  int power_on_state;
+  unsigned int power_on_delay_ms;
+  /* voltage */
+  unsigned int vdd;
+  unsigned int vled;
+  unsigned int vio;
+  unsigned int vddtx;
+  /* regulators */
+  const char *vdd_reg_name;
+  void *vdd_reg_dev;
+  const char *avdd_reg_name;
+  void *avdd_reg_dev;
 };
 
 /**
@@ -150,143 +150,138 @@ struct syna_hw_pwr_data {
  * on the target platform.
  */
 struct syna_hw_interface {
-	/* The handle of hardware device */
-	void *pdev;
+  /* The handle of hardware device */
+  void *pdev;
 
-	/* Hardware specific data */
-	struct syna_hw_bus_data bdata_io;
-	struct syna_hw_attn_data bdata_attn;
-	struct syna_hw_rst_data bdata_rst;
-	struct syna_hw_pwr_data bdata_pwr;
+  /* Hardware specific data */
+  struct syna_hw_bus_data bdata_io;
+  struct syna_hw_attn_data bdata_attn;
+  struct syna_hw_rst_data bdata_rst;
+  struct syna_hw_pwr_data bdata_pwr;
 
-	/* Operation to do power on/off, if supported
-	 *
-	 * This is an optional operation.
-	 *
-	 * Implementation should request that the power device be
-	 * enabled with the output at the proper voltage.
-	 *
-	 * Assign the pointer NULL if power supply module is not controllable.
-	 *
-	 * @param
-	 *    [ in] hw_if: the handle of hw interface
-	 *    [ in] en:    '1' for powering on, and '0' for powering off
-	 *
-	 * @return
-	 *    0 on success; otherwise, on error.
-	 */
-	int (*ops_power_on)(struct syna_hw_interface *hw_if,
-			bool en);
+  /* Operation to do power on/off, if supported
+   *
+   * This is an optional operation.
+   *
+   * Implementation should request that the power device be
+   * enabled with the output at the proper voltage.
+   *
+   * Assign the pointer NULL if power supply module is not controllable.
+   *
+   * @param
+   *    [ in] hw_if: the handle of hw interface
+   *    [ in] en:    '1' for powering on, and '0' for powering off
+   *
+   * @return
+   *    0 on success; otherwise, on error.
+   */
+  int (*ops_power_on)(struct syna_hw_interface *hw_if, bool en);
 
-	/* Operation to perform the hardware reset, if supported
-	 *
-	 * This is an optional operation.
-	 *
-	 * The actual reset waveform should be reference to the device spec.
-	 *
-	 * Assign the pointer NULL if RST_N pin is not controllable.
-	 *
-	 * @param
-	 *    [ in] hw_if: the handle of hw interface
-	 *
-	 * @return
-	 *    0 on success; otherwise, on error.
-	 */
-	void (*ops_hw_reset)(struct syna_hw_interface *hw_if);
+  /* Operation to perform the hardware reset, if supported
+   *
+   * This is an optional operation.
+   *
+   * The actual reset waveform should be reference to the device spec.
+   *
+   * Assign the pointer NULL if RST_N pin is not controllable.
+   *
+   * @param
+   *    [ in] hw_if: the handle of hw interface
+   *
+   * @return
+   *    0 on success; otherwise, on error.
+   */
+  void (*ops_hw_reset)(struct syna_hw_interface *hw_if);
 
-	/* Operation to set up the bus connection
-	 *
-	 * This is an optional operation to add in the extra configuration
-	 * before doing connection.
-	 *
-	 * Assign the pointer NULL if this operation is not required.
-	 *
-	 * @param
-	 *    [ in] hw_if:   the handle of hw interface
-	 *    [ in] config:  parameters to change
-	 *
-	 * @return
-	 *    0 or positive value on success; otherwise, on error.
-	 */
-	int (*ops_bus_setup)(struct syna_hw_interface *hw_if,
-			struct syna_hw_bus_data *config);
+  /* Operation to set up the bus connection
+   *
+   * This is an optional operation to add in the extra configuration
+   * before doing connection.
+   *
+   * Assign the pointer NULL if this operation is not required.
+   *
+   * @param
+   *    [ in] hw_if:   the handle of hw interface
+   *    [ in] config:  parameters to change
+   *
+   * @return
+   *    0 or positive value on success; otherwise, on error.
+   */
+  int (*ops_bus_setup)(struct syna_hw_interface *hw_if,
+                       struct syna_hw_bus_data *config);
 
-	/* Operation to read the bare data from bus
-	 *
-	 * This is an essential operation; otherwise, the communication
-	 * will not be created.
-	 *
-	 * @param
-	 *    [ in] hw_if:   the handle of hw interface
-	 *    [out] rd_data: buffer for storing data retrieved
-	 *    [ in] rd_len:  length of reading data in bytes
-	 *
-	 * @return
-	 *    0 or positive value on success; otherwise, on error.
-	 */
-	int (*ops_read_data)(struct syna_hw_interface *hw_if,
-			unsigned char *rd_data, unsigned int rd_len);
+  /* Operation to read the bare data from bus
+   *
+   * This is an essential operation; otherwise, the communication
+   * will not be created.
+   *
+   * @param
+   *    [ in] hw_if:   the handle of hw interface
+   *    [out] rd_data: buffer for storing data retrieved
+   *    [ in] rd_len:  length of reading data in bytes
+   *
+   * @return
+   *    0 or positive value on success; otherwise, on error.
+   */
+  int (*ops_read_data)(struct syna_hw_interface *hw_if, unsigned char *rd_data,
+                       unsigned int rd_len);
 
-	/* Operation to write the bare data to bus
-	 *
-	 * This is an essential operation; otherwise, the communication
-	 * will not be created.
-	 *
-	 * @param
-	 *    [ in] hw_if:   the handle of hw interface
-	 *    [ in] wr_data: written data
-	 *    [ in] wr_len:  length of written data in bytes
-	 *
-	 * @return
-	 *    0 or positive value on success; otherwise, on error.
-	 */
-	int (*ops_write_data)(struct syna_hw_interface *hw_if,
-			unsigned char *wr_data, unsigned int wr_len);
+  /* Operation to write the bare data to bus
+   *
+   * This is an essential operation; otherwise, the communication
+   * will not be created.
+   *
+   * @param
+   *    [ in] hw_if:   the handle of hw interface
+   *    [ in] wr_data: written data
+   *    [ in] wr_len:  length of written data in bytes
+   *
+   * @return
+   *    0 or positive value on success; otherwise, on error.
+   */
+  int (*ops_write_data)(struct syna_hw_interface *hw_if, unsigned char *wr_data,
+                        unsigned int wr_len);
 
-	/* Operation to enable/disable the irq, if supported
-	 *
-	 * This is an optional operation. Providing this operation could
-	 * minimize the frequency of ISR being called.
-	 *
-	 * Once disabled, ISR will not be invoked even ATTN is asserted.
-	 *
-	 * Assign the pointer NULL if irq is not controllable.
-	 *
-	 * @param
-	 *    [ in] hw_if: the handle of hw interface
-	 *    [ in] en:    '1' for enabling, and '0' for disabling
-	 *
-	 * @return
-	 *    0 on success; otherwise, on error.
-	 */
-	int (*ops_enable_irq)(struct syna_hw_interface *hw_if,
-			bool en);
+  /* Operation to enable/disable the irq, if supported
+   *
+   * This is an optional operation. Providing this operation could
+   * minimize the frequency of ISR being called.
+   *
+   * Once disabled, ISR will not be invoked even ATTN is asserted.
+   *
+   * Assign the pointer NULL if irq is not controllable.
+   *
+   * @param
+   *    [ in] hw_if: the handle of hw interface
+   *    [ in] en:    '1' for enabling, and '0' for disabling
+   *
+   * @return
+   *    0 on success; otherwise, on error.
+   */
+  int (*ops_enable_irq)(struct syna_hw_interface *hw_if, bool en);
 
-	/* Operation to wait for the signal of interrupt, if supported
-	 *
-	 * This is an optional operation to help for creating the
-	 * custom interrupt handler. Besides, the recommendation is to
-	 * implement in one-shot approach if possible.
-	 *
-	 * Implementation should return control if ATTN is asserted or
-	 * specified timeout expire. If timeout is 0, should check the
-	 * state of the ATTN signal and return control immediately.
-	 *
-	 * Assign the pointer NULL if customized ISR is not required.
-	 *
-	 * @param
-	 *    [ in] hw_if:      the handle of hw interface
-	 *    [ in] timeout_ms: time frame in milliseconds
-	 *
-	 * @return
-	 *    0 on success; otherwise, on error.
-	 */
-	int (*ops_wait_irq)(struct syna_hw_interface *hw_if,
-			unsigned int timeout_ms);
-
+  /* Operation to wait for the signal of interrupt, if supported
+   *
+   * This is an optional operation to help for creating the
+   * custom interrupt handler. Besides, the recommendation is to
+   * implement in one-shot approach if possible.
+   *
+   * Implementation should return control if ATTN is asserted or
+   * specified timeout expire. If timeout is 0, should check the
+   * state of the ATTN signal and return control immediately.
+   *
+   * Assign the pointer NULL if customized ISR is not required.
+   *
+   * @param
+   *    [ in] hw_if:      the handle of hw interface
+   *    [ in] timeout_ms: time frame in milliseconds
+   *
+   * @return
+   *    0 on success; otherwise, on error.
+   */
+  int (*ops_wait_irq)(struct syna_hw_interface *hw_if, unsigned int timeout_ms);
 };
 /* end of structure syna_hw_interface */
-
 
 /**
  * syna_hw_interface_init()
@@ -314,6 +309,5 @@ int syna_hw_interface_init(void);
  *    none.
  */
 void syna_hw_interface_exit(void);
-
 
 #endif /* end of _SYNAPTICS_TCM2_PLATFORM_H_ */

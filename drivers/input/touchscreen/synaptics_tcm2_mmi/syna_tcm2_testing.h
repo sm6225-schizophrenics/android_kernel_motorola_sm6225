@@ -47,8 +47,7 @@
  * @return
  *    on success, 0; otherwise, negative value on error.
  */
-int syna_testing_create_dir(struct syna_tcm *tcm,
-		struct kobject *sysfs_dir);
+int syna_testing_create_dir(struct syna_tcm *tcm, struct kobject *sysfs_dir);
 /**
  *syna_testing_remove_dir()
  *
@@ -61,6 +60,5 @@ int syna_testing_create_dir(struct syna_tcm *tcm,
  *    on success, 0; otherwise, negative value on error.
  */
 void syna_testing_remove_dir(void);
-
 
 #endif /* end of _SYNAPTICS_TCM2_TESTING_H_ */

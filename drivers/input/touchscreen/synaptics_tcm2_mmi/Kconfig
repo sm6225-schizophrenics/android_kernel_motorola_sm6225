@@ -1,5 +1,5 @@
 #
-# Synaptics TCM touchscreen driver configuration
+#Synaptics TCM touchscreen driver configuration
 #
 menuconfig TOUCHSCREEN_SYNA_TCM2
 	tristate "Synaptics TCM touchscreen"

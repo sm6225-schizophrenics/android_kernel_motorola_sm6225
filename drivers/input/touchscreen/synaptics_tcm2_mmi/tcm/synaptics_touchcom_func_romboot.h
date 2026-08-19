@@ -41,27 +41,26 @@
 #include "synaptics_touchcom_core_dev.h"
 #include "synaptics_touchcom_func_base_flash.h"
 
-
 #define ROMBOOT_DELAY_MS (20)
 
 /**
  * @section: Structure to assemble flash command
  */
 struct flash_param {
-	union {
-		struct {
-			unsigned char byte0;
-			unsigned char byte1;
-			unsigned char byte2;
-		};
-		struct {
-			unsigned char spi_param;
-			unsigned char clk_div;
-			unsigned char mode;
-		};
-	};
-	unsigned char read_size[2];
-	unsigned char command;
+  union {
+    struct {
+      unsigned char byte0;
+      unsigned char byte1;
+      unsigned char byte2;
+    };
+    struct {
+      unsigned char spi_param;
+      unsigned char clk_div;
+      unsigned char mode;
+    };
+  };
+  unsigned char read_size[2];
+  unsigned char command;
 };
 
 /**
@@ -71,20 +70,19 @@ struct flash_param {
  * ROM boot control
  */
 struct tcm_romboot_data_blob {
-	/* binary data to write */
-	const unsigned char *bdata;
-	unsigned int bdata_size;
-	/* parsed data based on given binary data */
-	struct ihex_info ihex_info;
-	struct image_info image_info;
-	/* standard information for flash access */
-	unsigned int page_size;
-	unsigned int write_block_size;
-	unsigned int max_write_payload_size;
-	/* temporary buffer during the reflash */
-	struct tcm_buffer out;
+  /* binary data to write */
+  const unsigned char *bdata;
+  unsigned int bdata_size;
+  /* parsed data based on given binary data */
+  struct ihex_info ihex_info;
+  struct image_info image_info;
+  /* standard information for flash access */
+  unsigned int page_size;
+  unsigned int write_block_size;
+  unsigned int max_write_payload_size;
+  /* temporary buffer during the reflash */
+  struct tcm_buffer out;
 };
-
 
 /**
  * syna_tcm_romboot_do_ihex_update()
@@ -107,9 +105,11 @@ struct tcm_romboot_data_blob {
  *    on success, 0 or positive value; otherwise, negative value on error.
  */
 int syna_tcm_romboot_do_ihex_update(struct tcm_dev *tcm_dev,
-	const unsigned char *ihex, unsigned int ihex_size,
-	unsigned int flash_size, unsigned int len_per_line,
-	unsigned int delay_ms, bool is_multichip);
+                                    const unsigned char *ihex,
+                                    unsigned int ihex_size,
+                                    unsigned int flash_size,
+                                    unsigned int len_per_line,
+                                    unsigned int delay_ms, bool is_multichip);
 
 /**
  * syna_tcm_romboot_do_multichip_reflash()
@@ -132,8 +132,10 @@ int syna_tcm_romboot_do_ihex_update(struct tcm_dev *tcm_dev,
  *    on success, 0 or positive value; otherwise, negative value on error.
  */
 int syna_tcm_romboot_do_multichip_reflash(struct tcm_dev *tcm_dev,
-	const unsigned char *image, unsigned int image_size,
-	unsigned int wait_delay_ms, bool force_reflash);
+                                          const unsigned char *image,
+                                          unsigned int image_size,
+                                          unsigned int wait_delay_ms,
+                                          bool force_reflash);
 
 /**
  * syna_tcm_get_romboot_info()
@@ -149,7 +151,6 @@ int syna_tcm_romboot_do_multichip_reflash(struct tcm_dev *tcm_dev,
  *    on success, 0 or positive value; otherwise, negative value on error.
  */
 int syna_tcm_get_romboot_info(struct tcm_dev *tcm_dev,
-		struct tcm_romboot_info *rom_boot_info);
-
+                              struct tcm_romboot_info *rom_boot_info);
 
 #endif /* end of _SYNAPTICS_TOUCHCOM_ROMBOOT_FUNCS_H_ */

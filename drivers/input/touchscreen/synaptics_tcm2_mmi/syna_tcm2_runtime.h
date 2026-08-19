@@ -39,26 +39,26 @@
 #ifndef _SYNAPTICS_TCM2_C_RUNTIME_H_
 #define _SYNAPTICS_TCM2_C_RUNTIME_H_
 
-#include <linux/version.h>
-#include <linux/kernel.h>
-#include <linux/module.h>
-#include <linux/input.h>
-#include <linux/delay.h>
-#include <linux/gpio.h>
-#include <linux/of_gpio.h>
-#include <linux/interrupt.h>
-#include <linux/init.h>
-#include <linux/major.h>
-#include <linux/sched.h>
-#include <linux/kthread.h>
-#include <linux/regulator/consumer.h>
-#include <linux/platform_device.h>
-#include <linux/input/mt.h>
 #include <linux/cdev.h>
-#include <linux/device.h>
-#include <linux/uaccess.h>
 #include <linux/crc32.h>
+#include <linux/delay.h>
+#include <linux/device.h>
 #include <linux/firmware.h>
+#include <linux/gpio.h>
+#include <linux/init.h>
+#include <linux/input.h>
+#include <linux/input/mt.h>
+#include <linux/interrupt.h>
+#include <linux/kernel.h>
+#include <linux/kthread.h>
+#include <linux/major.h>
+#include <linux/module.h>
+#include <linux/of_gpio.h>
+#include <linux/platform_device.h>
+#include <linux/regulator/consumer.h>
+#include <linux/sched.h>
+#include <linux/uaccess.h>
+#include <linux/version.h>
 #ifdef CONFIG_DRM_PANEL
 #include <drm/drm_panel.h>
 #elif CONFIG_FB
@@ -100,29 +100,25 @@ extern struct device *syna_request_managed_device(void);
  * @brief: LOGE
  *         Output the error message
  */
-#define LOGD(log, ...) \
-	pr_debug("[SYNA-debug] %s: " log, __func__, ##__VA_ARGS__)
-#define LOGI(log, ...) \
-	pr_info("[SYNA-info] %s: " log, __func__, ##__VA_ARGS__)
-#define LOGN(log, ...) \
-	pr_notice("[SYNA-info] %s: " log, __func__, ##__VA_ARGS__)
-#define LOGW(log, ...) \
-	pr_warn("[SYNA-warning] %s: " log, __func__, ##__VA_ARGS__)
-#define LOGE(log, ...) \
-	pr_err("[SYNA-error] %s: " log, __func__, ##__VA_ARGS__)
-
+#define LOGD(log, ...)                                                         \
+  pr_debug("[SYNA-debug] %s: " log, __func__, ##__VA_ARGS__)
+#define LOGI(log, ...) pr_info("[SYNA-info] %s: " log, __func__, ##__VA_ARGS__)
+#define LOGN(log, ...)                                                         \
+  pr_notice("[SYNA-info] %s: " log, __func__, ##__VA_ARGS__)
+#define LOGW(log, ...)                                                         \
+  pr_warn("[SYNA-warning] %s: " log, __func__, ##__VA_ARGS__)
+#define LOGE(log, ...) pr_err("[SYNA-error] %s: " log, __func__, ##__VA_ARGS__)
 
 /**
  * @section: Error Codes returned
  *           Functions usually return 0 or positive value on success.
  *           Thus, please defines negative value here.
  */
-#define _EIO        (-EIO)       /* I/O errors */
-#define _ENOMEM     (-ENOMEM)    /* Out of memory */
-#define _EINVAL     (-EINVAL)    /* Invalid parameters */
-#define _ENODEV     (-ENODEV)    /* No such device */
-#define _ETIMEDOUT  (-ETIMEDOUT) /* execution timeout */
-
+#define _EIO (-EIO)             /* I/O errors */
+#define _ENOMEM (-ENOMEM)       /* Out of memory */
+#define _EINVAL (-EINVAL)       /* Invalid parameters */
+#define _ENODEV (-ENODEV)       /* No such device */
+#define _ETIMEDOUT (-ETIMEDOUT) /* execution timeout */
 
 /**
  * @section: Data Comparison helpers
@@ -136,19 +132,21 @@ extern struct device *syna_request_managed_device(void);
  * @brief: GET_BIT
  *         Return the value of target bit
  */
-#define MAX(a, b) \
-	({__typeof__(a) _a = (a); \
-	__typeof__(b) _b = (b); \
-	_a > _b ? _a : _b; })
+#define MAX(a, b)                                                              \
+  ({                                                                           \
+    __typeof__(a) _a = (a);                                                    \
+    __typeof__(b) _b = (b);                                                    \
+    _a > _b ? _a : _b;                                                         \
+  })
 
-#define MIN(a, b) \
-	({__typeof__(a) _a = (a); \
-	__typeof__(b) _b = (b); \
-	_a < _b ? _a : _b; })
+#define MIN(a, b)                                                              \
+  ({                                                                           \
+    __typeof__(a) _a = (a);                                                    \
+    __typeof__(b) _b = (b);                                                    \
+    _a < _b ? _a : _b;                                                         \
+  })
 
-#define GET_BIT(var, pos) \
-	(((var) & (1 << (pos))) >> (pos))
-
+#define GET_BIT(var, pos) (((var) & (1 << (pos))) >> (pos))
 
 /**
  * @section: C Atomic operations
@@ -161,12 +159,9 @@ extern struct device *syna_request_managed_device(void);
  */
 typedef atomic_t syna_pal_atomic_t;
 
-#define ATOMIC_SET(atomic, value) \
-	atomic_set(&atomic, value)
+#define ATOMIC_SET(atomic, value) atomic_set(&atomic, value)
 
-#define ATOMIC_GET(atomic) \
-	atomic_read(&atomic)
-
+#define ATOMIC_GET(atomic) atomic_read(&atomic)
 
 /**
  * @section: C Integer Calculation helpers
@@ -192,10 +187,8 @@ typedef atomic_t syna_pal_atomic_t;
  * @return
  *    an unsigned integer converted
  */
-static inline unsigned int syna_pal_le2_to_uint(const unsigned char *src)
-{
-	return (unsigned int)src[0] +
-		(unsigned int)src[1] * 0x100;
+static inline unsigned int syna_pal_le2_to_uint(const unsigned char *src) {
+  return (unsigned int)src[0] + (unsigned int)src[1] * 0x100;
 }
 /**
  * syna_pal_le4_to_uint()
@@ -208,12 +201,9 @@ static inline unsigned int syna_pal_le2_to_uint(const unsigned char *src)
  * @return
  *    an unsigned integer converted
  */
-static inline unsigned int syna_pal_le4_to_uint(const unsigned char *src)
-{
-	return (unsigned int)src[0] +
-		(unsigned int)src[1] * 0x100 +
-		(unsigned int)src[2] * 0x10000 +
-		(unsigned int)src[3] * 0x1000000;
+static inline unsigned int syna_pal_le4_to_uint(const unsigned char *src) {
+  return (unsigned int)src[0] + (unsigned int)src[1] * 0x100 +
+         (unsigned int)src[2] * 0x10000 + (unsigned int)src[3] * 0x1000000;
 }
 /**
  * syna_pal_ceil_div()
@@ -228,11 +218,9 @@ static inline unsigned int syna_pal_le4_to_uint(const unsigned char *src)
  *    the ceiling of the integer division
  */
 static inline unsigned int syna_pal_ceil_div(unsigned int dividend,
-		unsigned int divisor)
-{
-	return (dividend + divisor - 1) / divisor;
+                                             unsigned int divisor) {
+  return (dividend + divisor - 1) / divisor;
 }
-
 
 /**
  * @section: C Runtime for Memory Management helpers
@@ -263,26 +251,25 @@ static inline unsigned int syna_pal_ceil_div(unsigned int dividend,
  * @return
  *    On success, a pointer to the memory block allocated by the function.
  */
-static inline void *syna_pal_mem_alloc(unsigned int num, unsigned int size)
-{
+static inline void *syna_pal_mem_alloc(unsigned int num, unsigned int size) {
 #ifdef DEV_MANAGED_API
-	struct device *dev = syna_request_managed_device();
+  struct device *dev = syna_request_managed_device();
 
-	if (!dev) {
-		LOGE("Invalid managed device\n");
-		return NULL;
-	}
+  if (!dev) {
+    LOGE("Invalid managed device\n");
+    return NULL;
+  }
 #endif
 
-	if ((int)(num * size) <= 0) {
-		LOGE("Invalid parameter\n");
-		return NULL;
-	}
+  if ((int)(num * size) <= 0) {
+    LOGE("Invalid parameter\n");
+    return NULL;
+  }
 
 #ifdef DEV_MANAGED_API
-	return devm_kcalloc(dev, num, size, GFP_KERNEL);
+  return devm_kcalloc(dev, num, size, GFP_KERNEL);
 #else /* Legacy API */
-	return kcalloc(num, size, GFP_KERNEL);
+  return kcalloc(num, size, GFP_KERNEL);
 #endif
 }
 /**
@@ -296,20 +283,19 @@ static inline void *syna_pal_mem_alloc(unsigned int num, unsigned int size)
  * @return
  *    none.
  */
-static inline void syna_pal_mem_free(void *ptr)
-{
+static inline void syna_pal_mem_free(void *ptr) {
 #ifdef DEV_MANAGED_API
-	struct device *dev = syna_request_managed_device();
+  struct device *dev = syna_request_managed_device();
 
-	if (!dev) {
-		LOGE("Invalid managed device\n");
-		return;
-	}
+  if (!dev) {
+    LOGE("Invalid managed device\n");
+    return;
+  }
 
-	if (ptr)
-		devm_kfree(dev, ptr);
+  if (ptr)
+    devm_kfree(dev, ptr);
 #else /* Legacy API */
-	kfree(ptr);
+  kfree(ptr);
 #endif
 }
 /**
@@ -325,9 +311,8 @@ static inline void syna_pal_mem_free(void *ptr)
  * @return
  *    none.
  */
-static inline void syna_pal_mem_set(void *ptr, int c, unsigned int n)
-{
-	memset(ptr, c, n);
+static inline void syna_pal_mem_set(void *ptr, int c, unsigned int n) {
+  memset(ptr, c, n);
 }
 /**
  * syna_pal_mem_cpy()
@@ -346,22 +331,20 @@ static inline void syna_pal_mem_set(void *ptr, int c, unsigned int n)
  *    0 on success; otherwise, on error.
  */
 static inline int syna_pal_mem_cpy(void *dest, unsigned int dest_size,
-		const void *src, unsigned int src_size, unsigned int num)
-{
-	if (dest == NULL || src == NULL)
-		return -1;
+                                   const void *src, unsigned int src_size,
+                                   unsigned int num) {
+  if (dest == NULL || src == NULL)
+    return -1;
 
-	if (num > dest_size || num > src_size) {
-		LOGE("Invalid size. src:%d, dest:%d, num:%d\n",
-			src_size, dest_size, num);
-		return -1;
-	}
+  if (num > dest_size || num > src_size) {
+    LOGE("Invalid size. src:%d, dest:%d, num:%d\n", src_size, dest_size, num);
+    return -1;
+  }
 
-	memcpy((void *)dest, (const void *)src, num);
+  memcpy((void *)dest, (const void *)src, num);
 
-	return 0;
+  return 0;
 }
-
 
 /**
  * @section: C Runtime for Muxtex Control helpers
@@ -392,10 +375,9 @@ typedef struct mutex syna_pal_mutex_t;
  * @return
  *    0 on success; otherwise, on error.
  */
-static inline int syna_pal_mutex_alloc(syna_pal_mutex_t *ptr)
-{
-	mutex_init((struct mutex *)ptr);
-	return 0;
+static inline int syna_pal_mutex_alloc(syna_pal_mutex_t *ptr) {
+  mutex_init((struct mutex *)ptr);
+  return 0;
 }
 /**
  * syna_pal_mutex_free()
@@ -408,9 +390,8 @@ static inline int syna_pal_mutex_alloc(syna_pal_mutex_t *ptr)
  * @return
  *    none.
  */
-static inline void syna_pal_mutex_free(syna_pal_mutex_t *ptr)
-{
-	/* do nothing */
+static inline void syna_pal_mutex_free(syna_pal_mutex_t *ptr) {
+  /* do nothing */
 }
 /**
  * syna_pal_mutex_lock()
@@ -423,9 +404,8 @@ static inline void syna_pal_mutex_free(syna_pal_mutex_t *ptr)
  * @return
  *    none.
  */
-static inline void syna_pal_mutex_lock(syna_pal_mutex_t *ptr)
-{
-	mutex_lock((struct mutex *)ptr);
+static inline void syna_pal_mutex_lock(syna_pal_mutex_t *ptr) {
+  mutex_lock((struct mutex *)ptr);
 }
 /**
  * syna_pal_mutex_unlock()
@@ -438,11 +418,9 @@ static inline void syna_pal_mutex_lock(syna_pal_mutex_t *ptr)
  * @return
  *    none.
  */
-static inline void syna_pal_mutex_unlock(syna_pal_mutex_t *ptr)
-{
-	mutex_unlock((struct mutex *)ptr);
+static inline void syna_pal_mutex_unlock(syna_pal_mutex_t *ptr) {
+  mutex_unlock((struct mutex *)ptr);
 }
-
 
 /**
  * @section: C Runtime for Completion Event
@@ -477,10 +455,9 @@ typedef struct completion syna_pal_completion_t;
  * @return
  *    0 on success; otherwise, on error.
  */
-static inline int syna_pal_completion_alloc(syna_pal_completion_t *ptr)
-{
-	init_completion((struct completion *)ptr);
-	return 0;
+static inline int syna_pal_completion_alloc(syna_pal_completion_t *ptr) {
+  init_completion((struct completion *)ptr);
+  return 0;
 }
 /**
  * syna_pal_completion_free()
@@ -493,9 +470,8 @@ static inline int syna_pal_completion_alloc(syna_pal_completion_t *ptr)
  * @return
  *    none.
  */
-static inline void syna_pal_completion_free(syna_pal_completion_t *ptr)
-{
-	/* do nothing */
+static inline void syna_pal_completion_free(syna_pal_completion_t *ptr) {
+  /* do nothing */
 }
 /**
  * syna_pal_completion_complete()
@@ -508,9 +484,8 @@ static inline void syna_pal_completion_free(syna_pal_completion_t *ptr)
  * @return
  *    none.
  */
-static inline void syna_pal_completion_complete(syna_pal_completion_t *ptr)
-{
-	complete((struct completion *)ptr);
+static inline void syna_pal_completion_complete(syna_pal_completion_t *ptr) {
+  complete((struct completion *)ptr);
 }
 /**
  * syna_pal_completion_reset()
@@ -523,12 +498,11 @@ static inline void syna_pal_completion_complete(syna_pal_completion_t *ptr)
  * @return
  *    none.
  */
-static inline void syna_pal_completion_reset(syna_pal_completion_t *ptr)
-{
+static inline void syna_pal_completion_reset(syna_pal_completion_t *ptr) {
 #if (KERNEL_VERSION(3, 13, 0) > LINUX_VERSION_CODE)
-		init_completion((struct completion *)ptr);
+  init_completion((struct completion *)ptr);
 #else
-		reinit_completion((struct completion *)ptr);
+  reinit_completion((struct completion *)ptr);
 #endif
 }
 /**
@@ -544,18 +518,16 @@ static inline void syna_pal_completion_reset(syna_pal_completion_t *ptr)
  *    0 if a signal is received; otherwise, on timeout or error occurs.
  */
 static inline int syna_pal_completion_wait_for(syna_pal_completion_t *ptr,
-		unsigned int timeout_ms)
-{
-	int retval;
+                                               unsigned int timeout_ms) {
+  int retval;
 
-	retval = wait_for_completion_timeout((struct completion *)ptr,
-			msecs_to_jiffies(timeout_ms));
-	if (retval == 0) /* timeout occurs */
-		return -1;
+  retval = wait_for_completion_timeout((struct completion *)ptr,
+                                       msecs_to_jiffies(timeout_ms));
+  if (retval == 0) /* timeout occurs */
+    return -1;
 
-	return 0;
+  return 0;
 }
-
 
 /**
  * @section: C Runtime to Pause the Execution
@@ -581,10 +553,7 @@ static inline int syna_pal_completion_wait_for(syna_pal_completion_t *ptr,
  * @return
  *    none.
  */
-static inline void syna_pal_sleep_ms(int time_ms)
-{
-	msleep(time_ms);
-}
+static inline void syna_pal_sleep_ms(int time_ms) { msleep(time_ms); }
 /**
  * syna_pal_sleep_us()
  *
@@ -597,9 +566,8 @@ static inline void syna_pal_sleep_ms(int time_ms)
  * @return
  *    none.
  */
-static inline void syna_pal_sleep_us(int time_us_min, int time_us_max)
-{
-	usleep_range(time_us_min, time_us_max);
+static inline void syna_pal_sleep_us(int time_us_min, int time_us_max) {
+  usleep_range(time_us_min, time_us_max);
 }
 /**
  * syna_pal_busy_delay_ms()
@@ -612,11 +580,7 @@ static inline void syna_pal_sleep_us(int time_us_min, int time_us_max)
  * @return
  *    none.
  */
-static inline void syna_pal_busy_delay_ms(int time_ms)
-{
-	mdelay(time_ms);
-}
-
+static inline void syna_pal_busy_delay_ms(int time_ms) { mdelay(time_ms); }
 
 /**
  * @section: C Runtime for String operations
@@ -642,9 +606,8 @@ static inline void syna_pal_busy_delay_ms(int time_ms)
  * @return
  *    the length of given string
  */
-static inline unsigned int syna_pal_str_len(const char *str)
-{
-	return (unsigned int)strlen(str);
+static inline unsigned int syna_pal_str_len(const char *str) {
+  return (unsigned int)strlen(str);
 }
 /**
  * syna_pal_str_cpy()
@@ -662,20 +625,19 @@ static inline unsigned int syna_pal_str_len(const char *str)
  *    0 on success; otherwise, on error.
  */
 static inline int syna_pal_str_cpy(char *dest, unsigned int dest_size,
-		const char *src, unsigned int src_size, unsigned int num)
-{
-	if (dest == NULL || src == NULL)
-		return -1;
+                                   const char *src, unsigned int src_size,
+                                   unsigned int num) {
+  if (dest == NULL || src == NULL)
+    return -1;
 
-	if (num > dest_size || num > src_size) {
-		LOGE("Invalid size. src:%d, dest:%d, num:%d\n",
-			src_size, dest_size, num);
-		return -1;
-	}
+  if (num > dest_size || num > src_size) {
+    LOGE("Invalid size. src:%d, dest:%d, num:%d\n", src_size, dest_size, num);
+    return -1;
+  }
 
-	strncpy(dest, src, num);
+  strncpy(dest, src, num);
 
-	return 0;
+  return 0;
 }
 /**
  * syna_pal_str_cmp()
@@ -692,9 +654,8 @@ static inline int syna_pal_str_cpy(char *dest, unsigned int dest_size,
  *    0 if both strings are equal; otherwise, not equal.
  */
 static inline int syna_pal_str_cmp(const char *str1, const char *str2,
-		unsigned int num)
-{
-	return strncmp(str1, str2, num);
+                                   unsigned int num) {
+  return strncmp(str1, str2, num);
 }
 /**
  * syna_pal_hex_to_uint()
@@ -708,20 +669,19 @@ static inline int syna_pal_str_cmp(const char *str1, const char *str2,
  * @return
  *    An integer converted
  */
-static inline unsigned int syna_pal_hex_to_uint(char *str, int length)
-{
-	unsigned int result = 0;
-	char *ptr = NULL;
+static inline unsigned int syna_pal_hex_to_uint(char *str, int length) {
+  unsigned int result = 0;
+  char *ptr = NULL;
 
-	for (ptr = str; ptr != str + length; ++ptr) {
-		result <<= 4;
-		if (*ptr >= 'A')
-			result += *ptr - 'A' + 10;
-		else
-			result += *ptr - '0';
-	}
+  for (ptr = str; ptr != str + length; ++ptr) {
+    result <<= 4;
+    if (*ptr >= 'A')
+      result += *ptr - 'A' + 10;
+    else
+      result += *ptr - '0';
+  }
 
-	return result;
+  return result;
 }
 
 /**
@@ -744,10 +704,9 @@ static inline unsigned int syna_pal_hex_to_uint(char *str, int length)
  * @return
  *    0 if both strings are equal; otherwise, not equal.
  */
-static inline unsigned int syna_pal_crc32(unsigned int seed,
-		const char *data, unsigned int len)
-{
-	return crc32(seed, data, len);
+static inline unsigned int syna_pal_crc32(unsigned int seed, const char *data,
+                                          unsigned int len) {
+  return crc32(seed, data, len);
 }
 
 #endif /* end of _SYNAPTICS_TCM2_C_RUNTIME_H_ */

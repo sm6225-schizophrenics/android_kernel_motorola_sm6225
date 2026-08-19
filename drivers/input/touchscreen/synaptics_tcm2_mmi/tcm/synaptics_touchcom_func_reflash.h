@@ -45,21 +45,21 @@
  * @section: Blocks to be updated
  */
 enum update_area {
-	UPDATE_NONE = 0,
-	UPDATE_FIRMWARE_CONFIG,
-	UPDATE_CONFIG_ONLY,
-	UPDATE_ALL_BLOCKS,
+  UPDATE_NONE = 0,
+  UPDATE_FIRMWARE_CONFIG,
+  UPDATE_CONFIG_ONLY,
+  UPDATE_ALL_BLOCKS,
 };
 
 /**
  * @section: Data Type in flash memory
  */
 enum flash_data {
-	FLASH_LCM_DATA = 1,
-	FLASH_OEM_DATA,
-	FLASH_PPDT_DATA,
-	FLASH_FORCE_CALIB_DATA,
-	FLASH_OPEN_SHORT_TUNING_DATA,
+  FLASH_LCM_DATA = 1,
+  FLASH_OEM_DATA,
+  FLASH_PPDT_DATA,
+  FLASH_FORCE_CALIB_DATA,
+  FLASH_OPEN_SHORT_TUNING_DATA,
 };
 
 /**
@@ -68,18 +68,18 @@ enum flash_data {
  * The structure contains various parameters being used in reflash
  */
 struct tcm_reflash_data_blob {
-	/* binary data of an image file */
-	const unsigned char *image;
-	unsigned int image_size;
-	/* parsed data based on given image file */
-	struct image_info image_info;
-	/* standard information for flash access */
-	unsigned int page_size;
-	unsigned int write_block_size;
-	unsigned int max_write_payload_size;
-	/* temporary buffer during the reflash */
-	struct tcm_buffer out;
-	struct syna_tcm *tcm;
+  /* binary data of an image file */
+  const unsigned char *image;
+  unsigned int image_size;
+  /* parsed data based on given image file */
+  struct image_info image_info;
+  /* standard information for flash access */
+  unsigned int page_size;
+  unsigned int write_block_size;
+  unsigned int max_write_payload_size;
+  /* temporary buffer during the reflash */
+  struct tcm_buffer out;
+  struct syna_tcm *tcm;
 };
 
 /**
@@ -97,7 +97,7 @@ struct tcm_reflash_data_blob {
  *    Comparison result
  */
 int syna_tcm_compare_image_id_info(struct tcm_dev *tcm_dev,
-		struct tcm_reflash_data_blob *reflash_data);
+                                   struct tcm_reflash_data_blob *reflash_data);
 
 /**
  * syna_tcm_read_flash_area()
@@ -115,9 +115,9 @@ int syna_tcm_compare_image_id_info(struct tcm_dev *tcm_dev,
  * @return
  *    on success, 0 or positive value; otherwise, negative value on error.
  */
-int syna_tcm_read_flash_area(struct tcm_dev *tcm_dev,
-		enum flash_area area, struct tcm_buffer *rd_data,
-		unsigned int rd_delay_us);
+int syna_tcm_read_flash_area(struct tcm_dev *tcm_dev, enum flash_area area,
+                             struct tcm_buffer *rd_data,
+                             unsigned int rd_delay_us);
 
 /**
  * syna_tcm_do_fw_update()
@@ -139,8 +139,8 @@ int syna_tcm_read_flash_area(struct tcm_dev *tcm_dev,
  * @return
  *    on success, 0 or positive value; otherwise, negative value on error.
  */
-int syna_tcm_do_fw_update(struct tcm_dev *tcm_dev,
-		const unsigned char *image, unsigned int image_size,
-		unsigned int wait_delay_ms, bool force_reflash);
+int syna_tcm_do_fw_update(struct tcm_dev *tcm_dev, const unsigned char *image,
+                          unsigned int image_size, unsigned int wait_delay_ms,
+                          bool force_reflash);
 
 #endif /* end of _SYNAPTICS_TOUCHCOM_REFLASH_FUNCS_H_ */

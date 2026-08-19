@@ -63,7 +63,8 @@
  *    on success, 0 or positive value; otherwise, negative value on error.
  */
 int syna_tcm_allocate_device(struct tcm_dev **ptcm_dev_ptr,
-		struct syna_hw_interface *hw_if, unsigned int resp_reading);
+                             struct syna_hw_interface *hw_if,
+                             unsigned int resp_reading);
 
 /**
  * syna_tcm_remove_device()
@@ -112,9 +113,8 @@ int syna_tcm_detect_device(struct tcm_dev *tcm_dev);
  * @return
  *    on success, 0 or positive value; otherwise, negative value on error.
  */
-int syna_tcm_get_event_data(struct tcm_dev *tcm_dev,
-		unsigned char *code,
-		struct tcm_buffer *report);
+int syna_tcm_get_event_data(struct tcm_dev *tcm_dev, unsigned char *code,
+                            struct tcm_buffer *report);
 
 /**
  * syna_tcm_change_resp_read()
@@ -146,7 +146,7 @@ void syna_tcm_change_resp_read(struct tcm_dev *tcm_dev, unsigned int request);
  *    on success, 0 or positive value; otherwise, negative value on error.
  */
 int syna_tcm_identify(struct tcm_dev *tcm_dev,
-		struct tcm_identification_info *id_info);
+                      struct tcm_identification_info *id_info);
 
 /**
  * syna_tcm_reset()
@@ -180,8 +180,8 @@ int syna_tcm_reset(struct tcm_dev *tcm_dev);
  * @return
  *    on success, 0 or positive value; otherwise, negative value on error.
  */
-int syna_tcm_enable_report(struct tcm_dev *tcm_dev,
-		unsigned char report_code, bool en);
+int syna_tcm_enable_report(struct tcm_dev *tcm_dev, unsigned char report_code,
+                           bool en);
 
 /**
  * syna_tcm_switch_fw_mode()
@@ -197,8 +197,8 @@ int syna_tcm_enable_report(struct tcm_dev *tcm_dev,
  * @return
  *    on success, 0 or positive value; otherwise, negative value on error.
  */
-int syna_tcm_switch_fw_mode(struct tcm_dev *tcm_dev,
-		unsigned char mode, unsigned int fw_switch_delay);
+int syna_tcm_switch_fw_mode(struct tcm_dev *tcm_dev, unsigned char mode,
+                            unsigned int fw_switch_delay);
 
 /**
  * syna_tcm_get_boot_info()
@@ -214,7 +214,7 @@ int syna_tcm_switch_fw_mode(struct tcm_dev *tcm_dev,
  *    on success, 0 or positive value; otherwise, negative value on error.
  */
 int syna_tcm_get_boot_info(struct tcm_dev *tcm_dev,
-		struct tcm_boot_info *boot_info);
+                           struct tcm_boot_info *boot_info);
 
 /**
  * syna_tcm_get_app_info()
@@ -230,7 +230,7 @@ int syna_tcm_get_boot_info(struct tcm_dev *tcm_dev,
  *    on success, 0 or positive value; otherwise, negative value on error.
  */
 int syna_tcm_get_app_info(struct tcm_dev *tcm_dev,
-		struct tcm_application_info *app_info);
+                          struct tcm_application_info *app_info);
 
 /**
  * syna_tcm_get_static_config()
@@ -248,8 +248,8 @@ int syna_tcm_get_app_info(struct tcm_dev *tcm_dev,
  * @return
  *    on success, 0 or positive value; otherwise, negative value on error.
  */
-int syna_tcm_get_static_config(struct tcm_dev *tcm_dev,
-		unsigned char *buf, unsigned int buf_size);
+int syna_tcm_get_static_config(struct tcm_dev *tcm_dev, unsigned char *buf,
+                               unsigned int buf_size);
 
 /**
  * syna_tcm_set_static_config()
@@ -269,7 +269,8 @@ int syna_tcm_get_static_config(struct tcm_dev *tcm_dev,
  *    on success, 0 or positive value; otherwise, negative value on error.
  */
 int syna_tcm_set_static_config(struct tcm_dev *tcm_dev,
-		unsigned char *config_data, unsigned int config_data_size);
+                               unsigned char *config_data,
+                               unsigned int config_data_size);
 
 /**
  * syna_tcm_get_dynamic_config()
@@ -287,9 +288,9 @@ int syna_tcm_set_static_config(struct tcm_dev *tcm_dev,
  * @return
  *    on success, 0 or positive value; otherwise, negative value on error.
  */
-int syna_tcm_get_dynamic_config(struct tcm_dev *tcm_dev,
-		unsigned char id, unsigned short *value,
-		unsigned int delay_ms_resp);
+int syna_tcm_get_dynamic_config(struct tcm_dev *tcm_dev, unsigned char id,
+                                unsigned short *value,
+                                unsigned int delay_ms_resp);
 
 /**
  * syna_tcm_set_dynamic_config()
@@ -307,9 +308,9 @@ int syna_tcm_get_dynamic_config(struct tcm_dev *tcm_dev,
  * @return
  *    on success, 0 or positive value; otherwise, negative value on error.
  */
-int syna_tcm_set_dynamic_config(struct tcm_dev *tcm_dev,
-		unsigned char id, unsigned short value,
-		unsigned int delay_ms_resp);
+int syna_tcm_set_dynamic_config(struct tcm_dev *tcm_dev, unsigned char id,
+                                unsigned short value,
+                                unsigned int delay_ms_resp);
 
 /**
  * syna_tcm_rezero()
@@ -339,8 +340,8 @@ int syna_tcm_rezero(struct tcm_dev *tcm_dev);
  * @return
  *    on success, 0 or positive value; otherwise, negative value on error.
  */
-int syna_tcm_set_config_id(struct tcm_dev *tcm_dev,
-		unsigned char *config_id, unsigned int size);
+int syna_tcm_set_config_id(struct tcm_dev *tcm_dev, unsigned char *config_id,
+                           unsigned int size);
 
 /**
  * syna_tcm_sleep()
@@ -370,7 +371,7 @@ int syna_tcm_sleep(struct tcm_dev *tcm_dev, bool en);
  *    on success, 0 or positive value; otherwise, negative value on error.
  */
 int syna_tcm_get_features(struct tcm_dev *tcm_dev,
-		struct tcm_features_info *info);
+                          struct tcm_features_info *info);
 
 /**
  * syna_tcm_run_production_test()
@@ -389,7 +390,8 @@ int syna_tcm_get_features(struct tcm_dev *tcm_dev,
  *    on success, 0 or positive value; otherwise, negative value on error.
  */
 int syna_tcm_run_production_test(struct tcm_dev *tcm_dev,
-	unsigned char test_item, struct tcm_buffer *tdata);
+                                 unsigned char test_item,
+                                 struct tcm_buffer *tdata);
 
 /**
  * syna_tcm_send_command()
@@ -409,10 +411,10 @@ int syna_tcm_run_production_test(struct tcm_dev *tcm_dev,
  * @return
  *    on success, 0 or positive value; otherwise, negative value on error.
  */
-int syna_tcm_send_command(struct tcm_dev *tcm_dev,
-			unsigned char command, unsigned char *payload,
-			unsigned int payload_length, unsigned char *resp_code,
-			struct tcm_buffer *resp, unsigned int delay_ms_resp);
+int syna_tcm_send_command(struct tcm_dev *tcm_dev, unsigned char command,
+                          unsigned char *payload, unsigned int payload_length,
+                          unsigned char *resp_code, struct tcm_buffer *resp,
+                          unsigned int delay_ms_resp);
 
 /**
  * syna_tcm_enable_predict_reading()
@@ -454,7 +456,7 @@ unsigned short syna_tcm_get_message_crc(struct tcm_dev *tcm_dev);
  *    on success, 0 or positive value; otherwise, negative value on error.
  */
 int syna_tcm_set_reset_occurrence_callback(struct tcm_dev *tcm_dev,
-		tcm_reset_occurrence_callback_t p_cb, void *p_cbdata);
-
+                                           tcm_reset_occurrence_callback_t p_cb,
+                                           void *p_cbdata);
 
 #endif /* end of _SYNAPTICS_TOUCHCOM_BASE_FUNCS_H_ */

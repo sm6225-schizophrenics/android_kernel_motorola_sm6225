@@ -45,8 +45,8 @@
 #include "syna_tcm2_testing.h"
 #endif
 
-#if (KERNEL_VERSION(5, 9, 0) <= LINUX_VERSION_CODE) || \
-	defined(HAVE_UNLOCKED_IOCTL)
+#if (KERNEL_VERSION(5, 9, 0) <= LINUX_VERSION_CODE) ||                         \
+    defined(HAVE_UNLOCKED_IOCTL)
 #define USE_UNLOCKED_IOCTL
 #endif
 
@@ -58,7 +58,6 @@
 #define REPLACE_KTIME
 #endif
 
-
 /* #define ENABLE_PID_TASK */
 
 #define SIG_ATTN (46)
@@ -66,16 +65,16 @@
 /* structure for IOCTLs
  */
 struct syna_ioctl_data {
-	unsigned int data_length;
-	unsigned int buf_size;
-	unsigned char __user *buf;
+  unsigned int data_length;
+  unsigned int buf_size;
+  unsigned char __user *buf;
 };
 
 #ifdef USE_COMPAT_IOCTL
 struct syna_tcm_ioctl_data_compat {
-	unsigned int data_length;
-	unsigned int buf_size;
-	compat_uptr_t __user *buf;
+  unsigned int data_length;
+  unsigned int buf_size;
+  compat_uptr_t __user *buf;
 };
 #endif
 
@@ -84,52 +83,47 @@ struct syna_tcm_ioctl_data_compat {
 #define IOCTL_MAGIC 's'
 
 /* Previous IOCTLs in early driver */
-#define OLD_RESET_ID		(0x00)
-#define OLD_SET_IRQ_MODE_ID	(0x01)
-#define OLD_SET_RAW_MODE_ID	(0x02)
-#define OLD_CONCURRENT_ID	(0x03)
+#define OLD_RESET_ID (0x00)
+#define OLD_SET_IRQ_MODE_ID (0x01)
+#define OLD_SET_RAW_MODE_ID (0x02)
+#define OLD_CONCURRENT_ID (0x03)
 
-#define IOCTL_OLD_RESET \
-	_IO(IOCTL_MAGIC, OLD_RESET_ID)
-#define IOCTL_OLD_SET_IRQ_MODE \
-	_IOW(IOCTL_MAGIC, OLD_SET_IRQ_MODE_ID, int)
-#define IOCTL_OLD_SET_RAW_MODE \
-	_IOW(IOCTL_MAGIC, OLD_SET_RAW_MODE_ID, int)
-#define IOCTL_OLD_CONCURRENT \
-	_IOW(IOCTL_MAGIC, OLD_CONCURRENT_ID, int)
+#define IOCTL_OLD_RESET _IO(IOCTL_MAGIC, OLD_RESET_ID)
+#define IOCTL_OLD_SET_IRQ_MODE _IOW(IOCTL_MAGIC, OLD_SET_IRQ_MODE_ID, int)
+#define IOCTL_OLD_SET_RAW_MODE _IOW(IOCTL_MAGIC, OLD_SET_RAW_MODE_ID, int)
+#define IOCTL_OLD_CONCURRENT _IOW(IOCTL_MAGIC, OLD_CONCURRENT_ID, int)
 
 /* Standard IOCTLs in TCM2 driver */
-#define STD_IOCTL_BEGIN		    (0x10)
-#define STD_SET_PID_ID		    (0x11)
-#define STD_ENABLE_IRQ_ID	    (0x12)
-#define STD_RAW_READ_ID		    (0x13)
-#define STD_RAW_WRITE_ID	    (0x14)
-#define STD_GET_FRAME_ID	    (0x15)
-#define STD_SEND_MESSAGE_ID     (0x16)
-#define STD_SET_REPORTS_ID      (0x17)
-#define STD_CHECK_FRAMES_ID     (0x18)
+#define STD_IOCTL_BEGIN (0x10)
+#define STD_SET_PID_ID (0x11)
+#define STD_ENABLE_IRQ_ID (0x12)
+#define STD_RAW_READ_ID (0x13)
+#define STD_RAW_WRITE_ID (0x14)
+#define STD_GET_FRAME_ID (0x15)
+#define STD_SEND_MESSAGE_ID (0x16)
+#define STD_SET_REPORTS_ID (0x17)
+#define STD_CHECK_FRAMES_ID (0x18)
 #define STD_CLEAN_OUT_FRAMES_ID (0x19)
 
-#define IOCTL_STD_IOCTL_BEGIN \
-	_IOR(IOCTL_MAGIC, STD_IOCTL_BEGIN)
-#define IOCTL_STD_SET_PID \
-	_IOW(IOCTL_MAGIC, STD_SET_PID_ID, struct syna_ioctl_data *)
-#define IOCTL_STD_ENABLE_IRQ \
-	_IOW(IOCTL_MAGIC, STD_ENABLE_IRQ_ID, struct syna_ioctl_data *)
-#define IOCTL_STD_RAW_READ \
-	_IOR(IOCTL_MAGIC, STD_RAW_READ_ID, struct syna_ioctl_data *)
-#define IOCTL_STD_RAW_WRITE \
-	_IOW(IOCTL_MAGIC, STD_RAW_WRITE_ID, struct syna_ioctl_data *)
-#define IOCTL_STD_GET_FRAME \
-	_IOWR(IOCTL_MAGIC, STD_GET_FRAME_ID, struct syna_ioctl_data *)
-#define IOCTL_STD_SEND_MESSAGE \
-	_IOWR(IOCTL_MAGIC, STD_SEND_MESSAGE_ID, struct syna_ioctl_data *)
-#define IOCTL_STD_SET_REPORT_TYPES \
-	_IOW(IOCTL_MAGIC, STD_SET_REPORTS_ID, struct syna_ioctl_data *)
-#define IOCTL_STD_CHECK_FRAMES \
-	_IOWR(IOCTL_MAGIC, STD_CHECK_FRAMES_ID, struct syna_ioctl_data *)
-#define IOCTL_STD_CLEAN_OUT_FRAMES \
-	_IOWR(IOCTL_MAGIC, STD_CLEAN_OUT_FRAMES_ID, struct syna_ioctl_data *)
+#define IOCTL_STD_IOCTL_BEGIN _IOR(IOCTL_MAGIC, STD_IOCTL_BEGIN)
+#define IOCTL_STD_SET_PID                                                      \
+  _IOW(IOCTL_MAGIC, STD_SET_PID_ID, struct syna_ioctl_data *)
+#define IOCTL_STD_ENABLE_IRQ                                                   \
+  _IOW(IOCTL_MAGIC, STD_ENABLE_IRQ_ID, struct syna_ioctl_data *)
+#define IOCTL_STD_RAW_READ                                                     \
+  _IOR(IOCTL_MAGIC, STD_RAW_READ_ID, struct syna_ioctl_data *)
+#define IOCTL_STD_RAW_WRITE                                                    \
+  _IOW(IOCTL_MAGIC, STD_RAW_WRITE_ID, struct syna_ioctl_data *)
+#define IOCTL_STD_GET_FRAME                                                    \
+  _IOWR(IOCTL_MAGIC, STD_GET_FRAME_ID, struct syna_ioctl_data *)
+#define IOCTL_STD_SEND_MESSAGE                                                 \
+  _IOWR(IOCTL_MAGIC, STD_SEND_MESSAGE_ID, struct syna_ioctl_data *)
+#define IOCTL_STD_SET_REPORT_TYPES                                             \
+  _IOW(IOCTL_MAGIC, STD_SET_REPORTS_ID, struct syna_ioctl_data *)
+#define IOCTL_STD_CHECK_FRAMES                                                 \
+  _IOWR(IOCTL_MAGIC, STD_CHECK_FRAMES_ID, struct syna_ioctl_data *)
+#define IOCTL_STD_CLEAN_OUT_FRAMES                                             \
+  _IOWR(IOCTL_MAGIC, STD_CLEAN_OUT_FRAMES_ID, struct syna_ioctl_data *)
 
 /* g_sysfs_dir represents the root directory of sysfs nodes being created
  */
@@ -160,25 +154,24 @@ unsigned int g_sysfs_io_polling_interval;
  * considering touch report and another reports may be co-enabled
  * at the same time, give a little buffer here (3 sec x 300 fps)
  */
-#define FIFO_QUEUE_MAX_FRAMES		(1200)
-#define SEND_MESSAGE_HEADER_LENGTH	(3)
+#define FIFO_QUEUE_MAX_FRAMES (1200)
+#define SEND_MESSAGE_HEADER_LENGTH (3)
 
 /* Indicate the interrupt status especially for sysfs using */
-#define SYSFS_DISABLED_INTERRUPT		(0)
-#define SYSFS_ENABLED_INTERRUPT			(1)
+#define SYSFS_DISABLED_INTERRUPT (0)
+#define SYSFS_ENABLED_INTERRUPT (1)
 
 /*Define a data structure that contains a list_head*/
 struct fifo_queue {
-	struct list_head next;
-	unsigned char *fifo_data;
-	unsigned int data_length;
+  struct list_head next;
+  unsigned char *fifo_data;
+  unsigned int data_length;
 #ifdef REPLACE_KTIME
-	struct timespec64 timestamp;
+  struct timespec64 timestamp;
 #else
-	struct timeval timestamp;
+  struct timeval timestamp;
 #endif
 };
-
 
 /**
  * syna_sysfs_info_show()
@@ -195,189 +188,180 @@ struct fifo_queue {
  *    otherwise, negative value on error.
  */
 static ssize_t syna_sysfs_info_show(struct kobject *kobj,
-		struct kobj_attribute *attr, char *buf)
-{
-	int retval;
-	unsigned int count;
-	struct device *p_dev;
-	struct kobject *p_kobj;
-	struct syna_tcm *tcm;
-	struct tcm_dev *tcm_dev;
-	int i;
+                                    struct kobj_attribute *attr, char *buf) {
+  int retval;
+  unsigned int count;
+  struct device *p_dev;
+  struct kobject *p_kobj;
+  struct syna_tcm *tcm;
+  struct tcm_dev *tcm_dev;
+  int i;
 
-	p_kobj = g_sysfs_dir->parent;
-	p_dev = container_of(p_kobj, struct device, kobj);
-	tcm = dev_get_drvdata(p_dev);
-	tcm_dev = tcm->tcm_dev;
+  p_kobj = g_sysfs_dir->parent;
+  p_dev = container_of(p_kobj, struct device, kobj);
+  tcm = dev_get_drvdata(p_dev);
+  tcm_dev = tcm->tcm_dev;
 
-	syna_pal_mutex_lock(&g_extif_mutex);
+  syna_pal_mutex_lock(&g_extif_mutex);
 
-	count = 0;
+  count = 0;
 
-	retval = snprintf(buf, PAGE_SIZE - count,
-			"Driver version:     %d.%s\n",
-			SYNAPTICS_TCM_DRIVER_VERSION,
-			SYNAPTICS_TCM_DRIVER_SUBVER);
-	if (retval < 0)
-		goto exit;
+  retval = snprintf(buf, PAGE_SIZE - count, "Driver version:     %d.%s\n",
+                    SYNAPTICS_TCM_DRIVER_VERSION, SYNAPTICS_TCM_DRIVER_SUBVER);
+  if (retval < 0)
+    goto exit;
 
-	buf += retval;
-	count += retval;
+  buf += retval;
+  count += retval;
 
-	retval = snprintf(buf, PAGE_SIZE - count,
-			"Core lib version:   %d.%02d\n\n",
-			(unsigned char)(SYNA_TCM_CORE_LIB_VERSION >> 8),
-			(unsigned char)SYNA_TCM_CORE_LIB_VERSION);
-	if (retval < 0)
-		goto exit;
+  retval = snprintf(buf, PAGE_SIZE - count, "Core lib version:   %d.%02d\n\n",
+                    (unsigned char)(SYNA_TCM_CORE_LIB_VERSION >> 8),
+                    (unsigned char)SYNA_TCM_CORE_LIB_VERSION);
+  if (retval < 0)
+    goto exit;
 
-	buf += retval;
-	count += retval;
+  buf += retval;
+  count += retval;
 
-	if (!tcm->is_connected) {
-		retval = snprintf(buf, PAGE_SIZE - count,
-				"Device is NOT connected\n");
-		goto exit;
-	}
+  if (!tcm->is_connected) {
+    retval = snprintf(buf, PAGE_SIZE - count, "Device is NOT connected\n");
+    goto exit;
+  }
 
+  retval = snprintf(buf, PAGE_SIZE - count, "TouchComm version:  %d\n",
+                    tcm_dev->id_info.version);
+  if (retval < 0)
+    goto exit;
 
-	retval = snprintf(buf, PAGE_SIZE - count,
-			"TouchComm version:  %d\n", tcm_dev->id_info.version);
-	if (retval < 0)
-		goto exit;
+  buf += retval;
+  count += retval;
 
-	buf += retval;
-	count += retval;
+  switch (tcm_dev->id_info.mode) {
+  case MODE_APPLICATION_FIRMWARE:
+    retval = snprintf(buf, PAGE_SIZE - count,
+                      "Firmware mode:      Application Firmware, 0x%02x\n",
+                      tcm_dev->id_info.mode);
+    if (retval < 0)
+      goto exit;
+    break;
+  case MODE_BOOTLOADER:
+    retval = snprintf(buf, PAGE_SIZE - count,
+                      "Firmware mode:      Bootloader, 0x%02x\n",
+                      tcm_dev->id_info.mode);
+    if (retval < 0)
+      goto exit;
+    break;
+  case MODE_ROMBOOTLOADER:
+    retval = snprintf(buf, PAGE_SIZE - count,
+                      "Firmware mode:      Rom Bootloader, 0x%02x\n",
+                      tcm_dev->id_info.mode);
+    if (retval < 0)
+      goto exit;
+    break;
+  default:
+    retval =
+        snprintf(buf, PAGE_SIZE - count, "Firmware mode:      Mode 0x%02x\n",
+                 tcm_dev->id_info.mode);
+    if (retval < 0)
+      goto exit;
+    break;
+  }
+  buf += retval;
+  count += retval;
 
-	switch (tcm_dev->id_info.mode) {
-	case MODE_APPLICATION_FIRMWARE:
-		retval = snprintf(buf, PAGE_SIZE - count,
-				"Firmware mode:      Application Firmware, 0x%02x\n",
-				tcm_dev->id_info.mode);
-		if (retval < 0)
-			goto exit;
-		break;
-	case MODE_BOOTLOADER:
-		retval = snprintf(buf, PAGE_SIZE - count,
-				"Firmware mode:      Bootloader, 0x%02x\n",
-				tcm_dev->id_info.mode);
-		if (retval < 0)
-			goto exit;
-		break;
-	case MODE_ROMBOOTLOADER:
-		retval = snprintf(buf, PAGE_SIZE - count,
-				"Firmware mode:      Rom Bootloader, 0x%02x\n",
-				tcm_dev->id_info.mode);
-		if (retval < 0)
-			goto exit;
-		break;
-	default:
-		retval = snprintf(buf, PAGE_SIZE - count,
-				"Firmware mode:      Mode 0x%02x\n",
-				tcm_dev->id_info.mode);
-		if (retval < 0)
-			goto exit;
-		break;
-	}
-	buf += retval;
-	count += retval;
+  retval = snprintf(buf, PAGE_SIZE - count, "Part number:        ");
+  if (retval < 0)
+    goto exit;
 
-	retval = snprintf(buf, PAGE_SIZE - count,
-			"Part number:        ");
-	if (retval < 0)
-		goto exit;
+  buf += retval;
+  count += retval;
 
-	buf += retval;
-	count += retval;
+  retval =
+      syna_pal_mem_cpy(buf, PAGE_SIZE - count, tcm_dev->id_info.part_number,
+                       sizeof(tcm_dev->id_info.part_number),
+                       sizeof(tcm_dev->id_info.part_number));
+  if (retval < 0) {
+    LOGE("Fail to copy part number string\n");
+    goto exit;
+  }
+  buf += sizeof(tcm_dev->id_info.part_number);
+  count += sizeof(tcm_dev->id_info.part_number);
 
-	retval = syna_pal_mem_cpy(buf,
-			PAGE_SIZE - count,
-			tcm_dev->id_info.part_number,
-			sizeof(tcm_dev->id_info.part_number),
-			sizeof(tcm_dev->id_info.part_number));
-	if (retval < 0) {
-		LOGE("Fail to copy part number string\n");
-		goto exit;
-	}
-	buf += sizeof(tcm_dev->id_info.part_number);
-	count += sizeof(tcm_dev->id_info.part_number);
+  retval = snprintf(buf, PAGE_SIZE - count, "\n");
+  if (retval < 0)
+    goto exit;
 
-	retval = snprintf(buf, PAGE_SIZE - count, "\n");
-	if (retval < 0)
-		goto exit;
+  buf += retval;
+  count += retval;
 
-	buf += retval;
-	count += retval;
+  retval = snprintf(buf, PAGE_SIZE - count, "Packrat number:     %d\n\n",
+                    tcm_dev->packrat_number);
+  if (retval < 0)
+    goto exit;
 
-	retval = snprintf(buf, PAGE_SIZE - count,
-			"Packrat number:     %d\n\n", tcm_dev->packrat_number);
-	if (retval < 0)
-		goto exit;
+  buf += retval;
+  count += retval;
 
-	buf += retval;
-	count += retval;
+  if (tcm_dev->id_info.mode != MODE_APPLICATION_FIRMWARE) {
+    retval = count;
+    goto exit;
+  }
 
-	if (tcm_dev->id_info.mode != MODE_APPLICATION_FIRMWARE) {
-		retval = count;
-		goto exit;
-	}
+  retval = snprintf(buf, PAGE_SIZE - count, "Config ID:          ");
+  if (retval < 0)
+    goto exit;
 
-	retval = snprintf(buf, PAGE_SIZE - count, "Config ID:          ");
-	if (retval < 0)
-		goto exit;
+  buf += retval;
+  count += retval;
 
-	buf += retval;
-	count += retval;
+  for (i = 0; i < MAX_SIZE_CONFIG_ID; i++) {
+    retval = snprintf(buf, PAGE_SIZE - count, "0x%2x ", tcm_dev->config_id[i]);
+    if (retval < 0)
+      goto exit;
+    buf += retval;
+    count += retval;
+  }
 
-	for (i = 0; i < MAX_SIZE_CONFIG_ID; i++) {
-		retval = snprintf(buf, PAGE_SIZE - count,
-			"0x%2x ", tcm_dev->config_id[i]);
-		if (retval < 0)
-			goto exit;
-		buf += retval;
-		count += retval;
-	}
+  retval = snprintf(buf, PAGE_SIZE - count, "\n");
+  if (retval < 0)
+    goto exit;
 
-	retval = snprintf(buf, PAGE_SIZE - count, "\n");
-	if (retval < 0)
-		goto exit;
+  buf += retval;
+  count += retval;
 
-	buf += retval;
-	count += retval;
+  retval = snprintf(buf, PAGE_SIZE - count, "Max X & Y:          %d, %d\n",
+                    tcm_dev->max_x, tcm_dev->max_y);
+  if (retval < 0)
+    goto exit;
 
-	retval = snprintf(buf, PAGE_SIZE - count,
-		"Max X & Y:          %d, %d\n", tcm_dev->max_x, tcm_dev->max_y);
-	if (retval < 0)
-		goto exit;
+  buf += retval;
+  count += retval;
 
-	buf += retval;
-	count += retval;
+  retval = snprintf(buf, PAGE_SIZE - count, "Num of objects:     %d\n",
+                    tcm_dev->max_objects);
+  if (retval < 0)
+    goto exit;
 
-	retval = snprintf(buf, PAGE_SIZE - count,
-		"Num of objects:     %d\n", tcm_dev->max_objects);
-	if (retval < 0)
-		goto exit;
+  buf += retval;
+  count += retval;
 
-	buf += retval;
-	count += retval;
+  retval = snprintf(buf, PAGE_SIZE - count, "Num of cols & rows: %d, %d\n",
+                    tcm_dev->cols, tcm_dev->rows);
+  if (retval < 0)
+    goto exit;
 
-	retval = snprintf(buf, PAGE_SIZE - count,
-		"Num of cols & rows: %d, %d\n", tcm_dev->cols, tcm_dev->rows);
-	if (retval < 0)
-		goto exit;
+  buf += retval;
+  count += retval;
 
-	buf += retval;
-	count += retval;
-
-	retval = count;
+  retval = count;
 
 exit:
-	syna_pal_mutex_unlock(&g_extif_mutex);
-	return retval;
+  syna_pal_mutex_unlock(&g_extif_mutex);
+  return retval;
 }
 
 static struct kobj_attribute kobj_attr_info =
-	__ATTR(info, 0444, syna_sysfs_info_show, NULL);
+    __ATTR(info, 0444, syna_sysfs_info_show, NULL);
 
 /**
  * syna_sysfs_irq_en_store()
@@ -394,60 +378,60 @@ static struct kobj_attribute kobj_attr_info =
  *    on success, return count; otherwise, return error code
  */
 static ssize_t syna_sysfs_irq_en_store(struct kobject *kobj,
-		struct kobj_attribute *attr, const char *buf, size_t count)
-{
-	int retval = 0;
-	unsigned int input;
-	struct device *p_dev;
-	struct kobject *p_kobj;
-	struct syna_tcm *tcm;
+                                       struct kobj_attribute *attr,
+                                       const char *buf, size_t count) {
+  int retval = 0;
+  unsigned int input;
+  struct device *p_dev;
+  struct kobject *p_kobj;
+  struct syna_tcm *tcm;
 
-	p_kobj = g_sysfs_dir->parent;
-	p_dev = container_of(p_kobj, struct device, kobj);
-	tcm = dev_get_drvdata(p_dev);
+  p_kobj = g_sysfs_dir->parent;
+  p_dev = container_of(p_kobj, struct device, kobj);
+  tcm = dev_get_drvdata(p_dev);
 
-	if (kstrtouint(buf, 10, &input))
-		return -EINVAL;
+  if (kstrtouint(buf, 10, &input))
+    return -EINVAL;
 
-	if (!tcm->hw_if->ops_enable_irq)
-		return 0;
+  if (!tcm->hw_if->ops_enable_irq)
+    return 0;
 
-	if (!tcm->is_connected) {
-		LOGW("Device is NOT connected\n");
-		return count;
-	}
+  if (!tcm->is_connected) {
+    LOGW("Device is NOT connected\n");
+    return count;
+  }
 
-	syna_pal_mutex_lock(&g_extif_mutex);
+  syna_pal_mutex_lock(&g_extif_mutex);
 
-	/* disable the interrupt line */
-	if (input == 0) {
-		retval = tcm->hw_if->ops_enable_irq(tcm->hw_if, false);
-		if (retval < 0) {
-			LOGE("Fail to disable interrupt\n");
-			goto exit;
-		}
-	} else if (input == 1) {
-	/* enable the interrupt line */
-		retval = tcm->hw_if->ops_enable_irq(tcm->hw_if, true);
-		if (retval < 0) {
-			LOGE("Fail to enable interrupt\n");
-			goto exit;
-		}
-	} else {
-		LOGW("Unknown option %d (0:disable / 1:enable)\n", input);
-		retval = -EINVAL;
-		goto exit;
-	}
+  /* disable the interrupt line */
+  if (input == 0) {
+    retval = tcm->hw_if->ops_enable_irq(tcm->hw_if, false);
+    if (retval < 0) {
+      LOGE("Fail to disable interrupt\n");
+      goto exit;
+    }
+  } else if (input == 1) {
+    /* enable the interrupt line */
+    retval = tcm->hw_if->ops_enable_irq(tcm->hw_if, true);
+    if (retval < 0) {
+      LOGE("Fail to enable interrupt\n");
+      goto exit;
+    }
+  } else {
+    LOGW("Unknown option %d (0:disable / 1:enable)\n", input);
+    retval = -EINVAL;
+    goto exit;
+  }
 
-	retval = count;
+  retval = count;
 
 exit:
-	syna_pal_mutex_unlock(&g_extif_mutex);
-	return retval;
+  syna_pal_mutex_unlock(&g_extif_mutex);
+  return retval;
 }
 
 static struct kobj_attribute kobj_attr_irq_en =
-	__ATTR(irq_en, 0220, NULL, syna_sysfs_irq_en_store);
+    __ATTR(irq_en, 0220, NULL, syna_sysfs_irq_en_store);
 
 /**
  * syna_sysfs_reset_store()
@@ -465,66 +449,65 @@ static struct kobj_attribute kobj_attr_irq_en =
  *    on success, return count; otherwise, return error code
  */
 static ssize_t syna_sysfs_reset_store(struct kobject *kobj,
-		struct kobj_attribute *attr, const char *buf, size_t count)
-{
-	int retval = 0;
-	unsigned int input;
-	struct device *p_dev;
-	struct kobject *p_kobj;
-	struct syna_tcm *tcm;
+                                      struct kobj_attribute *attr,
+                                      const char *buf, size_t count) {
+  int retval = 0;
+  unsigned int input;
+  struct device *p_dev;
+  struct kobject *p_kobj;
+  struct syna_tcm *tcm;
 
-	p_kobj = g_sysfs_dir->parent;
-	p_dev = container_of(p_kobj, struct device, kobj);
-	tcm = dev_get_drvdata(p_dev);
+  p_kobj = g_sysfs_dir->parent;
+  p_dev = container_of(p_kobj, struct device, kobj);
+  tcm = dev_get_drvdata(p_dev);
 
-	if (kstrtouint(buf, 10, &input))
-		return -EINVAL;
+  if (kstrtouint(buf, 10, &input))
+    return -EINVAL;
 
-	if (!tcm->is_connected) {
-		LOGW("Device is NOT connected\n");
-		return count;
-	}
+  if (!tcm->is_connected) {
+    LOGW("Device is NOT connected\n");
+    return count;
+  }
 
-	syna_pal_mutex_lock(&g_extif_mutex);
+  syna_pal_mutex_lock(&g_extif_mutex);
 
-	if (input == 1) {
-		retval = syna_tcm_reset(tcm->tcm_dev);
-		if (retval < 0) {
-			LOGE("Fail to do reset\n");
-			goto exit;
-		}
-	} else if (input == 2) {
-		if (!tcm->hw_if->ops_hw_reset) {
-			LOGE("No hardware reset support\n");
-			goto exit;
-		}
+  if (input == 1) {
+    retval = syna_tcm_reset(tcm->tcm_dev);
+    if (retval < 0) {
+      LOGE("Fail to do reset\n");
+      goto exit;
+    }
+  } else if (input == 2) {
+    if (!tcm->hw_if->ops_hw_reset) {
+      LOGE("No hardware reset support\n");
+      goto exit;
+    }
 
-		tcm->hw_if->ops_hw_reset(tcm->hw_if);
-	} else {
-		LOGW("Unknown option %d (1:sw / 2:hw)\n", input);
-		retval = -EINVAL;
-		goto exit;
-	}
+    tcm->hw_if->ops_hw_reset(tcm->hw_if);
+  } else {
+    LOGW("Unknown option %d (1:sw / 2:hw)\n", input);
+    retval = -EINVAL;
+    goto exit;
+  }
 
-	/* check the fw setup in case the settings is changed */
-	if (IS_APP_FW_MODE(tcm->tcm_dev->dev_mode)) {
-		retval = tcm->dev_set_up_app_fw(tcm);
-		if (retval < 0) {
-			LOGE("Fail to set up app fw\n");
-			goto exit;
-		}
-	}
+  /* check the fw setup in case the settings is changed */
+  if (IS_APP_FW_MODE(tcm->tcm_dev->dev_mode)) {
+    retval = tcm->dev_set_up_app_fw(tcm);
+    if (retval < 0) {
+      LOGE("Fail to set up app fw\n");
+      goto exit;
+    }
+  }
 
-	retval = count;
+  retval = count;
 
 exit:
-	syna_pal_mutex_unlock(&g_extif_mutex);
-	return retval;
+  syna_pal_mutex_unlock(&g_extif_mutex);
+  return retval;
 }
 
 static struct kobj_attribute kobj_attr_reset =
-	__ATTR(reset, 0220, NULL, syna_sysfs_reset_store);
-
+    __ATTR(reset, 0220, NULL, syna_sysfs_reset_store);
 
 /**
  * syna_sysfs_pwr_store()
@@ -541,59 +524,59 @@ static struct kobj_attribute kobj_attr_reset =
  *    on success, return count; otherwise, return error code
  */
 static ssize_t syna_sysfs_pwr_store(struct kobject *kobj,
-		struct kobj_attribute *attr, const char *buf, size_t count)
-{
-	int retval = 0;
-	struct device *p_dev;
-	struct kobject *p_kobj;
-	struct syna_tcm *tcm;
+                                    struct kobj_attribute *attr,
+                                    const char *buf, size_t count) {
+  int retval = 0;
+  struct device *p_dev;
+  struct kobject *p_kobj;
+  struct syna_tcm *tcm;
 
-	p_kobj = g_sysfs_dir->parent;
-	p_dev = container_of(p_kobj, struct device, kobj);
-	tcm = dev_get_drvdata(p_dev);
+  p_kobj = g_sysfs_dir->parent;
+  p_dev = container_of(p_kobj, struct device, kobj);
+  tcm = dev_get_drvdata(p_dev);
 
-	if (!tcm->is_connected) {
-		LOGW("Device is NOT connected\n");
-		return count;
-	}
+  if (!tcm->is_connected) {
+    LOGW("Device is NOT connected\n");
+    return count;
+  }
 
-	syna_pal_mutex_lock(&g_extif_mutex);
+  syna_pal_mutex_lock(&g_extif_mutex);
 
-	if (strncmp(buf, "resume", 6) == 0) {
-		if (tcm->dev_resume)
-			tcm->dev_resume(p_dev);
-	} else if (strncmp(buf, "suspend", 7) == 0) {
-		if (tcm->dev_suspend)
-			tcm->dev_suspend(p_dev);
-	} else {
-		LOGW("Unknown option %s\n", buf);
-		retval = -EINVAL;
-		goto exit;
-	}
+  if (strncmp(buf, "resume", 6) == 0) {
+    if (tcm->dev_resume)
+      tcm->dev_resume(p_dev);
+  } else if (strncmp(buf, "suspend", 7) == 0) {
+    if (tcm->dev_suspend)
+      tcm->dev_suspend(p_dev);
+  } else {
+    LOGW("Unknown option %s\n", buf);
+    retval = -EINVAL;
+    goto exit;
+  }
 
-	retval = count;
+  retval = count;
 
 exit:
-	syna_pal_mutex_unlock(&g_extif_mutex);
-	return retval;
+  syna_pal_mutex_unlock(&g_extif_mutex);
+  return retval;
 }
 
 static struct kobj_attribute kobj_attr_pwr =
-	__ATTR(power_state, 0220, NULL, syna_sysfs_pwr_store);
+    __ATTR(power_state, 0220, NULL, syna_sysfs_pwr_store);
 
 /**
  * declaration of sysfs attributes
  */
 static struct attribute *attrs[] = {
-	&kobj_attr_info.attr,
-	&kobj_attr_irq_en.attr,
-	&kobj_attr_reset.attr,
-	&kobj_attr_pwr.attr,
-	NULL,
+    &kobj_attr_info.attr,
+    &kobj_attr_irq_en.attr,
+    &kobj_attr_reset.attr,
+    &kobj_attr_pwr.attr,
+    NULL,
 };
 
 static struct attribute_group attr_group = {
-	.attrs = attrs,
+    .attrs = attrs,
 };
 
 /**
@@ -609,40 +592,37 @@ static struct attribute_group attr_group = {
  * @return
  *    on success, 0; otherwise, negative value on error.
  */
-int syna_sysfs_create_dir(struct syna_tcm *tcm,
-		struct platform_device *pdev)
-{
-	int retval = 0;
+int syna_sysfs_create_dir(struct syna_tcm *tcm, struct platform_device *pdev) {
+  int retval = 0;
 
-	g_sysfs_dir = kobject_create_and_add("sysfs",
-			&pdev->dev.kobj);
-	if (!g_sysfs_dir) {
-		LOGE("Fail to create sysfs directory\n");
-		return -ENOTDIR;
-	}
+  g_sysfs_dir = kobject_create_and_add("sysfs", &pdev->dev.kobj);
+  if (!g_sysfs_dir) {
+    LOGE("Fail to create sysfs directory\n");
+    return -ENOTDIR;
+  }
 
-	tcm->sysfs_dir = g_sysfs_dir;
+  tcm->sysfs_dir = g_sysfs_dir;
 
-	retval = sysfs_create_group(g_sysfs_dir, &attr_group);
-	if (retval < 0) {
-		LOGE("Fail to create sysfs group\n");
+  retval = sysfs_create_group(g_sysfs_dir, &attr_group);
+  if (retval < 0) {
+    LOGE("Fail to create sysfs group\n");
 
-		kobject_put(tcm->sysfs_dir);
-		return retval;
-	}
+    kobject_put(tcm->sysfs_dir);
+    return retval;
+  }
 
 #ifdef HAS_TESTING_FEATURE
-	retval = syna_testing_create_dir(tcm, g_sysfs_dir);
-	if (retval < 0) {
-		LOGE("Fail to create testing sysfs\n");
+  retval = syna_testing_create_dir(tcm, g_sysfs_dir);
+  if (retval < 0) {
+    LOGE("Fail to create testing sysfs\n");
 
-		sysfs_remove_group(tcm->sysfs_dir, &attr_group);
-		kobject_put(tcm->sysfs_dir);
-		return retval;
-	}
+    sysfs_remove_group(tcm->sysfs_dir, &attr_group);
+    kobject_put(tcm->sysfs_dir);
+    return retval;
+  }
 #endif
 
-	return 0;
+  return 0;
 }
 /**
  * syna_sysfs_remove_dir()
@@ -655,23 +635,21 @@ int syna_sysfs_create_dir(struct syna_tcm *tcm,
  * @return
  *    on success, 0; otherwise, negative value on error.
  */
-void syna_sysfs_remove_dir(struct syna_tcm *tcm)
-{
-	if (!tcm) {
-		LOGE("Invalid tcm device handle\n");
-		return;
-	}
+void syna_sysfs_remove_dir(struct syna_tcm *tcm) {
+  if (!tcm) {
+    LOGE("Invalid tcm device handle\n");
+    return;
+  }
 
-	if (tcm->sysfs_dir) {
+  if (tcm->sysfs_dir) {
 #ifdef HAS_TESTING_FEATURE
-		syna_testing_remove_dir();
+    syna_testing_remove_dir();
 #endif
 
-		sysfs_remove_group(tcm->sysfs_dir, &attr_group);
+    sysfs_remove_group(tcm->sysfs_dir, &attr_group);
 
-		kobject_put(tcm->sysfs_dir);
-	}
-
+    kobject_put(tcm->sysfs_dir);
+  }
 }
 #ifdef ENABLE_EXTERNAL_FRAME_PROCESS
 /**
@@ -694,67 +672,65 @@ void syna_sysfs_remove_dir(struct syna_tcm *tcm)
  * @return
  *    on success, 0; otherwise, negative value on error.
  */
-static int syna_cdev_insert_fifo(struct syna_tcm *tcm,
-		unsigned char *buf_ptr, unsigned int length)
-{
-	int retval = 0;
-	struct fifo_queue *pfifo_data;
-	struct fifo_queue *pfifo_data_temp;
-	static int pre_remaining_frames = -1;
+static int syna_cdev_insert_fifo(struct syna_tcm *tcm, unsigned char *buf_ptr,
+                                 unsigned int length) {
+  int retval = 0;
+  struct fifo_queue *pfifo_data;
+  struct fifo_queue *pfifo_data_temp;
+  static int pre_remaining_frames = -1;
 
-	syna_pal_mutex_lock(&g_fifo_queue_mutex);
+  syna_pal_mutex_lock(&g_fifo_queue_mutex);
 
-	/* check queue buffer limit */
-	if (tcm->fifo_remaining_frame >= FIFO_QUEUE_MAX_FRAMES) {
-		if (tcm->fifo_remaining_frame != pre_remaining_frames)
-			LOGI("Reached %d and drop FIFO first frame\n",
-				tcm->fifo_remaining_frame);
+  /* check queue buffer limit */
+  if (tcm->fifo_remaining_frame >= FIFO_QUEUE_MAX_FRAMES) {
+    if (tcm->fifo_remaining_frame != pre_remaining_frames)
+      LOGI("Reached %d and drop FIFO first frame\n", tcm->fifo_remaining_frame);
 
-		pfifo_data_temp = list_first_entry(&tcm->frame_fifo_queue,
-						struct fifo_queue, next);
+    pfifo_data_temp =
+        list_first_entry(&tcm->frame_fifo_queue, struct fifo_queue, next);
 
-		list_del(&pfifo_data_temp->next);
-		kfree(pfifo_data_temp->fifo_data);
-		kfree(pfifo_data_temp);
-		pre_remaining_frames = tcm->fifo_remaining_frame;
-		tcm->fifo_remaining_frame--;
-	} else if (pre_remaining_frames >= FIFO_QUEUE_MAX_FRAMES) {
-		LOGI("Reached limit, dropped oldest frame, remaining:%d\n",
-			tcm->fifo_remaining_frame);
-		pre_remaining_frames = tcm->fifo_remaining_frame;
-	}
+    list_del(&pfifo_data_temp->next);
+    kfree(pfifo_data_temp->fifo_data);
+    kfree(pfifo_data_temp);
+    pre_remaining_frames = tcm->fifo_remaining_frame;
+    tcm->fifo_remaining_frame--;
+  } else if (pre_remaining_frames >= FIFO_QUEUE_MAX_FRAMES) {
+    LOGI("Reached limit, dropped oldest frame, remaining:%d\n",
+         tcm->fifo_remaining_frame);
+    pre_remaining_frames = tcm->fifo_remaining_frame;
+  }
 
-	pfifo_data = kmalloc(sizeof(*pfifo_data), GFP_KERNEL);
-	if (!(pfifo_data)) {
-		LOGE("Failed to allocate memory\n");
-		LOGE("Allocation size = %zu\n", (sizeof(*pfifo_data)));
-		retval = -ENOMEM;
-		goto exit;
-	}
+  pfifo_data = kmalloc(sizeof(*pfifo_data), GFP_KERNEL);
+  if (!(pfifo_data)) {
+    LOGE("Failed to allocate memory\n");
+    LOGE("Allocation size = %zu\n", (sizeof(*pfifo_data)));
+    retval = -ENOMEM;
+    goto exit;
+  }
 
-	pfifo_data->fifo_data = kmalloc(length, GFP_KERNEL);
-	if (!(pfifo_data->fifo_data)) {
-		LOGE("Failed to allocate memory, size = %d\n", length);
-		retval = -ENOMEM;
-		goto exit;
-	}
+  pfifo_data->fifo_data = kmalloc(length, GFP_KERNEL);
+  if (!(pfifo_data->fifo_data)) {
+    LOGE("Failed to allocate memory, size = %d\n", length);
+    retval = -ENOMEM;
+    goto exit;
+  }
 
-	pfifo_data->data_length = length;
+  pfifo_data->data_length = length;
 
-	memcpy((void *)pfifo_data->fifo_data, (void *)buf_ptr, length);
+  memcpy((void *)pfifo_data->fifo_data, (void *)buf_ptr, length);
 #ifdef REPLACE_KTIME
-	ktime_get_real_ts64(&(pfifo_data->timestamp));
+  ktime_get_real_ts64(&(pfifo_data->timestamp));
 #else
-	do_gettimeofday(&(pfifo_data->timestamp));
+  do_gettimeofday(&(pfifo_data->timestamp));
 #endif
-	/* append the data to the tail for FIFO queueing */
-	list_add_tail(&pfifo_data->next, &tcm->frame_fifo_queue);
-	tcm->fifo_remaining_frame++;
-	retval = 0;
+  /* append the data to the tail for FIFO queueing */
+  list_add_tail(&pfifo_data->next, &tcm->frame_fifo_queue);
+  tcm->fifo_remaining_frame++;
+  retval = 0;
 
 exit:
-	syna_pal_mutex_unlock(&g_fifo_queue_mutex);
-	return retval;
+  syna_pal_mutex_unlock(&g_fifo_queue_mutex);
+  return retval;
 }
 #endif
 /**
@@ -772,71 +748,69 @@ exit:
  *    on success, 0; otherwise, negative value on error.
  */
 static int syna_cdev_ioctl_check_frame(struct syna_tcm *tcm,
-		const unsigned char *ubuf_ptr, unsigned int buf_size,
-		unsigned int data_size)
-{
-	int retval = 0;
-	int result = 0;
-	unsigned int timeout = 0;
-	unsigned int frames = 0;
-	unsigned char data[4] = {0};
+                                       const unsigned char *ubuf_ptr,
+                                       unsigned int buf_size,
+                                       unsigned int data_size) {
+  int retval = 0;
+  int result = 0;
+  unsigned int timeout = 0;
+  unsigned int frames = 0;
+  unsigned char data[4] = {0};
 
-	if (!tcm->is_connected) {
-		LOGE("Not connected\n");
-		return _EINVAL;
-	}
+  if (!tcm->is_connected) {
+    LOGE("Not connected\n");
+    return _EINVAL;
+  }
 
-	if (buf_size < sizeof(data) || data_size < sizeof(data)) {
-		LOGE("Invalid sync data size, buf_size: %u\n", buf_size);
-		retval = -EINVAL;
-		goto exit;
-	}
+  if (buf_size < sizeof(data) || data_size < sizeof(data)) {
+    LOGE("Invalid sync data size, buf_size: %u\n", buf_size);
+    retval = -EINVAL;
+    goto exit;
+  }
 
-	result = copy_from_user(data, ubuf_ptr,
-			sizeof(data));
-	if (result) {
-		LOGE("Fail to copy data from user space\n");
-		retval = -EBADE;
-		goto exit;
-	}
+  result = copy_from_user(data, ubuf_ptr, sizeof(data));
+  if (result) {
+    LOGE("Fail to copy data from user space\n");
+    retval = -EBADE;
+    goto exit;
+  }
 
-	/* Parese the waiting duration length */
-	timeout = syna_pal_le4_to_uint(&data[0]);
-	LOGD("Time out: %d\n", timeout);
+  /* Parese the waiting duration length */
+  timeout = syna_pal_le4_to_uint(&data[0]);
+  LOGD("Time out: %d\n", timeout);
 
-	if (list_empty(&tcm->frame_fifo_queue)) {
-		LOGD("The queue is empty, wait for the frames\n");
-		result = wait_event_interruptible_timeout(tcm->wait_frame,
-				(tcm->fifo_remaining_frame > 0),
-				msecs_to_jiffies(timeout));
-		if (result == 0) {
-			LOGD("Queue waiting timed out after %dms\n", timeout);
-			retval = -ETIMEDOUT;
-			goto exit;
-		}
-		LOGD("Data queued\n");
-		retval = data_size;
-	} else {
-		LOGD("Queue is not empty\n");
-		retval = data_size;
-	}
+  if (list_empty(&tcm->frame_fifo_queue)) {
+    LOGD("The queue is empty, wait for the frames\n");
+    result = wait_event_interruptible_timeout(tcm->wait_frame,
+                                              (tcm->fifo_remaining_frame > 0),
+                                              msecs_to_jiffies(timeout));
+    if (result == 0) {
+      LOGD("Queue waiting timed out after %dms\n", timeout);
+      retval = -ETIMEDOUT;
+      goto exit;
+    }
+    LOGD("Data queued\n");
+    retval = data_size;
+  } else {
+    LOGD("Queue is not empty\n");
+    retval = data_size;
+  }
 
 exit:
-	if (retval > 0) {
-		frames = tcm->fifo_remaining_frame;
-		data[0] = (unsigned char)(frames & 0xff);
-		data[1] = (unsigned char)((frames >> 8) & 0xff);
-		data[2] = (unsigned char)((frames >> 16) & 0xff);
-		data[3] = (unsigned char)((frames >> 24) & 0xff);
-		result = copy_to_user((void *)ubuf_ptr,
-				data, sizeof(data));
-		if (result) {
-			LOGE("Fail to copy data to user space\n");
-			retval = -EBADE;
-		}
-	}
+  if (retval > 0) {
+    frames = tcm->fifo_remaining_frame;
+    data[0] = (unsigned char)(frames & 0xff);
+    data[1] = (unsigned char)((frames >> 8) & 0xff);
+    data[2] = (unsigned char)((frames >> 16) & 0xff);
+    data[3] = (unsigned char)((frames >> 24) & 0xff);
+    result = copy_to_user((void *)ubuf_ptr, data, sizeof(data));
+    if (result) {
+      LOGE("Fail to copy data to user space\n");
+      retval = -EBADE;
+    }
+  }
 
-	return retval;
+  return retval;
 }
 
 /**
@@ -852,25 +826,24 @@ exit:
  * @return
  *    void.
  */
-static void syna_cdev_clean_queue(struct syna_tcm *tcm)
-{
-	struct fifo_queue *pfifo_data;
+static void syna_cdev_clean_queue(struct syna_tcm *tcm) {
+  struct fifo_queue *pfifo_data;
 
-	syna_pal_mutex_lock(&g_fifo_queue_mutex);
+  syna_pal_mutex_lock(&g_fifo_queue_mutex);
 
-	while (!list_empty(&tcm->frame_fifo_queue)) {
-		pfifo_data = list_first_entry(&tcm->frame_fifo_queue,
-				struct fifo_queue, next);
-		list_del(&pfifo_data->next);
-		kfree(pfifo_data->fifo_data);
-		kfree(pfifo_data);
-		if (tcm->fifo_remaining_frame != 0)
-			tcm->fifo_remaining_frame--;
-	}
+  while (!list_empty(&tcm->frame_fifo_queue)) {
+    pfifo_data =
+        list_first_entry(&tcm->frame_fifo_queue, struct fifo_queue, next);
+    list_del(&pfifo_data->next);
+    kfree(pfifo_data->fifo_data);
+    kfree(pfifo_data);
+    if (tcm->fifo_remaining_frame != 0)
+      tcm->fifo_remaining_frame--;
+  }
 
-	LOGD("Queue cleaned, frame: %d\n", tcm->fifo_remaining_frame);
+  LOGD("Queue cleaned, frame: %d\n", tcm->fifo_remaining_frame);
 
-	syna_pal_mutex_unlock(&g_fifo_queue_mutex);
+  syna_pal_mutex_unlock(&g_fifo_queue_mutex);
 }
 /**
  * syna_cdev_ioctl_get_frame()
@@ -893,109 +866,106 @@ static void syna_cdev_clean_queue(struct syna_tcm *tcm)
  *    on success, 0; otherwise, negative value on error.
  */
 static int syna_cdev_ioctl_get_frame(struct syna_tcm *tcm,
-		const unsigned char *ubuf_ptr, unsigned int buf_size,
-		unsigned int *frame_size)
-{
-	int retval = 0;
-	int timeout = 0;
-	unsigned char timeout_data[4] = {0};
-	struct fifo_queue *pfifo_data;
+                                     const unsigned char *ubuf_ptr,
+                                     unsigned int buf_size,
+                                     unsigned int *frame_size) {
+  int retval = 0;
+  int timeout = 0;
+  unsigned char timeout_data[4] = {0};
+  struct fifo_queue *pfifo_data;
 
-	if (!tcm->is_connected) {
-		LOGE("Not connected\n");
-		return _EINVAL;
-	}
+  if (!tcm->is_connected) {
+    LOGE("Not connected\n");
+    return _EINVAL;
+  }
 
-	if (buf_size < sizeof(timeout_data)) {
-		LOGE("Invalid sync data size, buf_size:%d\n", buf_size);
-		retval = -EINVAL;
-		goto exit;
-	}
+  if (buf_size < sizeof(timeout_data)) {
+    LOGE("Invalid sync data size, buf_size:%d\n", buf_size);
+    retval = -EINVAL;
+    goto exit;
+  }
 
 #if !defined(ENABLE_EXTERNAL_FRAME_PROCESS)
-	LOGE("ENABLE_EXTERNAL_FRAME_PROCESS is not enabled\n");
-	return -EFAULT;
+  LOGE("ENABLE_EXTERNAL_FRAME_PROCESS is not enabled\n");
+  return -EFAULT;
 #endif
 
-	retval = copy_from_user(timeout_data, ubuf_ptr, sizeof(timeout_data));
-	if (retval) {
-		LOGE("Fail to copy data from user space, size:%d\n", retval);
-		retval = -EBADE;
-		goto exit;
-	}
+  retval = copy_from_user(timeout_data, ubuf_ptr, sizeof(timeout_data));
+  if (retval) {
+    LOGE("Fail to copy data from user space, size:%d\n", retval);
+    retval = -EBADE;
+    goto exit;
+  }
 
-	/* get the waiting duration */
-	timeout = syna_pal_le4_to_uint(&timeout_data[0]);
-	LOGD("Wait time: %dms\n", timeout);
+  /* get the waiting duration */
+  timeout = syna_pal_le4_to_uint(&timeout_data[0]);
+  LOGD("Wait time: %dms\n", timeout);
 
-	if (list_empty(&tcm->frame_fifo_queue)) {
-		LOGD("The queue is empty, wait for the frame\n");
-		retval = wait_event_interruptible_timeout(tcm->wait_frame,
-				(tcm->fifo_remaining_frame > 0),
-				msecs_to_jiffies(timeout));
-		if (retval == 0) {
-			LOGD("Queue waiting timed out after %dms\n", timeout);
-			retval = -ETIMEDOUT;
-			*frame_size = 0;
-			goto exit;
-		}
-		LOGD("Data queued\n");
-	}
+  if (list_empty(&tcm->frame_fifo_queue)) {
+    LOGD("The queue is empty, wait for the frame\n");
+    retval = wait_event_interruptible_timeout(tcm->wait_frame,
+                                              (tcm->fifo_remaining_frame > 0),
+                                              msecs_to_jiffies(timeout));
+    if (retval == 0) {
+      LOGD("Queue waiting timed out after %dms\n", timeout);
+      retval = -ETIMEDOUT;
+      *frame_size = 0;
+      goto exit;
+    }
+    LOGD("Data queued\n");
+  }
 
-    /* confirm the queue status */
-	if (list_empty(&tcm->frame_fifo_queue)) {
-		LOGD("Is queue empty? The remaining frame = %d\n",
-			tcm->fifo_remaining_frame);
-		retval = -ENODATA;
-		goto exit;
-	}
+  /* confirm the queue status */
+  if (list_empty(&tcm->frame_fifo_queue)) {
+    LOGD("Is queue empty? The remaining frame = %d\n",
+         tcm->fifo_remaining_frame);
+    retval = -ENODATA;
+    goto exit;
+  }
 
-	syna_pal_mutex_lock(&g_fifo_queue_mutex);
+  syna_pal_mutex_lock(&g_fifo_queue_mutex);
 
-	pfifo_data = list_first_entry(&tcm->frame_fifo_queue,
-			struct fifo_queue, next);
+  pfifo_data =
+      list_first_entry(&tcm->frame_fifo_queue, struct fifo_queue, next);
 
-	LOGD("Pop data from the queue, data length = %d\n",
-		pfifo_data->data_length);
+  LOGD("Pop data from the queue, data length = %d\n", pfifo_data->data_length);
 
-	if (buf_size >= pfifo_data->data_length) {
-		retval = copy_to_user((void *)ubuf_ptr,
-				pfifo_data->fifo_data,
-				pfifo_data->data_length);
-		if (retval) {
-			LOGE("Fail to copy data to user space, size:%d\n",
-				retval);
-			retval = -EBADE;
-		}
+  if (buf_size >= pfifo_data->data_length) {
+    retval = copy_to_user((void *)ubuf_ptr, pfifo_data->fifo_data,
+                          pfifo_data->data_length);
+    if (retval) {
+      LOGE("Fail to copy data to user space, size:%d\n", retval);
+      retval = -EBADE;
+    }
 
-		*frame_size = pfifo_data->data_length;
+    *frame_size = pfifo_data->data_length;
 
-	} else {
-		LOGE("No enough space for data copy, buf_size:%d data:%d\n",
-			buf_size, pfifo_data->data_length);
+  } else {
+    LOGE("No enough space for data copy, buf_size:%d data:%d\n", buf_size,
+         pfifo_data->data_length);
 
-		retval = -EOVERFLOW;
-		goto exit;
-	}
+    retval = -EOVERFLOW;
+    goto exit;
+  }
 
-	LOGD("From FIFO: (0x%02x, 0x%02x, 0x%02x, 0x%02x)\n",
-		pfifo_data->fifo_data[0], pfifo_data->fifo_data[1],
-		pfifo_data->fifo_data[2], pfifo_data->fifo_data[3]);
+  LOGD("From FIFO: (0x%02x, 0x%02x, 0x%02x, 0x%02x)\n",
+       pfifo_data->fifo_data[0], pfifo_data->fifo_data[1],
+       pfifo_data->fifo_data[2], pfifo_data->fifo_data[3]);
 
-	list_del(&pfifo_data->next);
+  list_del(&pfifo_data->next);
 
-	if (retval >= 0)
-		retval = pfifo_data->data_length;
+  if (retval >= 0)
+    retval = pfifo_data->data_length;
 
-	kfree(pfifo_data->fifo_data);
-	kfree(pfifo_data);
-	if (tcm->fifo_remaining_frame != 0)
-		tcm->fifo_remaining_frame--;
+  kfree(pfifo_data->fifo_data);
+  kfree(pfifo_data);
+  if (tcm->fifo_remaining_frame != 0)
+    tcm->fifo_remaining_frame--;
 
-	syna_pal_mutex_unlock(&g_fifo_queue_mutex);
+  syna_pal_mutex_unlock(&g_fifo_queue_mutex);
 
 exit:
-	return retval;
+  return retval;
 }
 
 /**
@@ -1014,52 +984,52 @@ exit:
  *    on success, 0; otherwise, negative value on error.
  */
 static int syna_cdev_ioctl_set_reports(struct syna_tcm *tcm,
-		const unsigned char *ubuf_ptr, unsigned int buf_size,
-		unsigned int report_size)
-{
-	int retval = 0;
-	unsigned char data[REPORT_TYPES] = {0};
-	unsigned int reports = 0;
-	unsigned int report_set = 0;
+                                       const unsigned char *ubuf_ptr,
+                                       unsigned int buf_size,
+                                       unsigned int report_size) {
+  int retval = 0;
+  unsigned char data[REPORT_TYPES] = {0};
+  unsigned int reports = 0;
+  unsigned int report_set = 0;
 
-	if (buf_size < sizeof(data)) {
-		LOGE("Invalid sync data size, buf_size:%d, expected:%d\n",
-			buf_size, (unsigned int)sizeof(data));
-		return -EINVAL;
-	}
+  if (buf_size < sizeof(data)) {
+    LOGE("Invalid sync data size, buf_size:%d, expected:%d\n", buf_size,
+         (unsigned int)sizeof(data));
+    return -EINVAL;
+  }
 
 #if !defined(ENABLE_EXTERNAL_FRAME_PROCESS)
-	LOGE("ENABLE_EXTERNAL_FRAME_PROCESS is not enabled\n");
-	return -EINVAL;
+  LOGE("ENABLE_EXTERNAL_FRAME_PROCESS is not enabled\n");
+  return -EINVAL;
 #endif
 
-	if (report_size == 0) {
-		LOGE("Invalid written size\n");
-		return -EINVAL;
-	}
+  if (report_size == 0) {
+    LOGE("Invalid written size\n");
+    return -EINVAL;
+  }
 
-	retval = copy_from_user(data, ubuf_ptr, report_size);
-	if (retval) {
-		LOGE("Fail to copy data from user space, size:%d\n", retval);
-		retval = -EBADE;
-		goto exit;
-	}
+  retval = copy_from_user(data, ubuf_ptr, report_size);
+  if (retval) {
+    LOGE("Fail to copy data from user space, size:%d\n", retval);
+    retval = -EBADE;
+    goto exit;
+  }
 
-	retval = syna_pal_mem_cpy(tcm->report_to_queue, REPORT_TYPES,
-			data, sizeof(data), REPORT_TYPES);
-	for (reports = 0 ; reports < REPORT_TYPES ; reports++) {
-		if (tcm->report_to_queue[reports] == EFP_ENABLE) {
-			report_set++;
-			LOGD("Set report 0x%02x for queue\n", reports);
-		}
-	}
+  retval = syna_pal_mem_cpy(tcm->report_to_queue, REPORT_TYPES, data,
+                            sizeof(data), REPORT_TYPES);
+  for (reports = 0; reports < REPORT_TYPES; reports++) {
+    if (tcm->report_to_queue[reports] == EFP_ENABLE) {
+      report_set++;
+      LOGD("Set report 0x%02x for queue\n", reports);
+    }
+  }
 
-	LOGI("Forward %d types of reports to the Queue.\n", report_set);
+  LOGI("Forward %d types of reports to the Queue.\n", report_set);
 
-	retval = report_set;
+  retval = report_set;
 
 exit:
-	return retval;
+  return retval;
 }
 /**
  * syna_cdev_ioctl_send_message()
@@ -1079,130 +1049,121 @@ exit:
  *    on success, 0; otherwise, negative value on error.
  */
 static int syna_cdev_ioctl_send_message(struct syna_tcm *tcm,
-		const unsigned char *ubuf_ptr, unsigned int buf_size,
-		unsigned int *msg_size)
-{
-	int retval = 0;
-	unsigned char *data = NULL;
-	unsigned char resp_code = 0;
-	unsigned int payload_length = 0;
-	unsigned int delay_ms_resp = RESP_IN_POLLING;
-	struct tcm_buffer resp_data_buf;
+                                        const unsigned char *ubuf_ptr,
+                                        unsigned int buf_size,
+                                        unsigned int *msg_size) {
+  int retval = 0;
+  unsigned char *data = NULL;
+  unsigned char resp_code = 0;
+  unsigned int payload_length = 0;
+  unsigned int delay_ms_resp = RESP_IN_POLLING;
+  struct tcm_buffer resp_data_buf;
 
-	if (!tcm->is_connected) {
-		LOGE("Not connected\n");
-		return -ENXIO;
-	}
+  if (!tcm->is_connected) {
+    LOGE("Not connected\n");
+    return -ENXIO;
+  }
 
-	if (buf_size < SEND_MESSAGE_HEADER_LENGTH) {
-		LOGE("Invalid sync data size, buf_size:%d\n", buf_size);
-		return -EINVAL;
-	}
+  if (buf_size < SEND_MESSAGE_HEADER_LENGTH) {
+    LOGE("Invalid sync data size, buf_size:%d\n", buf_size);
+    return -EINVAL;
+  }
 
-	if (*msg_size == 0) {
-		LOGE("Invalid message length, msg size: 0\n");
-		return -EINVAL;
-	}
+  if (*msg_size == 0) {
+    LOGE("Invalid message length, msg size: 0\n");
+    return -EINVAL;
+  }
 
-	syna_tcm_buf_lock(&g_cdev_cbuf);
+  syna_tcm_buf_lock(&g_cdev_cbuf);
 
-	retval = syna_tcm_buf_alloc(&g_cdev_cbuf, buf_size);
-	if (retval < 0) {
-		LOGE("Fail to allocate memory for g_cdev_cbuf, size: %d\n",
-			buf_size);
-		goto exit;
-	}
+  retval = syna_tcm_buf_alloc(&g_cdev_cbuf, buf_size);
+  if (retval < 0) {
+    LOGE("Fail to allocate memory for g_cdev_cbuf, size: %d\n", buf_size);
+    goto exit;
+  }
 
-	data = g_cdev_cbuf.buf;
+  data = g_cdev_cbuf.buf;
 
-	retval = copy_from_user(data, ubuf_ptr, *msg_size);
-	if (retval) {
-		LOGE("Fail to copy data from user space, size:%d\n", *msg_size);
-		retval = -EBADE;
-		goto exit;
-	}
+  retval = copy_from_user(data, ubuf_ptr, *msg_size);
+  if (retval) {
+    LOGE("Fail to copy data from user space, size:%d\n", *msg_size);
+    retval = -EBADE;
+    goto exit;
+  }
 
-	payload_length = syna_pal_le2_to_uint(&data[1]);
-	LOGD("Command = 0x%02x, payload length = %d\n",
-		data[0], payload_length);
+  payload_length = syna_pal_le2_to_uint(&data[1]);
+  LOGD("Command = 0x%02x, payload length = %d\n", data[0], payload_length);
 
-	/* init a buffer for the response data */
-	syna_tcm_buf_init(&resp_data_buf);
+  /* init a buffer for the response data */
+  syna_tcm_buf_init(&resp_data_buf);
 
-	if (g_sysfs_io_polling_interval == RESP_IN_ATTN)
-		delay_ms_resp = RESP_IN_ATTN;
-	else
-		delay_ms_resp = g_sysfs_io_polling_interval;
+  if (g_sysfs_io_polling_interval == RESP_IN_ATTN)
+    delay_ms_resp = RESP_IN_ATTN;
+  else
+    delay_ms_resp = g_sysfs_io_polling_interval;
 
-	retval = syna_tcm_send_command(tcm->tcm_dev,
-			data[0],
-			&data[3],
-			payload_length,
-			&resp_code,
-			&resp_data_buf,
-			delay_ms_resp);
-	if (retval < 0) {
-		LOGE("Fail to send command:%d\n", retval);
-		goto exit;
-	}
+  retval =
+      syna_tcm_send_command(tcm->tcm_dev, data[0], &data[3], payload_length,
+                            &resp_code, &resp_data_buf, delay_ms_resp);
+  if (retval < 0) {
+    LOGE("Fail to send command:%d\n", retval);
+    goto exit;
+  }
 
-	syna_pal_mem_set(data, 0, buf_size);
-	/* status code */
-	data[0] = resp_code;
-	/* the length for response data */
-	data[1] = (unsigned char)(resp_data_buf.data_length & 0xff);
-	data[2] = (unsigned char)((resp_data_buf.data_length >> 8) & 0xff);
-	/* response data */
-	if (resp_data_buf.data_length > 0) {
-		retval = syna_pal_mem_cpy(&g_cdev_cbuf.buf[3],
-			(g_cdev_cbuf.buf_size - SEND_MESSAGE_HEADER_LENGTH),
-			resp_data_buf.buf,
-			resp_data_buf.buf_size,
-			resp_data_buf.data_length);
-		if (retval < 0) {
-			LOGE("Fail to copy resp data\n");
-			goto exit;
-		}
-	}
+  syna_pal_mem_set(data, 0, buf_size);
+  /* status code */
+  data[0] = resp_code;
+  /* the length for response data */
+  data[1] = (unsigned char)(resp_data_buf.data_length & 0xff);
+  data[2] = (unsigned char)((resp_data_buf.data_length >> 8) & 0xff);
+  /* response data */
+  if (resp_data_buf.data_length > 0) {
+    retval = syna_pal_mem_cpy(
+        &g_cdev_cbuf.buf[3],
+        (g_cdev_cbuf.buf_size - SEND_MESSAGE_HEADER_LENGTH), resp_data_buf.buf,
+        resp_data_buf.buf_size, resp_data_buf.data_length);
+    if (retval < 0) {
+      LOGE("Fail to copy resp data\n");
+      goto exit;
+    }
+  }
 
 #ifdef ENABLE_EXTERNAL_FRAME_PROCESS
-    /* It's for queuing the data when user is polling the command
-     * response for the selected responses. The response will not be
-     * queued if the user doesn't set the report/response types through
-     * syna_cdev_ioctl_set_reports.
-     */
-	if (delay_ms_resp != RESP_IN_ATTN) {
-		if (tcm->report_to_queue[resp_code] == EFP_ENABLE) {
-			syna_cdev_update_report_queue(tcm, resp_code,
-				&resp_data_buf);
-		}
-	}
+  /* It's for queuing the data when user is polling the command
+   * response for the selected responses. The response will not be
+   * queued if the user doesn't set the report/response types through
+   * syna_cdev_ioctl_set_reports.
+   */
+  if (delay_ms_resp != RESP_IN_ATTN) {
+    if (tcm->report_to_queue[resp_code] == EFP_ENABLE) {
+      syna_cdev_update_report_queue(tcm, resp_code, &resp_data_buf);
+    }
+  }
 #endif
 
-	if (buf_size < resp_data_buf.data_length) {
-		LOGE("No enough space for data copy, buf_size:%d data:%d\n",
-			buf_size, resp_data_buf.data_length);
-		retval = -EOVERFLOW;
-		goto exit;
-	}
+  if (buf_size < resp_data_buf.data_length) {
+    LOGE("No enough space for data copy, buf_size:%d data:%d\n", buf_size,
+         resp_data_buf.data_length);
+    retval = -EOVERFLOW;
+    goto exit;
+  }
 
-	retval = copy_to_user((void *)ubuf_ptr,
-			data, resp_data_buf.data_length);
-	if (retval) {
-		LOGE("Fail to copy data to user space\n");
-		retval = -EBADE;
-		goto exit;
-	}
+  retval = copy_to_user((void *)ubuf_ptr, data, resp_data_buf.data_length);
+  if (retval) {
+    LOGE("Fail to copy data to user space\n");
+    retval = -EBADE;
+    goto exit;
+  }
 
-	*msg_size = resp_data_buf.data_length + 3;
-	retval = *msg_size;
+  *msg_size = resp_data_buf.data_length + 3;
+  retval = *msg_size;
 
 exit:
-	syna_tcm_buf_unlock(&g_cdev_cbuf);
+  syna_tcm_buf_unlock(&g_cdev_cbuf);
 
-	syna_tcm_buf_release(&resp_data_buf);
+  syna_tcm_buf_release(&resp_data_buf);
 
-	return retval;
+  return retval;
 }
 
 /**
@@ -1229,80 +1190,78 @@ exit:
  *    on success, 0; otherwise, negative value on error.
  */
 static int syna_cdev_ioctl_enable_irq(struct syna_tcm *tcm,
-		const unsigned char *ubuf_ptr, unsigned int buf_size,
-		unsigned int data_size)
-{
-	int retval = 0;
-	unsigned int data;
+                                      const unsigned char *ubuf_ptr,
+                                      unsigned int buf_size,
+                                      unsigned int data_size) {
+  int retval = 0;
+  unsigned int data;
 
-	if (!tcm->is_connected) {
-		LOGE("Not connected\n");
-		return -ENXIO;
-	}
+  if (!tcm->is_connected) {
+    LOGE("Not connected\n");
+    return -ENXIO;
+  }
 
-	if ((buf_size < sizeof(data)) || (data_size < sizeof(data))) {
-		LOGE("Invalid sync data size, buf_size:%d, data_size:%d\n",
-		    buf_size, data_size);
-		return -EINVAL;
-	}
+  if ((buf_size < sizeof(data)) || (data_size < sizeof(data))) {
+    LOGE("Invalid sync data size, buf_size:%d, data_size:%d\n", buf_size,
+         data_size);
+    return -EINVAL;
+  }
 
-	if (!tcm->hw_if->ops_enable_irq) {
-		LOGW("Not support irq control\n");
-		return -EFAULT;
-	}
+  if (!tcm->hw_if->ops_enable_irq) {
+    LOGW("Not support irq control\n");
+    return -EFAULT;
+  }
 
-	retval = copy_from_user(&data, ubuf_ptr, buf_size);
-	if (retval) {
-		LOGE("Fail to copy data from user space, size:%d\n", retval);
-		return -EBADE;
-	}
+  retval = copy_from_user(&data, ubuf_ptr, buf_size);
+  if (retval) {
+    LOGE("Fail to copy data from user space, size:%d\n", retval);
+    return -EBADE;
+  }
 
-	switch (data) {
-	case SYSFS_DISABLED_INTERRUPT:
-		retval = tcm->hw_if->ops_enable_irq(tcm->hw_if, false);
-		if (retval < 0) {
-			LOGE("Fail to disable interrupt\n");
-			return retval;
-		}
+  switch (data) {
+  case SYSFS_DISABLED_INTERRUPT:
+    retval = tcm->hw_if->ops_enable_irq(tcm->hw_if, false);
+    if (retval < 0) {
+      LOGE("Fail to disable interrupt\n");
+      return retval;
+    }
 
-		g_sysfs_io_polling_interval =
-			tcm->tcm_dev->msg_data.default_resp_reading;
+    g_sysfs_io_polling_interval = tcm->tcm_dev->msg_data.default_resp_reading;
 
-		LOGI("IRQ is disabled by userspace application\n");
+    LOGI("IRQ is disabled by userspace application\n");
 
-		break;
-	case SYSFS_ENABLED_INTERRUPT:
-		retval = tcm->hw_if->ops_enable_irq(tcm->hw_if, true);
-		if (retval < 0) {
-			LOGE("Fail to enable interrupt\n");
-			return retval;
-		}
+    break;
+  case SYSFS_ENABLED_INTERRUPT:
+    retval = tcm->hw_if->ops_enable_irq(tcm->hw_if, true);
+    if (retval < 0) {
+      LOGE("Fail to enable interrupt\n");
+      return retval;
+    }
 
-		g_sysfs_io_polling_interval = RESP_IN_ATTN;
+    g_sysfs_io_polling_interval = RESP_IN_ATTN;
 
-		LOGI("IRQ is enabled by userspace application\n");
+    LOGI("IRQ is enabled by userspace application\n");
 
-		break;
-	default:
-		/* recover the interrupt and also assing the polling interval */
-		retval = tcm->hw_if->ops_enable_irq(tcm->hw_if, true);
-		if (retval < 0) {
-			LOGE("Fail to enable interrupt\n");
-			return retval;
-		}
+    break;
+  default:
+    /* recover the interrupt and also assing the polling interval */
+    retval = tcm->hw_if->ops_enable_irq(tcm->hw_if, true);
+    if (retval < 0) {
+      LOGE("Fail to enable interrupt\n");
+      return retval;
+    }
 
-		g_sysfs_io_polling_interval = data;
-		if (g_sysfs_io_polling_interval < RESP_IN_POLLING)
-			g_sysfs_io_polling_interval = RESP_IN_POLLING;
+    g_sysfs_io_polling_interval = data;
+    if (g_sysfs_io_polling_interval < RESP_IN_POLLING)
+      g_sysfs_io_polling_interval = RESP_IN_POLLING;
 
-		LOGI("IRQ is enabled by userspace application\n");
-		LOGI("Polling interval is set to %d ms\n",
-			g_sysfs_io_polling_interval);
+    LOGI("IRQ is enabled by userspace application\n");
+    LOGI("Polling interval is set to %d ms\n", g_sysfs_io_polling_interval);
 
-		break;
-	}
+    break;
+  }
 
-	return 0;
+  return 0;
 }
 /**
  * syna_cdev_ioctl_store_pid()
@@ -1319,65 +1278,61 @@ static int syna_cdev_ioctl_enable_irq(struct syna_tcm *tcm,
  *    on success, 0; otherwise, negative value on error.
  */
 static int syna_cdev_ioctl_store_pid(struct syna_tcm *tcm,
-		const unsigned char *ubuf_ptr, unsigned int buf_size,
-		unsigned int data_size)
-{
-	int retval = 0;
-	unsigned char *data = NULL;
+                                     const unsigned char *ubuf_ptr,
+                                     unsigned int buf_size,
+                                     unsigned int data_size) {
+  int retval = 0;
+  unsigned char *data = NULL;
 
-	if (!tcm->is_connected) {
-		LOGE("Not connected\n");
-		return -ENXIO;
-	}
+  if (!tcm->is_connected) {
+    LOGE("Not connected\n");
+    return -ENXIO;
+  }
 
-	if (buf_size < 4) {
-		LOGE("Invalid sync data size, buf_size:%d\n", buf_size);
-		return -EINVAL;
-	}
+  if (buf_size < 4) {
+    LOGE("Invalid sync data size, buf_size:%d\n", buf_size);
+    return -EINVAL;
+  }
 
-	if (data_size < 4) {
-		LOGE("Invalid data_size\n");
-		return -EINVAL;
-	}
+  if (data_size < 4) {
+    LOGE("Invalid data_size\n");
+    return -EINVAL;
+  }
 
-	syna_tcm_buf_lock(&g_cdev_cbuf);
+  syna_tcm_buf_lock(&g_cdev_cbuf);
 
-	retval = syna_tcm_buf_alloc(&g_cdev_cbuf, buf_size);
-	if (retval < 0) {
-		LOGE("Fail to allocate memory for g_cdev_buf, size: %d\n",
-			buf_size);
-		goto exit;
-	}
+  retval = syna_tcm_buf_alloc(&g_cdev_cbuf, buf_size);
+  if (retval < 0) {
+    LOGE("Fail to allocate memory for g_cdev_buf, size: %d\n", buf_size);
+    goto exit;
+  }
 
-	data = g_cdev_cbuf.buf;
+  data = g_cdev_cbuf.buf;
 
-	retval = copy_from_user(data, ubuf_ptr, data_size);
-	if (retval) {
-		LOGE("Fail to copy data from user space, size:%d\n", retval);
-		retval = -EBADE;
-		goto exit;
-	}
+  retval = copy_from_user(data, ubuf_ptr, data_size);
+  if (retval) {
+    LOGE("Fail to copy data from user space, size:%d\n", retval);
+    retval = -EBADE;
+    goto exit;
+  }
 
-	tcm->proc_pid = syna_pal_le4_to_uint(&data[0]);
+  tcm->proc_pid = syna_pal_le4_to_uint(&data[0]);
 
-	LOGD("PID: %d\n", (unsigned int)tcm->proc_pid);
+  LOGD("PID: %d\n", (unsigned int)tcm->proc_pid);
 #ifdef ENABLE_PID_TASK
-	if (tcm->proc_pid) {
-		tcm->proc_task = pid_task(
-				find_vpid(tcm->proc_pid),
-				PIDTYPE_PID);
-		if (!tcm->proc_task) {
-			LOGE("Fail to locate task, pid: %d\n",
-				(unsigned int)tcm->proc_pid);
-			retval = -ESRCH;
-			goto exit;
-		}
-	}
+  if (tcm->proc_pid) {
+    tcm->proc_task = pid_task(find_vpid(tcm->proc_pid), PIDTYPE_PID);
+    if (!tcm->proc_task) {
+      LOGE("Fail to locate task, pid: %d\n", (unsigned int)tcm->proc_pid);
+      retval = -ESRCH;
+      goto exit;
+    }
+  }
 #endif
 exit:
-	syna_tcm_buf_unlock(&g_cdev_cbuf);
+  syna_tcm_buf_unlock(&g_cdev_cbuf);
 
-	return retval;
+  return retval;
 }
 /**
  * syna_cdev_ioctl_raw_read()
@@ -1395,59 +1350,56 @@ exit:
  *    on success, 0; otherwise, negative value on error.
  */
 static int syna_cdev_ioctl_raw_read(struct syna_tcm *tcm,
-		const unsigned char *ubuf_ptr, unsigned int buf_size,
-		unsigned int rd_size)
-{
-	int retval = 0;
-	unsigned char *data = NULL;
+                                    const unsigned char *ubuf_ptr,
+                                    unsigned int buf_size,
+                                    unsigned int rd_size) {
+  int retval = 0;
+  unsigned char *data = NULL;
 
-	if (!tcm->is_connected) {
-		LOGE("Not connected\n");
-		return -ENXIO;
-	}
+  if (!tcm->is_connected) {
+    LOGE("Not connected\n");
+    return -ENXIO;
+  }
 
-	if ((buf_size < 0) || (rd_size > buf_size)) {
-		LOGE("Invalid sync data size, buf_size:%d, rd_size:%d\n",
-			buf_size, rd_size);
-		return -EINVAL;
-	}
+  if ((buf_size < 0) || (rd_size > buf_size)) {
+    LOGE("Invalid sync data size, buf_size:%d, rd_size:%d\n", buf_size,
+         rd_size);
+    return -EINVAL;
+  }
 
-	if (rd_size == 0) {
-		LOGE("The read length is 0\n");
-		return 0;
-	}
+  if (rd_size == 0) {
+    LOGE("The read length is 0\n");
+    return 0;
+  }
 
-	syna_tcm_buf_lock(&g_cdev_cbuf);
+  syna_tcm_buf_lock(&g_cdev_cbuf);
 
-	retval = syna_tcm_buf_alloc(&g_cdev_cbuf, rd_size);
-	if (retval < 0) {
-		LOGE("Fail to allocate memory for g_cdev_cbuf, size: %d\n",
-			rd_size);
-		goto exit;
-	}
+  retval = syna_tcm_buf_alloc(&g_cdev_cbuf, rd_size);
+  if (retval < 0) {
+    LOGE("Fail to allocate memory for g_cdev_cbuf, size: %d\n", rd_size);
+    goto exit;
+  }
 
-	data = g_cdev_cbuf.buf;
+  data = g_cdev_cbuf.buf;
 
-	retval = syna_tcm_read(tcm->tcm_dev,
-			data,
-			rd_size);
-	if (retval < 0) {
-		LOGE("Fail to read raw data, size: %d\n", rd_size);
-		goto exit;
-	}
+  retval = syna_tcm_read(tcm->tcm_dev, data, rd_size);
+  if (retval < 0) {
+    LOGE("Fail to read raw data, size: %d\n", rd_size);
+    goto exit;
+  }
 
-	if (copy_to_user((void *)ubuf_ptr, data, rd_size)) {
-		LOGE("Fail to copy data to user space\n");
-		retval = -EBADE;
-		goto exit;
-	}
+  if (copy_to_user((void *)ubuf_ptr, data, rd_size)) {
+    LOGE("Fail to copy data to user space\n");
+    retval = -EBADE;
+    goto exit;
+  }
 
-	retval = rd_size;
+  retval = rd_size;
 
 exit:
-	syna_tcm_buf_unlock(&g_cdev_cbuf);
+  syna_tcm_buf_unlock(&g_cdev_cbuf);
 
-	return retval;
+  return retval;
 }
 /**
  * syna_cdev_ioctl_raw_write()
@@ -1465,63 +1417,60 @@ exit:
  *    on success, 0; otherwise, negative value on error.
  */
 static int syna_cdev_ioctl_raw_write(struct syna_tcm *tcm,
-		const unsigned char *ubuf_ptr, unsigned int buf_size,
-		unsigned int wr_size)
-{
-	int retval = 0;
-	unsigned char *data = NULL;
+                                     const unsigned char *ubuf_ptr,
+                                     unsigned int buf_size,
+                                     unsigned int wr_size) {
+  int retval = 0;
+  unsigned char *data = NULL;
 
-	if (!tcm->is_connected) {
-		LOGE("Not connected\n");
-		return -ENXIO;
-	}
+  if (!tcm->is_connected) {
+    LOGE("Not connected\n");
+    return -ENXIO;
+  }
 
-	if ((buf_size < 0) || (wr_size > buf_size)) {
-		LOGE("Invalid sync data size, buf_size:%d, wr_size:%d\n",
-			buf_size, wr_size);
-		return -EINVAL;
-	}
+  if ((buf_size < 0) || (wr_size > buf_size)) {
+    LOGE("Invalid sync data size, buf_size:%d, wr_size:%d\n", buf_size,
+         wr_size);
+    return -EINVAL;
+  }
 
-	if (wr_size == 0) {
-		LOGE("Invalid written size\n");
-		return -EINVAL;
-	}
+  if (wr_size == 0) {
+    LOGE("Invalid written size\n");
+    return -EINVAL;
+  }
 
-	syna_tcm_buf_lock(&g_cdev_cbuf);
+  syna_tcm_buf_lock(&g_cdev_cbuf);
 
-	retval = syna_tcm_buf_alloc(&g_cdev_cbuf, wr_size);
-	if (retval < 0) {
-		LOGE("Fail to allocate memory for g_cdev_cbuf, size: %d\n",
-			wr_size);
-		goto exit;
-	}
+  retval = syna_tcm_buf_alloc(&g_cdev_cbuf, wr_size);
+  if (retval < 0) {
+    LOGE("Fail to allocate memory for g_cdev_cbuf, size: %d\n", wr_size);
+    goto exit;
+  }
 
-	data = g_cdev_cbuf.buf;
+  data = g_cdev_cbuf.buf;
 
-	retval = copy_from_user(data, ubuf_ptr, wr_size);
-	if (retval) {
-		LOGE("Fail to copy data from user space, size:%d\n", retval);
-		retval = -EBADE;
-		goto exit;
-	}
+  retval = copy_from_user(data, ubuf_ptr, wr_size);
+  if (retval) {
+    LOGE("Fail to copy data from user space, size:%d\n", retval);
+    retval = -EBADE;
+    goto exit;
+  }
 
-	LOGD("Write command: 0x%02x, legnth: 0x%02x, 0x%02x (size:%d)\n",
-		data[0], data[1], data[2], wr_size);
+  LOGD("Write command: 0x%02x, legnth: 0x%02x, 0x%02x (size:%d)\n", data[0],
+       data[1], data[2], wr_size);
 
-	retval = syna_tcm_write(tcm->tcm_dev,
-			data,
-			wr_size);
-	if (retval < 0) {
-		LOGE("Fail to write raw data, size: %d\n", wr_size);
-		goto exit;
-	}
+  retval = syna_tcm_write(tcm->tcm_dev, data, wr_size);
+  if (retval < 0) {
+    LOGE("Fail to write raw data, size: %d\n", wr_size);
+    goto exit;
+  }
 
-	retval = wr_size;
+  retval = wr_size;
 
 exit:
-	syna_tcm_buf_unlock(&g_cdev_cbuf);
+  syna_tcm_buf_unlock(&g_cdev_cbuf);
 
-	return retval;
+  return retval;
 }
 
 /**
@@ -1539,56 +1488,48 @@ exit:
  * @return
  *    on success, 0; otherwise, negative value on error.
  */
-static int syna_cdev_ioctl_dispatch(struct syna_tcm *tcm,
-		unsigned int code, const unsigned char *ubuf_ptr,
-		unsigned int ubuf_size, unsigned int *data_size)
-{
-	int retval = 0;
+static int syna_cdev_ioctl_dispatch(struct syna_tcm *tcm, unsigned int code,
+                                    const unsigned char *ubuf_ptr,
+                                    unsigned int ubuf_size,
+                                    unsigned int *data_size) {
+  int retval = 0;
 
-	switch (code) {
-	case STD_SET_PID_ID:
-		retval = syna_cdev_ioctl_store_pid(tcm,
-				ubuf_ptr, ubuf_size, *data_size);
-		break;
-	case STD_ENABLE_IRQ_ID:
-		retval = syna_cdev_ioctl_enable_irq(tcm,
-				ubuf_ptr, ubuf_size, *data_size);
-		break;
-	case STD_RAW_WRITE_ID:
-		retval = syna_cdev_ioctl_raw_write(tcm,
-				ubuf_ptr, ubuf_size, *data_size);
-		break;
-	case STD_RAW_READ_ID:
-		retval = syna_cdev_ioctl_raw_read(tcm,
-				ubuf_ptr, ubuf_size, *data_size);
-		break;
-	case STD_GET_FRAME_ID:
-		retval = syna_cdev_ioctl_get_frame(tcm,
-				ubuf_ptr, ubuf_size, data_size);
-		break;
-	case STD_SEND_MESSAGE_ID:
-		retval = syna_cdev_ioctl_send_message(tcm,
-				ubuf_ptr, ubuf_size, data_size);
-		break;
-	case STD_SET_REPORTS_ID:
-		retval = syna_cdev_ioctl_set_reports(tcm,
-				ubuf_ptr, ubuf_size, *data_size);
-		break;
-	case STD_CHECK_FRAMES_ID:
-		retval = syna_cdev_ioctl_check_frame(tcm,
-				ubuf_ptr, ubuf_size, *data_size);
-		break;
-	case STD_CLEAN_OUT_FRAMES_ID:
-		LOGD("STD_CLEAN_OUT_FRAMES_ID called\n");
-		syna_cdev_clean_queue(tcm);
-		retval = 0;
-		break;
-	default:
-		LOGE("Unknown ioctl code: 0x%x\n", code);
-		return -EINVAL;
-	}
+  switch (code) {
+  case STD_SET_PID_ID:
+    retval = syna_cdev_ioctl_store_pid(tcm, ubuf_ptr, ubuf_size, *data_size);
+    break;
+  case STD_ENABLE_IRQ_ID:
+    retval = syna_cdev_ioctl_enable_irq(tcm, ubuf_ptr, ubuf_size, *data_size);
+    break;
+  case STD_RAW_WRITE_ID:
+    retval = syna_cdev_ioctl_raw_write(tcm, ubuf_ptr, ubuf_size, *data_size);
+    break;
+  case STD_RAW_READ_ID:
+    retval = syna_cdev_ioctl_raw_read(tcm, ubuf_ptr, ubuf_size, *data_size);
+    break;
+  case STD_GET_FRAME_ID:
+    retval = syna_cdev_ioctl_get_frame(tcm, ubuf_ptr, ubuf_size, data_size);
+    break;
+  case STD_SEND_MESSAGE_ID:
+    retval = syna_cdev_ioctl_send_message(tcm, ubuf_ptr, ubuf_size, data_size);
+    break;
+  case STD_SET_REPORTS_ID:
+    retval = syna_cdev_ioctl_set_reports(tcm, ubuf_ptr, ubuf_size, *data_size);
+    break;
+  case STD_CHECK_FRAMES_ID:
+    retval = syna_cdev_ioctl_check_frame(tcm, ubuf_ptr, ubuf_size, *data_size);
+    break;
+  case STD_CLEAN_OUT_FRAMES_ID:
+    LOGD("STD_CLEAN_OUT_FRAMES_ID called\n");
+    syna_cdev_clean_queue(tcm);
+    retval = 0;
+    break;
+  default:
+    LOGE("Unknown ioctl code: 0x%x\n", code);
+    return -EINVAL;
+  }
 
-	return retval;
+  return retval;
 }
 /**
  * syna_cdev_ioctl_old_dispatch()
@@ -1603,57 +1544,54 @@ static int syna_cdev_ioctl_dispatch(struct syna_tcm *tcm,
  * @return
  *    on success, 0; otherwise, negative value on error.
  */
-static int syna_cdev_ioctl_old_dispatch(struct syna_tcm *tcm,
-		unsigned int code, unsigned long arg)
-{
-	int retval = 0;
+static int syna_cdev_ioctl_old_dispatch(struct syna_tcm *tcm, unsigned int code,
+                                        unsigned long arg) {
+  int retval = 0;
 
-	switch (code) {
-	case OLD_RESET_ID:
-		retval = syna_tcm_reset(tcm->tcm_dev);
-		if (retval < 0) {
-			LOGE("Fail to do reset\n");
-			break;
-		}
+  switch (code) {
+  case OLD_RESET_ID:
+    retval = syna_tcm_reset(tcm->tcm_dev);
+    if (retval < 0) {
+      LOGE("Fail to do reset\n");
+      break;
+    }
 
-		retval = tcm->dev_set_up_app_fw(tcm);
-		if (retval < 0) {
-			LOGE("Fail to set up app fw\n");
-			break;
-		}
+    retval = tcm->dev_set_up_app_fw(tcm);
+    if (retval < 0) {
+      LOGE("Fail to set up app fw\n");
+      break;
+    }
 
-		break;
-	case OLD_SET_IRQ_MODE_ID:
-		if (!tcm->hw_if->ops_enable_irq) {
-			retval = -EFAULT;
-			break;
-		}
+    break;
+  case OLD_SET_IRQ_MODE_ID:
+    if (!tcm->hw_if->ops_enable_irq) {
+      retval = -EFAULT;
+      break;
+    }
 
-		if (arg == 0)
-			retval = tcm->hw_if->ops_enable_irq(tcm->hw_if,
-					false);
-		else if (arg == 1)
-			retval = tcm->hw_if->ops_enable_irq(tcm->hw_if,
-					true);
-		break;
-	case OLD_SET_RAW_MODE_ID:
-		if (arg == 0)
-			tcm->is_attn_redirecting = false;
-		else if (arg == 1)
-			tcm->is_attn_redirecting = true;
+    if (arg == 0)
+      retval = tcm->hw_if->ops_enable_irq(tcm->hw_if, false);
+    else if (arg == 1)
+      retval = tcm->hw_if->ops_enable_irq(tcm->hw_if, true);
+    break;
+  case OLD_SET_RAW_MODE_ID:
+    if (arg == 0)
+      tcm->is_attn_redirecting = false;
+    else if (arg == 1)
+      tcm->is_attn_redirecting = true;
 
-		break;
-	case OLD_CONCURRENT_ID:
-		retval = 0;
-		break;
+    break;
+  case OLD_CONCURRENT_ID:
+    retval = 0;
+    break;
 
-	default:
-		LOGE("Unknown ioctl code: 0x%x\n", code);
-		retval = -EINVAL;
-		break;
-	}
+  default:
+    LOGE("Unknown ioctl code: 0x%x\n", code);
+    retval = -EINVAL;
+    break;
+  }
 
-	return retval;
+  return retval;
 }
 
 /**
@@ -1671,72 +1609,65 @@ static int syna_cdev_ioctl_old_dispatch(struct syna_tcm *tcm,
  */
 #ifdef USE_UNLOCKED_IOCTL
 static long syna_cdev_ioctls(struct file *filp, unsigned int cmd,
-		unsigned long arg)
+                             unsigned long arg)
 #else
 static int syna_cdev_ioctls(struct inode *inp, struct file *filp,
-		unsigned int cmd, unsigned long arg)
+                            unsigned int cmd, unsigned long arg)
 #endif
 {
-	int retval = 0;
-	struct device *p_dev;
-	struct kobject *p_kobj;
-	struct syna_tcm *tcm;
-	struct syna_ioctl_data ioc_data;
-	unsigned char *ptr = NULL;
+  int retval = 0;
+  struct device *p_dev;
+  struct kobject *p_kobj;
+  struct syna_tcm *tcm;
+  struct syna_ioctl_data ioc_data;
+  unsigned char *ptr = NULL;
 
-	p_kobj = g_sysfs_dir->parent;
-	p_dev = container_of(p_kobj, struct device, kobj);
-	tcm = dev_get_drvdata(p_dev);
+  p_kobj = g_sysfs_dir->parent;
+  p_dev = container_of(p_kobj, struct device, kobj);
+  tcm = dev_get_drvdata(p_dev);
 
-	syna_pal_mutex_lock(&g_extif_mutex);
+  syna_pal_mutex_lock(&g_extif_mutex);
 
-	retval = 0;
+  retval = 0;
 
-	/* handle the old IOCTLs */
-	if ((_IOC_NR(cmd)) < STD_IOCTL_BEGIN) {
-		retval = syna_cdev_ioctl_old_dispatch(tcm,
-			(unsigned int)_IOC_NR(cmd), arg);
+  /* handle the old IOCTLs */
+  if ((_IOC_NR(cmd)) < STD_IOCTL_BEGIN) {
+    retval = syna_cdev_ioctl_old_dispatch(tcm, (unsigned int)_IOC_NR(cmd), arg);
 
-		goto exit;
-	} else if ((_IOC_NR(cmd)) == STD_IOCTL_BEGIN) {
-		retval = 1;
-		goto exit;
-	}
+    goto exit;
+  } else if ((_IOC_NR(cmd)) == STD_IOCTL_BEGIN) {
+    retval = 1;
+    goto exit;
+  }
 
-	retval = copy_from_user(&ioc_data,
-			(void __user *) arg,
-			sizeof(struct syna_ioctl_data));
-	if (retval) {
-		LOGE("Fail to copy ioctl_data from user space, size:%d\n",
-			retval);
-		retval = -EBADE;
-		goto exit;
-	}
+  retval = copy_from_user(&ioc_data, (void __user *)arg,
+                          sizeof(struct syna_ioctl_data));
+  if (retval) {
+    LOGE("Fail to copy ioctl_data from user space, size:%d\n", retval);
+    retval = -EBADE;
+    goto exit;
+  }
 
-	ptr = ioc_data.buf;
+  ptr = ioc_data.buf;
 
-	retval = syna_cdev_ioctl_dispatch(tcm,
-			(unsigned int)_IOC_NR(cmd),
-			(const unsigned char *)ptr,
-			ioc_data.buf_size,
-			&ioc_data.data_length);
-	if (retval < 0)
-		goto exit;
+  retval = syna_cdev_ioctl_dispatch(tcm, (unsigned int)_IOC_NR(cmd),
+                                    (const unsigned char *)ptr,
+                                    ioc_data.buf_size, &ioc_data.data_length);
+  if (retval < 0)
+    goto exit;
 
-	retval = copy_to_user((void __user *) arg,
-			&ioc_data,
-			sizeof(struct syna_ioctl_data));
-	if (retval) {
-		LOGE("Fail to update ioctl_data to user space, size:%d\n",
-			retval);
-		retval = -EBADE;
-		goto exit;
-	}
+  retval = copy_to_user((void __user *)arg, &ioc_data,
+                        sizeof(struct syna_ioctl_data));
+  if (retval) {
+    LOGE("Fail to update ioctl_data to user space, size:%d\n", retval);
+    retval = -EBADE;
+    goto exit;
+  }
 
 exit:
-	syna_pal_mutex_unlock(&g_extif_mutex);
+  syna_pal_mutex_unlock(&g_extif_mutex);
 
-	return retval;
+  return retval;
 }
 
 #ifdef USE_COMPAT_IOCTL
@@ -1753,69 +1684,62 @@ exit:
  * @return
  *    on success, 0; otherwise, negative value on error.
  */
-static long syna_cdev_compat_ioctls(struct file *filp,
-		unsigned int cmd, unsigned long arg)
-{
-	int retval = 0;
-	struct device *p_dev;
-	struct kobject *p_kobj;
-	struct syna_tcm *tcm;
-	struct syna_tcm_ioctl_data_compat ioc_data;
-	unsigned char *ptr = NULL;
+static long syna_cdev_compat_ioctls(struct file *filp, unsigned int cmd,
+                                    unsigned long arg) {
+  int retval = 0;
+  struct device *p_dev;
+  struct kobject *p_kobj;
+  struct syna_tcm *tcm;
+  struct syna_tcm_ioctl_data_compat ioc_data;
+  unsigned char *ptr = NULL;
 
-	p_kobj = g_sysfs_dir->parent;
-	p_dev = container_of(p_kobj, struct device, kobj);
-	tcm = dev_get_drvdata(p_dev);
+  p_kobj = g_sysfs_dir->parent;
+  p_dev = container_of(p_kobj, struct device, kobj);
+  tcm = dev_get_drvdata(p_dev);
 
-	syna_pal_mutex_lock(&g_extif_mutex);
+  syna_pal_mutex_lock(&g_extif_mutex);
 
-	retval = 0;
+  retval = 0;
 
-	/* handle the old IOCTLs */
-	if ((_IOC_NR(cmd)) < STD_IOCTL_BEGIN) {
-		retval = syna_cdev_ioctl_old_dispatch(tcm,
-			(unsigned int)_IOC_NR(cmd), arg);
+  /* handle the old IOCTLs */
+  if ((_IOC_NR(cmd)) < STD_IOCTL_BEGIN) {
+    retval = syna_cdev_ioctl_old_dispatch(tcm, (unsigned int)_IOC_NR(cmd), arg);
 
-		goto exit;
-	} else if ((_IOC_NR(cmd)) == STD_IOCTL_BEGIN) {
-		retval = 1;
-		goto exit;
-	}
+    goto exit;
+  } else if ((_IOC_NR(cmd)) == STD_IOCTL_BEGIN) {
+    retval = 1;
+    goto exit;
+  }
 
-	retval = copy_from_user(&ioc_data,
-		(struct syna_tcm_ioctl_data_compat __user *) compat_ptr(arg),
-		sizeof(struct syna_tcm_ioctl_data_compat));
-	if (retval) {
-		LOGE("Fail to copy ioctl_data from user space, size:%d\n",
-			retval);
-		retval = -EBADE;
-		goto exit;
-	}
+  retval = copy_from_user(
+      &ioc_data, (struct syna_tcm_ioctl_data_compat __user *)compat_ptr(arg),
+      sizeof(struct syna_tcm_ioctl_data_compat));
+  if (retval) {
+    LOGE("Fail to copy ioctl_data from user space, size:%d\n", retval);
+    retval = -EBADE;
+    goto exit;
+  }
 
-	ptr = compat_ptr((unsigned long)ioc_data.buf);
+  ptr = compat_ptr((unsigned long)ioc_data.buf);
 
-	retval = syna_cdev_ioctl_dispatch(tcm,
-			(unsigned int)_IOC_NR(cmd),
-			(const unsigned char *)ptr,
-			ioc_data.buf_size,
-			&ioc_data.data_length);
-	if (retval < 0)
-		goto exit;
+  retval = syna_cdev_ioctl_dispatch(tcm, (unsigned int)_IOC_NR(cmd),
+                                    (const unsigned char *)ptr,
+                                    ioc_data.buf_size, &ioc_data.data_length);
+  if (retval < 0)
+    goto exit;
 
-	retval = copy_to_user(compat_ptr(arg),
-			&ioc_data,
-			sizeof(struct syna_tcm_ioctl_data_compat));
-	if (retval) {
-		LOGE("Fail to update ioctl_data to user space, size:%d\n",
-			retval);
-		retval = -EBADE;
-		goto exit;
-	}
+  retval = copy_to_user(compat_ptr(arg), &ioc_data,
+                        sizeof(struct syna_tcm_ioctl_data_compat));
+  if (retval) {
+    LOGE("Fail to update ioctl_data to user space, size:%d\n", retval);
+    retval = -EBADE;
+    goto exit;
+  }
 
 exit:
-	syna_pal_mutex_unlock(&g_extif_mutex);
+  syna_pal_mutex_unlock(&g_extif_mutex);
 
-	return retval;
+  return retval;
 }
 #endif
 
@@ -1832,10 +1756,8 @@ exit:
  * @return
  *    not support
  */
-static loff_t syna_cdev_llseek(struct file *filp,
-		loff_t off, int whence)
-{
-	return -EFAULT;
+static loff_t syna_cdev_llseek(struct file *filp, loff_t off, int whence) {
+  return -EFAULT;
 }
 /**
  * syna_cdev_read()
@@ -1852,33 +1774,32 @@ static loff_t syna_cdev_llseek(struct file *filp,
  * @return
  *    on success, 0; otherwise, negative value on error.
  */
-static ssize_t syna_cdev_read(struct file *filp,
-		char __user *buf, size_t count, loff_t *f_pos)
-{
-	int retval = 0;
-	struct device *p_dev;
-	struct kobject *p_kobj;
-	struct syna_tcm *tcm;
+static ssize_t syna_cdev_read(struct file *filp, char __user *buf, size_t count,
+                              loff_t *f_pos) {
+  int retval = 0;
+  struct device *p_dev;
+  struct kobject *p_kobj;
+  struct syna_tcm *tcm;
 
-	p_kobj = g_sysfs_dir->parent;
-	p_dev = container_of(p_kobj, struct device, kobj);
-	tcm = dev_get_drvdata(p_dev);
+  p_kobj = g_sysfs_dir->parent;
+  p_dev = container_of(p_kobj, struct device, kobj);
+  tcm = dev_get_drvdata(p_dev);
 
-	if (count == 0)
-		return 0;
+  if (count == 0)
+    return 0;
 
-	syna_pal_mutex_lock(&g_extif_mutex);
+  syna_pal_mutex_lock(&g_extif_mutex);
 
-	retval = syna_cdev_ioctl_raw_read(tcm,
-			(const unsigned char *)buf, count, count);
-	if (retval != count) {
-		LOGE("Invalid read operation, request:%d, return:%d\n",
-			(unsigned int)count, retval);
-	}
+  retval =
+      syna_cdev_ioctl_raw_read(tcm, (const unsigned char *)buf, count, count);
+  if (retval != count) {
+    LOGE("Invalid read operation, request:%d, return:%d\n", (unsigned int)count,
+         retval);
+  }
 
-	syna_pal_mutex_unlock(&g_extif_mutex);
+  syna_pal_mutex_unlock(&g_extif_mutex);
 
-	return retval;
+  return retval;
 }
 /**
  * syna_cdev_write()
@@ -1895,33 +1816,32 @@ static ssize_t syna_cdev_read(struct file *filp,
  * @return
  *    on success, 0; otherwise, negative value on error.
  */
-static ssize_t syna_cdev_write(struct file *filp,
-		const char __user *buf, size_t count, loff_t *f_pos)
-{
-	int retval = 0;
-	struct device *p_dev;
-	struct kobject *p_kobj;
-	struct syna_tcm *tcm;
+static ssize_t syna_cdev_write(struct file *filp, const char __user *buf,
+                               size_t count, loff_t *f_pos) {
+  int retval = 0;
+  struct device *p_dev;
+  struct kobject *p_kobj;
+  struct syna_tcm *tcm;
 
-	p_kobj = g_sysfs_dir->parent;
-	p_dev = container_of(p_kobj, struct device, kobj);
-	tcm = dev_get_drvdata(p_dev);
+  p_kobj = g_sysfs_dir->parent;
+  p_dev = container_of(p_kobj, struct device, kobj);
+  tcm = dev_get_drvdata(p_dev);
 
-	if (count == 0)
-		return 0;
+  if (count == 0)
+    return 0;
 
-	syna_pal_mutex_lock(&g_extif_mutex);
+  syna_pal_mutex_lock(&g_extif_mutex);
 
-	retval = syna_cdev_ioctl_raw_write(tcm,
-			(const unsigned char *)buf, count, count);
-	if (retval != count) {
-		LOGE("Invalid write operation, request:%d, return:%d\n",
-			(unsigned int)count, retval);
-	}
+  retval =
+      syna_cdev_ioctl_raw_write(tcm, (const unsigned char *)buf, count, count);
+  if (retval != count) {
+    LOGE("Invalid write operation, request:%d, return:%d\n",
+         (unsigned int)count, retval);
+  }
 
-	syna_pal_mutex_unlock(&g_extif_mutex);
+  syna_pal_mutex_unlock(&g_extif_mutex);
 
-	return retval;
+  return retval;
 }
 /**
  * syna_cdev_open()
@@ -1936,36 +1856,34 @@ static ssize_t syna_cdev_write(struct file *filp,
  * @return
  *    on success, 0; otherwise, negative value on error.
  */
-static int syna_cdev_open(struct inode *inp, struct file *filp)
-{
-	struct device *p_dev;
-	struct kobject *p_kobj;
-	struct syna_tcm *tcm;
+static int syna_cdev_open(struct inode *inp, struct file *filp) {
+  struct device *p_dev;
+  struct kobject *p_kobj;
+  struct syna_tcm *tcm;
 
-	p_kobj = g_sysfs_dir->parent;
-	p_dev = container_of(p_kobj, struct device, kobj);
-	tcm = dev_get_drvdata(p_dev);
+  p_kobj = g_sysfs_dir->parent;
+  p_dev = container_of(p_kobj, struct device, kobj);
+  tcm = dev_get_drvdata(p_dev);
 
-	syna_pal_mutex_lock(&g_extif_mutex);
+  syna_pal_mutex_lock(&g_extif_mutex);
 
-	if (tcm->char_dev_ref_count != 0) {
-		LOGN("cdev already open, %d\n",
-			tcm->char_dev_ref_count);
-		return -EBUSY;
-	}
+  if (tcm->char_dev_ref_count != 0) {
+    LOGN("cdev already open, %d\n", tcm->char_dev_ref_count);
+    return -EBUSY;
+  }
 
-	tcm->char_dev_ref_count++;
+  tcm->char_dev_ref_count++;
 
-	g_sysfs_io_polling_interval = 0;
+  g_sysfs_io_polling_interval = 0;
 
 #ifdef ENABLE_EXTERNAL_FRAME_PROCESS
-	syna_cdev_clean_queue(tcm);
+  syna_cdev_clean_queue(tcm);
 #endif
-	syna_pal_mutex_unlock(&g_extif_mutex);
+  syna_pal_mutex_unlock(&g_extif_mutex);
 
-	LOGI("cdev open\n");
+  LOGI("cdev open\n");
 
-	return 0;
+  return 0;
 }
 /**
  * syna_cdev_release()
@@ -1979,58 +1897,56 @@ static int syna_cdev_open(struct inode *inp, struct file *filp)
  * @return
  *    on success, 0; otherwise, negative value on error.
  */
-static int syna_cdev_release(struct inode *inp, struct file *filp)
-{
-	struct device *p_dev;
-	struct kobject *p_kobj;
-	struct syna_tcm *tcm;
+static int syna_cdev_release(struct inode *inp, struct file *filp) {
+  struct device *p_dev;
+  struct kobject *p_kobj;
+  struct syna_tcm *tcm;
 
-	p_kobj = g_sysfs_dir->parent;
-	p_dev = container_of(p_kobj, struct device, kobj);
-	tcm = dev_get_drvdata(p_dev);
+  p_kobj = g_sysfs_dir->parent;
+  p_dev = container_of(p_kobj, struct device, kobj);
+  tcm = dev_get_drvdata(p_dev);
 
-	syna_pal_mutex_lock(&g_extif_mutex);
+  syna_pal_mutex_lock(&g_extif_mutex);
 
-	if (tcm->char_dev_ref_count <= 0) {
-		LOGN("cdev already closed, %d\n",
-			tcm->char_dev_ref_count);
-		return 0;
-	}
+  if (tcm->char_dev_ref_count <= 0) {
+    LOGN("cdev already closed, %d\n", tcm->char_dev_ref_count);
+    return 0;
+  }
 
-	tcm->char_dev_ref_count--;
+  tcm->char_dev_ref_count--;
 
-	tcm->is_attn_redirecting = false;
-	syna_pal_mem_set(tcm->report_to_queue, 0, REPORT_TYPES);
+  tcm->is_attn_redirecting = false;
+  syna_pal_mem_set(tcm->report_to_queue, 0, REPORT_TYPES);
 #ifdef ENABLE_EXTERNAL_FRAME_PROCESS
-	syna_cdev_clean_queue(tcm);
+  syna_cdev_clean_queue(tcm);
 #endif
-	syna_pal_mutex_unlock(&g_extif_mutex);
+  syna_pal_mutex_unlock(&g_extif_mutex);
 
-	g_sysfs_io_polling_interval = 0;
+  g_sysfs_io_polling_interval = 0;
 
-	LOGI("cdev close\n");
+  LOGI("cdev close\n");
 
-	return 0;
+  return 0;
 }
 
 /**
  * Declare the operations of TouchCom device file
  */
 static const struct file_operations device_fops = {
-	.owner = THIS_MODULE,
+    .owner = THIS_MODULE,
 #ifdef USE_UNLOCKED_IOCTL
-	.unlocked_ioctl = syna_cdev_ioctls,
+    .unlocked_ioctl = syna_cdev_ioctls,
 #ifdef USE_COMPAT_IOCTL
-	.compat_ioctl = syna_cdev_compat_ioctls,
+    .compat_ioctl = syna_cdev_compat_ioctls,
 #endif
 #else
-	.ioctl = syna_cdev_ioctls,
+    .ioctl = syna_cdev_ioctls,
 #endif
-	.llseek = syna_cdev_llseek,
-	.read = syna_cdev_read,
-	.write = syna_cdev_write,
-	.open = syna_cdev_open,
-	.release = syna_cdev_release,
+    .llseek = syna_cdev_llseek,
+    .read = syna_cdev_read,
+    .write = syna_cdev_write,
+    .open = syna_cdev_open,
+    .release = syna_cdev_release,
 };
 /**
  * syna_cdev_redirect_attn()
@@ -2043,10 +1959,9 @@ static const struct file_operations device_fops = {
  * @return
  *    none.
  */
-void syna_cdev_redirect_attn(struct syna_tcm *tcm)
-{
-	if (tcm->proc_pid)
-		return;
+void syna_cdev_redirect_attn(struct syna_tcm *tcm) {
+  if (tcm->proc_pid)
+    return;
 }
 #ifdef ENABLE_EXTERNAL_FRAME_PROCESS
 /**
@@ -2062,53 +1977,49 @@ void syna_cdev_redirect_attn(struct syna_tcm *tcm)
  * @return
  *    none.
  */
-void syna_cdev_update_report_queue(struct syna_tcm *tcm,
-		unsigned char code, struct tcm_buffer *pevent_data)
-{
-	int retval;
-	unsigned char *frame_buffer = NULL;
-	unsigned int frame_length = 0;
+void syna_cdev_update_report_queue(struct syna_tcm *tcm, unsigned char code,
+                                   struct tcm_buffer *pevent_data) {
+  int retval;
+  unsigned char *frame_buffer = NULL;
+  unsigned int frame_length = 0;
 
-	if (pevent_data == NULL) {
-		LOGE("Returned, invalid event data pointer\n");
-		return;
-	}
-	frame_length = pevent_data->data_length + 3;
-	LOGD("The overall queuing data length = %d\n", frame_length);
-	frame_buffer = (unsigned char *)syna_pal_mem_alloc(frame_length,
-					sizeof(unsigned char));
-	if (!frame_buffer) {
-		LOGE("Fail to allocate buffer, size: %d, data_length: %d\n",
-			pevent_data->data_length + 3, pevent_data->data_length);
-		return;
-	}
+  if (pevent_data == NULL) {
+    LOGE("Returned, invalid event data pointer\n");
+    return;
+  }
+  frame_length = pevent_data->data_length + 3;
+  LOGD("The overall queuing data length = %d\n", frame_length);
+  frame_buffer =
+      (unsigned char *)syna_pal_mem_alloc(frame_length, sizeof(unsigned char));
+  if (!frame_buffer) {
+    LOGE("Fail to allocate buffer, size: %d, data_length: %d\n",
+         pevent_data->data_length + 3, pevent_data->data_length);
+    return;
+  }
 
-	frame_buffer[0] = code;
-	frame_buffer[1] = (unsigned char)pevent_data->data_length;
-	frame_buffer[2] = (unsigned char)(pevent_data->data_length >> 8);
+  frame_buffer[0] = code;
+  frame_buffer[1] = (unsigned char)pevent_data->data_length;
+  frame_buffer[2] = (unsigned char)(pevent_data->data_length >> 8);
 
-	if (pevent_data->data_length > 0) {
-		retval = syna_pal_mem_cpy(&frame_buffer[3],
-				(frame_length - 3),
-				pevent_data->buf,
-				pevent_data->data_length,
-				pevent_data->data_length);
-		if (retval < 0) {
-			LOGE("Fail to copy data to buffer, size: %d\n",
-				pevent_data->data_length);
-			goto exit;
-		}
-	}
-	retval = syna_cdev_insert_fifo(tcm, frame_buffer, frame_length);
-	if (retval < 0) {
-		LOGE("Fail to insert data to fifo\n");
-		goto exit;
-	}
+  if (pevent_data->data_length > 0) {
+    retval =
+        syna_pal_mem_cpy(&frame_buffer[3], (frame_length - 3), pevent_data->buf,
+                         pevent_data->data_length, pevent_data->data_length);
+    if (retval < 0) {
+      LOGE("Fail to copy data to buffer, size: %d\n", pevent_data->data_length);
+      goto exit;
+    }
+  }
+  retval = syna_cdev_insert_fifo(tcm, frame_buffer, frame_length);
+  if (retval < 0) {
+    LOGE("Fail to insert data to fifo\n");
+    goto exit;
+  }
 
-	wake_up_interruptible(&(tcm->wait_frame));
+  wake_up_interruptible(&(tcm->wait_frame));
 
 exit:
-	syna_pal_mem_free((void *)frame_buffer);
+  syna_pal_mem_free((void *)frame_buffer);
 }
 #endif
 /**
@@ -2123,15 +2034,14 @@ exit:
  * @return
  *    the string of devtmpfs
  */
-static char *syna_cdev_devnode(struct device *dev, umode_t *mode)
-{
-	if (!mode)
-		return NULL;
+static char *syna_cdev_devnode(struct device *dev, umode_t *mode) {
+  if (!mode)
+    return NULL;
 
-	/* S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH | S_IWOTH */
-	*mode = CHAR_DEVICE_MODE;
+  /* S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH | S_IWOTH */
+  *mode = CHAR_DEVICE_MODE;
 
-	return kasprintf(GFP_KERNEL, "%s", dev_name(dev));
+  return kasprintf(GFP_KERNEL, "%s", dev_name(dev));
 }
 /**
  * syna_cdev_create_sysfs()
@@ -2145,104 +2055,100 @@ static char *syna_cdev_devnode(struct device *dev, umode_t *mode)
  * @return
  *    on success, 0; otherwise, negative value on error.
  */
-int syna_cdev_create_sysfs(struct syna_tcm *tcm,
-		struct platform_device *pdev)
-{
-	int retval = 0;
-	struct class *device_class = NULL;
-	struct device *device = NULL;
-	static int cdev_major_num;
+int syna_cdev_create_sysfs(struct syna_tcm *tcm, struct platform_device *pdev) {
+  int retval = 0;
+  struct class *device_class = NULL;
+  struct device *device = NULL;
+  static int cdev_major_num;
 
-	tcm->device_class = NULL;
-	tcm->device = NULL;
+  tcm->device_class = NULL;
+  tcm->device = NULL;
 
-	tcm->is_attn_redirecting = false;
+  tcm->is_attn_redirecting = false;
 
-	syna_pal_mutex_alloc(&g_extif_mutex);
+  syna_pal_mutex_alloc(&g_extif_mutex);
 #ifdef ENABLE_EXTERNAL_FRAME_PROCESS
-	syna_pal_mutex_alloc(&g_fifo_queue_mutex);
+  syna_pal_mutex_alloc(&g_fifo_queue_mutex);
 #endif
-	syna_tcm_buf_init(&g_cdev_cbuf);
+  syna_tcm_buf_init(&g_cdev_cbuf);
 
-	if (cdev_major_num) {
-		tcm->char_dev_num = MKDEV(cdev_major_num, 0);
-		retval = register_chrdev_region(tcm->char_dev_num, 1,
-				PLATFORM_DRIVER_NAME);
-		if (retval < 0) {
-			LOGE("Fail to register char device\n");
-			goto err_register_chrdev_region;
-		}
-	} else {
-		retval = alloc_chrdev_region(&tcm->char_dev_num, 0, 1,
-				PLATFORM_DRIVER_NAME);
-		if (retval < 0) {
-			LOGE("Fail to allocate char device\n");
-			goto err_alloc_chrdev_region;
-		}
+  if (cdev_major_num) {
+    tcm->char_dev_num = MKDEV(cdev_major_num, 0);
+    retval = register_chrdev_region(tcm->char_dev_num, 1, PLATFORM_DRIVER_NAME);
+    if (retval < 0) {
+      LOGE("Fail to register char device\n");
+      goto err_register_chrdev_region;
+    }
+  } else {
+    retval =
+        alloc_chrdev_region(&tcm->char_dev_num, 0, 1, PLATFORM_DRIVER_NAME);
+    if (retval < 0) {
+      LOGE("Fail to allocate char device\n");
+      goto err_alloc_chrdev_region;
+    }
 
-		cdev_major_num = MAJOR(tcm->char_dev_num);
-	}
+    cdev_major_num = MAJOR(tcm->char_dev_num);
+  }
 
-	cdev_init(&tcm->char_dev, &device_fops);
-	tcm->char_dev.owner = THIS_MODULE;
+  cdev_init(&tcm->char_dev, &device_fops);
+  tcm->char_dev.owner = THIS_MODULE;
 
-	retval = cdev_add(&tcm->char_dev, tcm->char_dev_num, 1);
-	if (retval < 0) {
-		LOGE("Fail to add cdev_add\n");
-		goto err_add_chardev;
-	}
+  retval = cdev_add(&tcm->char_dev, tcm->char_dev_num, 1);
+  if (retval < 0) {
+    LOGE("Fail to add cdev_add\n");
+    goto err_add_chardev;
+  }
 
-	device_class = class_create(THIS_MODULE, PLATFORM_DRIVER_NAME);
-	if (IS_ERR(device_class)) {
-		LOGE("Fail to create device class\n");
-		retval = PTR_ERR(device_class);
-		goto err_create_class;
-	}
+  device_class = class_create(THIS_MODULE, PLATFORM_DRIVER_NAME);
+  if (IS_ERR(device_class)) {
+    LOGE("Fail to create device class\n");
+    retval = PTR_ERR(device_class);
+    goto err_create_class;
+  }
 
-	device_class->devnode = syna_cdev_devnode;
+  device_class->devnode = syna_cdev_devnode;
 
-	device = device_create(device_class, NULL,
-			tcm->char_dev_num, NULL,
-			CHAR_DEVICE_NAME"%d", MINOR(tcm->char_dev_num));
-	if (IS_ERR(tcm->device)) {
-		LOGE("Fail to create character device\n");
-		retval = -ENOENT;
-		goto err_create_device;
-	}
+  device = device_create(device_class, NULL, tcm->char_dev_num, NULL,
+                         CHAR_DEVICE_NAME "%d", MINOR(tcm->char_dev_num));
+  if (IS_ERR(tcm->device)) {
+    LOGE("Fail to create character device\n");
+    retval = -ENOENT;
+    goto err_create_device;
+  }
 
-	tcm->device_class = device_class;
+  tcm->device_class = device_class;
 
-	tcm->device = device;
+  tcm->device = device;
 
-	tcm->char_dev_ref_count = 0;
-	tcm->proc_pid = 0;
+  tcm->char_dev_ref_count = 0;
+  tcm->proc_pid = 0;
 
 #ifdef ENABLE_EXTERNAL_FRAME_PROCESS
-	INIT_LIST_HEAD(&tcm->frame_fifo_queue);
-	init_waitqueue_head(&tcm->wait_frame);
+  INIT_LIST_HEAD(&tcm->frame_fifo_queue);
+  init_waitqueue_head(&tcm->wait_frame);
 #endif
-	syna_pal_mem_set(tcm->report_to_queue, 0, REPORT_TYPES);
+  syna_pal_mem_set(tcm->report_to_queue, 0, REPORT_TYPES);
 
-	retval = syna_sysfs_create_dir(tcm, pdev);
-	if (retval < 0) {
-		LOGE("Fail to create sysfs dir\n");
-		retval = -ENOTDIR;
-		goto err_create_dir;
-	}
+  retval = syna_sysfs_create_dir(tcm, pdev);
+  if (retval < 0) {
+    LOGE("Fail to create sysfs dir\n");
+    retval = -ENOTDIR;
+    goto err_create_dir;
+  }
 
-	return 0;
+  return 0;
 
 err_create_dir:
-	device_destroy(device_class, tcm->char_dev_num);
+  device_destroy(device_class, tcm->char_dev_num);
 err_create_device:
-	class_destroy(device_class);
+  class_destroy(device_class);
 err_create_class:
-	cdev_del(&tcm->char_dev);
+  cdev_del(&tcm->char_dev);
 err_add_chardev:
-	unregister_chrdev_region(tcm->char_dev_num, 1);
+  unregister_chrdev_region(tcm->char_dev_num, 1);
 err_alloc_chrdev_region:
 err_register_chrdev_region:
-	return retval;
+  return retval;
 }
 /**
  * syna_cdev_remove_sysfs()
@@ -2255,36 +2161,33 @@ err_register_chrdev_region:
  * @return
  *    none.
  */
-void syna_cdev_remove_sysfs(struct syna_tcm *tcm)
-{
-	if (!tcm) {
-		LOGE("Invalid tcm driver handle\n");
-		return;
-	}
+void syna_cdev_remove_sysfs(struct syna_tcm *tcm) {
+  if (!tcm) {
+    LOGE("Invalid tcm driver handle\n");
+    return;
+  }
 
-	syna_sysfs_remove_dir(tcm);
+  syna_sysfs_remove_dir(tcm);
 
-	syna_pal_mem_set(tcm->report_to_queue, 0, REPORT_TYPES);
-	syna_cdev_clean_queue(tcm);
-	syna_pal_mutex_free(&g_fifo_queue_mutex);
+  syna_pal_mem_set(tcm->report_to_queue, 0, REPORT_TYPES);
+  syna_cdev_clean_queue(tcm);
+  syna_pal_mutex_free(&g_fifo_queue_mutex);
 
-	tcm->char_dev_ref_count = 0;
-	tcm->proc_pid = 0;
+  tcm->char_dev_ref_count = 0;
+  tcm->proc_pid = 0;
 
-	if (tcm->device) {
-		device_destroy(tcm->device_class, tcm->char_dev_num);
-		class_destroy(tcm->device_class);
-		cdev_del(&tcm->char_dev);
-		unregister_chrdev_region(tcm->char_dev_num, 1);
-	}
+  if (tcm->device) {
+    device_destroy(tcm->device_class, tcm->char_dev_num);
+    class_destroy(tcm->device_class);
+    cdev_del(&tcm->char_dev);
+    unregister_chrdev_region(tcm->char_dev_num, 1);
+  }
 
-	syna_tcm_buf_release(&g_cdev_cbuf);
+  syna_tcm_buf_release(&g_cdev_cbuf);
 
-	syna_pal_mutex_free(&g_extif_mutex);
+  syna_pal_mutex_free(&g_extif_mutex);
 
-	tcm->device_class = NULL;
+  tcm->device_class = NULL;
 
-	tcm->device = NULL;
+  tcm->device = NULL;
 }
-
-
