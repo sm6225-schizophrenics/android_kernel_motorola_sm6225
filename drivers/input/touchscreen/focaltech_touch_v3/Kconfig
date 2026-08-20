@@ -1,5 +1,5 @@
 #
-# Focaltech Touchscreen driver configuration
+#Focaltech Touchscreen driver configuration
 #
 
 config TOUCHSCREEN_FTS_V3
