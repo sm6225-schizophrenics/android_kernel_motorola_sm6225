@@ -1,3 +1,5 @@
-focal_fps_mmi-y += ff_ctl.o plat-msm.o
+focal_fps_mmi - y += ff_ctl.o plat -
+                     msm.o
 
-obj-$(CONFIG_INPUT_FOCAL_FPS) += focal_fps_mmi.o
+                         obj -
+                     $(CONFIG_INPUT_FOCAL_FPS) += focal_fps_mmi.o
